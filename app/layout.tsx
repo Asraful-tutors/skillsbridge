@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 
-import { Inter } from "next/font/google";
-import "./globals.css";
 import MotionLayout from "@/components/layout/MotionLayout";
 
-const inter = Inter({ subsets: ["latin"] });
+import "./globals.css";
+import StoreProvider from "./StoreProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,10 +16,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <MotionLayout>
-        <body className={inter.className}>{children}</body>
-      </MotionLayout>
-    </html>
+    <StoreProvider>
+      <html lang="en">
+        <MotionLayout>
+          <body>{children}</body>
+        </MotionLayout>
+      </html>
+    </StoreProvider>
   );
 }

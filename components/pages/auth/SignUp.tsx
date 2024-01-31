@@ -4,10 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
-type Props = {};
+type SignUpProps = {
+  // onRequestAccess: () => void;
+};
 
-export default function SignUp({}: Props) {
+export default function SignUp({}: SignUpProps) {
   return (
     <motion.div
       initial={{
@@ -21,7 +24,7 @@ export default function SignUp({}: Props) {
         ease: "easeInOut",
       }}
     >
-      <section className="grid grid-cols-1 lg:grid-cols-2 w-screen h-screen overflow-hidden py-14 p-4 lg:p-10 xl:px-12">
+      <section className="grid grid-cols-1 lg:grid-cols-2 w-screen h-screen overflow-hidden py-14 p-4 lg:p-10 xl:px-12 absolute inset-0 bg-[#F9F9F7]">
         <div className="hidden lg:flex bg-white_background flex-col items-center justify-center gap-3.5 py-24">
           <Image
             src="/logo/logo.svg"
@@ -66,8 +69,8 @@ export default function SignUp({}: Props) {
                 Electronic Communication Policy
               </span>
             </p>
-            <Button variant={"violate"} className="">
-              Request Access
+            <Button asChild variant={"violate"}>
+              <Link href="/start">Request Access</Link>
             </Button>
           </div>
         </div>
