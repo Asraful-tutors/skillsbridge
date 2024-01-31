@@ -21,7 +21,7 @@ function StartPage() {
       case 2:
         return <HardSkillsPage onNext={handleNext} />;
       case 3:
-        return <SoftSkills />;
+        return <SoftSkills onNext={handleNext} />;
 
       default:
         return null;
