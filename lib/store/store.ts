@@ -1,10 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
+
+import hardSkillReducer from "./hardSkill/hardSkill";
 import pathReducer from "./path/pathSlice";
+import softSkillReducer from "./softSkill/softSkill";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       path: pathReducer,
+      hardSkill: hardSkillReducer,
+      softSkill: softSkillReducer,
     },
   });
 };
