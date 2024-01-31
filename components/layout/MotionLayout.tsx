@@ -8,7 +8,7 @@ export default function MotionLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AnimatePresence mode="popLayout" initial={false}>
+    <AnimatePresence mode="popLayout" initial={true}>
       {children}
     </AnimatePresence>
   );
