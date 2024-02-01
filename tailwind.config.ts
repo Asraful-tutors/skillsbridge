@@ -19,6 +19,7 @@ const config = {
     },
     extend: {
       colors: {
+        light_sky: "#F0F1F5",
         light_gray: "#dedfe3",
         Moderate_violet: "#9d64d6",
         primary_background: "#F9F9F7",

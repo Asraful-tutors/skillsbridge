@@ -87,3 +87,15 @@
 * > * {
   font-family: "Open Sans", sans-serif;
 }
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0000001a;
+}
+::-webkit-scrollbar-thumb {
+  background: #9d64d6;
+  border-radius: 16px;
+}

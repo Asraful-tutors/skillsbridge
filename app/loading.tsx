@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 export default function Loading() {
   return (
-    <>
+    <div className="absolute inset-0 z-50 h-screen w-screen grid place-content-center">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -17,6 +17,6 @@ export default function Loading() {
       >
         <path d="M21 12a9 9 0 1 1-6.219-8.56" />
       </svg>
-    </>
+    </div>
   );
 }
