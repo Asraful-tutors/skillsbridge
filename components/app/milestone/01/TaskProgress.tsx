@@ -6,21 +6,22 @@ export default function TaskProgress({
 }: {
   progress: number
 }) {
+  progress = 1
   return (
     <motion.div className="flex flex-col">
       <div className="flex flex-row mb-[11px]">
-        <div className={`border-gray ${progress === 0 ? 'bg-deep_blue border-0' : 'bg-white border-2'} w-[18px] h-[18px] flex justify-center items-center`}>
-          {progress === 0 && <div className="w-[8px] h-[2px] bg-white"></div>}
+        <div className={`border-gray bg-deep_blue border-0 w-[18px] h-[18px] flex justify-center items-center`}>
+          <div className="w-[8px] h-[2px] bg-white"></div>
         </div>
-        <hr className="border-t-2 border-dotted border-gray w-[1px] my-2 ml-2" />
-        <hr className="border-t-2 border-dashed border-gray w-[174px] my-2 mx-1.5" />
-        <hr className="border-t-2 border-dotted border-gray w-[1px] my-2 mr-2" />
-        <div className={`border-gray ${progress === 1 ? 'bg-deep_blue border-0' : 'bg-white border-2'} w-[18px] h-[18px] flex justify-center items-center`}>
-          {progress === 1 && <div className="w-[8px] h-[2px] bg-white"></div>}
+        <hr className={`${progress === 1 || progress === 2 ? 'border-deep_blue' : 'border-gray'} border-t-2 border-dotted w-[1px] my-2 ml-2`} />
+        <hr className={`${progress === 1 || progress === 2 ? 'border-deep_blue' : 'border-gray'} border-t-2 border-dashed w-[174px] my-2 mx-1.5`} />
+        <hr className={`${progress === 1 || progress === 2 ? 'border-deep_blue' : 'border-gray'} border-t-2 border-dotted w-[1px] my-2 mr-2`} />
+        <div className={`border-gray ${progress === 1 || progress === 2 ? 'bg-deep_blue border-0' : 'bg-white border-2'} w-[18px] h-[18px] flex justify-center items-center`}>
+          {(progress === 1 || progress === 2) && <div className="w-[8px] h-[2px] bg-white"></div>}
         </div>
-        <hr className="border-t-2 border-dotted border-gray w-[1px] my-2 ml-2" />
-        <hr className="border-t-2 border-dashed border-gray w-[174px] my-2 mx-1.5" />
-        <hr className="border-t-2 border-dotted border-gray w-[1px] my-2 mr-2" />
+        <hr className={`${progress === 2 ? 'border-deep_blue' : 'border-gray'} border-t-2 border-dotted w-[1px] my-2 ml-2`} />
+        <hr className={`${progress === 2 ? 'border-deep_blue' : 'border-gray'} border-t-2 border-dashed w-[174px] my-2 mx-1.5`} />
+        <hr className={`${progress === 2 ? 'border-deep_blue' : 'border-gray'} border-t-2 border-dotted w-[1px] my-2 mr-2`} />
         <div className={`border-gray ${progress === 2 ? 'bg-deep_blue border-0' : 'bg-white border-2'} w-[18px] h-[18px] flex justify-center items-center`}>
           {progress === 2 && <div className="w-[8px] h-[2px] bg-white"></div>}
         </div>
