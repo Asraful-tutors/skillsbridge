@@ -11,36 +11,39 @@ export const ProgressBar = ({
   const segmentWidth = 100 / stepSegments;
 
   const calculateSegmentColor = (segmentIndex: number) => {
-    // Adjust the colors based on your design preferences
-    const currentColor = "bg-Moderate_violet";
-    const nextColor = "bg-[#e3cfff]";
-    const otherColor = "bg-gray-300";
-
+    // Assign different colors based on the segmentIndex
+    // You can customize the colors based on your design
     if (segmentIndex === currentStep) {
-      return currentColor;
+      return "bg-Moderate_violet"; // Current step color
+    } else if (segmentIndex < currentStep) {
+      return "bg-Moderate_violet"; // Previous steps color
     } else if (segmentIndex === currentStep + 1) {
-      return nextColor;
+      return "bg-[#e3cfff]"; // Slightly lighter color for the next step
     } else {
-      return otherColor;
+      return "bg-gray-300"; // Other segments color
     }
   };
 
   return (
     <motion.div className="w-full mb-4">
-      <div className="bg-gray-200 h-4 rounded-full relative space-x-2">
+      <motion.div className="bg-gray-200 h-4 rounded-full overflow-hidden relative">
         {[...Array(stepSegments)].map((_, index) => (
           <motion.div
             key={index}
-            className={`h-4 rounded-full absolute z-${
+            className={`h-4 absolute z-${
               stepSegments - index
             } ${calculateSegmentColor(index)}`}
-            style={{
+            animate={{
               width: `${segmentWidth}%`,
               left: `${index * segmentWidth}%`,
             }}
+            transition={{
+              duration: 0.5,
+              ease: "easeInOut",
+            }}
           ></motion.div>
         ))}
-      </div>
+      </motion.div>
     </motion.div>
   );
 };

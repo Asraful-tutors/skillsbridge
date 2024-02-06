@@ -35,16 +35,25 @@ export default function QuestionsPanel({
     const selectedCareerData = paths.find(
       (data) => data.career === selectedCareer?.career
     );
+    console.log("selectedCareerData", selectedCareerData);
 
     if (selectedCareerData) {
       const allQuestions = selectedCareerData.skills.reduce(
         (
           acc: {
             question: string;
+            type: string; // Add the type information
             answers: { text: string; correct: boolean }[];
           }[],
           skill
-        ) => [...acc, ...skill.questions],
+        ) => {
+          const skillQuestions = skill.questions.map((question: any) => ({
+            question: question.question,
+            type: selectedCareerData.type, // Set the type for each question
+            answers: question.answers,
+          }));
+          return [...acc, ...skillQuestions];
+        },
         []
       );
 
@@ -100,30 +109,37 @@ export default function QuestionsPanel({
   return (
     <motion.div className="flex flex-col gap-16">
       <ProgressBar currentStep={currentStep} totalSteps={questions.length} />
-      <h2 className="text-black text-base font-semibold leading-[150%]">
-        {currentQuestion.question}
-      </h2>
-      <ul className="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-7">
-        {currentQuestion.answers.map((answer: any, index: number) => (
-          <li key={index}>
-            <label
-              htmlFor={answer.text}
-              className="text-black text-base font-semibold leading-[150%] flex items-center gap-2"
-            >
-              <input
-                type="radio"
-                name="answer"
-                id={answer.text}
-                value={answer.text}
-                onChange={() =>
-                  handleAnswerSelection(currentQuestion.question, answer)
-                }
-              />
-              {answer.text}
-            </label>
-          </li>
-        ))}
-      </ul>
+      <div className="flex flex-col gap-8">
+        <p>
+          {" "}
+          Q: {currentStep + 1} ({questions.length - currentStep - 1} questions
+          are remaining)
+        </p>
+        <h2 className="text-black text-base font-semibold leading-[150%]">
+          {currentQuestion.question}
+        </h2>
+        <ul className="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-7">
+          {currentQuestion.answers.map((answer: any, index: number) => (
+            <li key={index}>
+              <label
+                htmlFor={answer.text}
+                className="text-black text-base font-semibold leading-[150%] flex items-center gap-2"
+              >
+                <input
+                  type="radio"
+                  name="answer"
+                  id={answer.text}
+                  value={answer.text}
+                  onChange={() =>
+                    handleAnswerSelection(currentQuestion.question, answer)
+                  }
+                />
+                {answer.text}
+              </label>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <div className="flex items-center justify-between gap-10 py-5">
         <Button

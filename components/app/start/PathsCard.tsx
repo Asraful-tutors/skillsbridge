@@ -35,7 +35,7 @@ export default function PathsCard({ img, career }: LearningPath) {
     >
       <div className=" w-[88px] bg-[#C7C7C7] rounded-sm">
         <Image
-          src={img}
+          src={"/images/game-artist.svg"}
           alt={career}
           width={64}
           height={64}
