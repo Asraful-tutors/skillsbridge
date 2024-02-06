@@ -1,25 +1,25 @@
 import { motion } from "framer-motion";
 
-import { LearningPath } from "@/lib/data/learning-paths";
 import Image from "next/image";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { setSelectedPath } from "@/lib/store/path/pathSlice";
+import { LearningPath } from "@/lib/types/types";
 
 const cardVariants = {
   selected: { backgroundColor: "#9d64d6" },
   unselected: { backgroundColor: "#dedfe3" },
 };
 
-export default function PathsCard({ img, title }: LearningPath) {
+export default function PathsCard({ img, career }: LearningPath) {
   const dispatch = useAppDispatch();
   const selectedPath = useAppSelector((state) => state.path.selectedPath);
-
-  const isSelected = selectedPath?.title === title;
+  console.log("selectedPath", selectedPath);
+  const isSelected = selectedPath?.career === career;
 
   const handleCardClick = () => {
     if (!isSelected) {
-      dispatch(setSelectedPath({ img, title }));
+      dispatch(setSelectedPath({ img, career }));
     } else {
       dispatch(setSelectedPath(null));
     }
@@ -36,7 +36,7 @@ export default function PathsCard({ img, title }: LearningPath) {
       <div className=" w-[88px] bg-[#C7C7C7] rounded-sm">
         <Image
           src={img}
-          alt={title}
+          alt={career}
           width={64}
           height={64}
           loading="lazy"
@@ -49,7 +49,7 @@ export default function PathsCard({ img, title }: LearningPath) {
           isSelected ? "text-white" : "text-black text-opacity-80"
         }`}
       >
-        {title}
+        {career}
       </p>
     </motion.div>
   );
