@@ -28,8 +28,6 @@ export default function HardSkillsPage({ onNext }: { onNext: () => void }) {
 
   return (
     <motion.div
-      initial="hidden"
-      animate="visible"
       layout
       variants={staggerVariants}
       className="flex flex-col items-center justify-center h-full w-full gap-10"
@@ -42,7 +40,7 @@ export default function HardSkillsPage({ onNext }: { onNext: () => void }) {
         </p>
       </section>
       <motion.section
-        className="grid grid-cols-1 gap-5"
+        className="grid grid-cols-1 gap-5 px-4"
         variants={staggerVariants}
       >
         {hardSkills.map((skill, key) => (
@@ -60,7 +58,7 @@ export default function HardSkillsPage({ onNext }: { onNext: () => void }) {
         disabled={isNextDisabled}
         variant={"violate"}
         onClick={onNext}
-        className="max-w-[284px] mx-auto"
+        className="w-[284px] mx-auto"
       >
         Next
       </Button>

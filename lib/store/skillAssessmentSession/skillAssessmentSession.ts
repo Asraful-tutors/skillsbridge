@@ -2,14 +2,14 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface skillAssessmentSessionState {
   currentStep: number;
-  currentSkillType: "hardSkills" | "softSkills";
+  currentSkillType: "hard" | "soft";
   questions: any[];
   answers: any[];
 }
 
 const initialState: skillAssessmentSessionState = {
   currentStep: 0,
-  currentSkillType: "hardSkills",
+  currentSkillType: "hard",
   questions: [],
   answers: [],
 };
@@ -19,7 +19,7 @@ const skillAssessmentSessionState = createSlice({
   initialState,
   reducers: {
     setQuestions: (state, action: PayloadAction<any[]>) => {
-      state.questions = action.payload;
+      state.questions = action.payload || [];
     },
     setAnswers: (state, action: PayloadAction<any[]>) => {
       state.answers = action.payload;
@@ -27,10 +27,7 @@ const skillAssessmentSessionState = createSlice({
     setCurrentStep: (state, action: PayloadAction<number>) => {
       state.currentStep = action.payload;
     },
-    setCurrentSkillType: (
-      state,
-      action: PayloadAction<"hardSkills" | "softSkills">
-    ) => {
+    setCurrentSkillType: (state, action: PayloadAction<"hard" | "soft">) => {
       state.currentSkillType = action.payload;
     },
     addSelectedAnswer: (

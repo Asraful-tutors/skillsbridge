@@ -2,21 +2,17 @@ import WhiteWrapper from "@/components/layout/WhiteWrapper";
 import { motion } from "framer-motion";
 import Sidebar from "./Sidebar";
 import QuestionsPanel from "./QuestionsPanel";
-import { useAppDispatch } from "@/lib/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useEffect } from "react";
 import {
   setCurrentSkillType,
   setQuestions,
 } from "@/lib/store/skillAssessmentSession/skillAssessmentSession";
 import { hardSkillsAssessmentData } from "@/lib/data/skillAssessmentsSessions";
+import { paths } from "@/lib/data/path";
 
 export default function StartMultiStepAssessments() {
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(setQuestions(hardSkillsAssessmentData[0].questions));
-    dispatch(setCurrentSkillType("hardSkills"));
-  }, [dispatch]);
+  const selectedCareer = useAppSelector((state) => state.path.selectedPath);
 
   return (
     <motion.div>
@@ -31,7 +27,7 @@ export default function StartMultiStepAssessments() {
         {/* questions and answers with progressbar */}
         <motion.div className="w-full lg:col-span-5 xl:col-span-4">
           <WhiteWrapper>
-            <QuestionsPanel />
+            <QuestionsPanel selectedCareer={selectedCareer} />
           </WhiteWrapper>
         </motion.div>
       </motion.div>

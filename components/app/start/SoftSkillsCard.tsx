@@ -22,7 +22,7 @@ export default function SoftSkillsCard({
     onScaleClick(value);
   };
   return (
-    <motion.div className="p-8 rounded-2xl bg-white_background flex items-center flex-wrap gap-10 w-full md:min-w-[704px]">
+    <motion.div className="p-8 rounded-2xl bg-white_background flex items-center flex-col md:flex-row gap-10 w-full md:min-w-[704px]">
       <section className="flex flex-1 items-center gap-2.5">
         <Image
           src={img}
