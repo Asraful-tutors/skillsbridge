@@ -7,6 +7,10 @@ export const paths = [
     skills: [
       {
         skill: "Digital Painting and Drawing",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
@@ -85,6 +89,10 @@ export const paths = [
         ],
       },
       {
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         skill: "3D Modeling and Animation",
         questions: [
           {
@@ -163,6 +171,10 @@ export const paths = [
         ],
       },
       {
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         skill: "Texturing",
         questions: [
           {
@@ -255,6 +267,10 @@ export const paths = [
       },
       {
         skill: "Sculpting",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
@@ -358,6 +374,10 @@ export const paths = [
       },
       {
         skill: "Knowledge of Game Engines",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
@@ -373,8 +393,14 @@ export const paths = [
             question:
               "In Unity, how can you optimize the performance of your game's art assets?",
             answers: [
-              { text: " By using high-resolution textures exclusively", correct: false },
-              { text: " By increasing the number of light sources", correct: false },
+              {
+                text: " By using high-resolution textures exclusively",
+                correct: false,
+              },
+              {
+                text: " By increasing the number of light sources",
+                correct: false,
+              },
               { text: " By batching static objects", correct: true },
               { text: " By disabling physics simulations", correct: false },
             ],
@@ -395,17 +421,32 @@ export const paths = [
             answers: [
               { text: " To optimize game code", correct: false },
               { text: " To control the game's AI", correct: false },
-              { text: " To dictate how surfaces appear under lighting", correct: true },
-              { text: " To manage the game's inventory system", correct: false },
+              {
+                text: " To dictate how surfaces appear under lighting",
+                correct: true,
+              },
+              {
+                text: " To manage the game's inventory system",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "Which of the following is a key consideration when importing 3D models into Unity?",
             answers: [
-              { text: " Ensuring all models are in the .unity format", correct: false },
-              { text: " Applying all textures in Photoshop before importing", correct: false },
-              { text: " Setting the correct import settings for scale, normals, and materials", correct: true },
+              {
+                text: " Ensuring all models are in the .unity format",
+                correct: false,
+              },
+              {
+                text: " Applying all textures in Photoshop before importing",
+                correct: false,
+              },
+              {
+                text: " Setting the correct import settings for scale, normals, and materials",
+                correct: true,
+              },
               { text: " Converting all models to 2D sprites", correct: false },
             ],
           },
@@ -419,6 +460,10 @@ export const paths = [
     skills: [
       {
         skill: "Game Mechanics",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
@@ -488,8 +533,7 @@ export const paths = [
             ],
           },
           {
-            question:
-              "What is the purpose of a 'respawn' mechanic in a game?",
+            question: "What is the purpose of a 'respawn' mechanic in a game?",
             answers: [
               {
                 text: " To create challenge and difficulty",
@@ -513,6 +557,10 @@ export const paths = [
       },
       {
         skill: "Level Design",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question: "What is the primary goal of level design in a game?",
@@ -558,7 +606,10 @@ export const paths = [
             answers: [
               { text: " To display the player's score", correct: false },
               { text: " To mark the start of a new level", correct: false },
-              { text: " To allow the player to resume from a specific point after failing", correct: true },
+              {
+                text: " To allow the player to resume from a specific point after failing",
+                correct: true,
+              },
               { text: " To trigger cutscenes", correct: false },
             ],
           },
@@ -576,6 +627,10 @@ export const paths = [
       },
       {
         skill: "Narrative Design",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
@@ -610,7 +665,10 @@ export const paths = [
             question:
               "What is the primary purpose of branching narrative paths in a game's story?",
             answers: [
-              { text: " To increase the game's graphics quality", correct: false },
+              {
+                text: " To increase the game's graphics quality",
+                correct: false,
+              },
               { text: " To create alternate game endings", correct: true },
               { text: " To add extra challenges for players", correct: false },
               { text: " To optimize game performance", correct: false },
@@ -640,6 +698,10 @@ export const paths = [
       },
       {
         skill: "Playtesting",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
@@ -661,13 +723,18 @@ export const paths = [
             ],
           },
           {
-            question:
-              "Playtesting typically involves:",
+            question: "Playtesting typically involves:",
             answers: [
               { text: " Playing the game for fun", correct: false },
-              { text: " Observing how players interact with the game and gathering feedback", correct: true },
+              {
+                text: " Observing how players interact with the game and gathering feedback",
+                correct: true,
+              },
               { text: " Completing the game in record time", correct: false },
-              { text: " Testing the game on different platforms", correct: false },
+              {
+                text: " Testing the game on different platforms",
+                correct: false,
+              },
             ],
           },
           {
@@ -684,9 +751,15 @@ export const paths = [
             question:
               "When should playtesting be conducted in the game development process?",
             answers: [
-              { text: " Only after the game is fully developed", correct: false },
+              {
+                text: " Only after the game is fully developed",
+                correct: false,
+              },
               { text: " During the early concept phase", correct: false },
-              { text: " Throughout the development cycle, from early prototypes to final builds", correct: true },
+              {
+                text: " Throughout the development cycle, from early prototypes to final builds",
+                correct: true,
+              },
               { text: " Only during marketing and promotion", correct: false },
             ],
           },
@@ -694,10 +767,22 @@ export const paths = [
             question:
               "What is the main benefit of conducting usability testing during playtesting?",
             answers: [
-              { text: " Identifying technical bugs and glitches", correct: false },
-              { text: " Evaluating the game's graphics quality", correct: false },
-              { text: " Understanding how players perceive and interact with the game's user interface", correct: true },
-              { text: " Measuring player engagement and enjoyment", correct: false },
+              {
+                text: " Identifying technical bugs and glitches",
+                correct: false,
+              },
+              {
+                text: " Evaluating the game's graphics quality",
+                correct: false,
+              },
+              {
+                text: " Understanding how players perceive and interact with the game's user interface",
+                correct: true,
+              },
+              {
+                text: " Measuring player engagement and enjoyment",
+                correct: false,
+              },
             ],
           },
         ],
@@ -710,6 +795,10 @@ export const paths = [
     skills: [
       {
         skill: "Project Management Tools",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
@@ -767,19 +856,34 @@ export const paths = [
             ],
           },
           {
-            question:
-              "Agile project management methodologies emphasize:",
+            question: "Agile project management methodologies emphasize:",
             answers: [
-              { text: " Comprehensive documentation over working software", correct: false },
-              { text: " Contract negotiation over customer collaboration", correct: false },
-              { text: " Following a plan over responding to change", correct: false },
-              { text: " Individuals and interactions over processes and tools", correct: true },
+              {
+                text: " Comprehensive documentation over working software",
+                correct: false,
+              },
+              {
+                text: " Contract negotiation over customer collaboration",
+                correct: false,
+              },
+              {
+                text: " Following a plan over responding to change",
+                correct: false,
+              },
+              {
+                text: " Individuals and interactions over processes and tools",
+                correct: true,
+              },
             ],
           },
         ],
       },
       {
         skill: "Budgeting and Financial Software",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
@@ -815,10 +919,19 @@ export const paths = [
             question:
               "Effective financial management in game development requires:",
             answers: [
-              { text: " Focusing solely on the lowest cost options", correct: false },
+              {
+                text: " Focusing solely on the lowest cost options",
+                correct: false,
+              },
               { text: " Ignoring external market trends", correct: false },
-              { text: " Balancing quality with cost-efficiency", correct: true },
-              { text: " Avoiding investments in new technology", correct: false },
+              {
+                text: " Balancing quality with cost-efficiency",
+                correct: true,
+              },
+              {
+                text: " Avoiding investments in new technology",
+                correct: false,
+              },
             ],
           },
           {
@@ -835,24 +948,42 @@ export const paths = [
       },
       {
         skill: "Scheduling Tools",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
               "The critical path method (CPM) is a project management technique that:",
             answers: [
-              { text: " Identifies project tasks that are not important", correct: false },
-              { text: " Determines the shortest time possible to complete the project", correct: true },
+              {
+                text: " Identifies project tasks that are not important",
+                correct: false,
+              },
+              {
+                text: " Determines the shortest time possible to complete the project",
+                correct: true,
+              },
               { text: " Focuses on maximizing project costs", correct: false },
-              { text: " Is used to schedule marketing releases only", correct: false },
+              {
+                text: " Is used to schedule marketing releases only",
+                correct: false,
+              },
             ],
           },
           {
-            question:
-              "Gantt charts are used in scheduling to:",
+            question: "Gantt charts are used in scheduling to:",
             answers: [
               { text: " Track the performance of stocks", correct: false },
-              { text: " Create detailed 3D models of project outcomes", correct: false },
-              { text: " Visualize project timelines and task dependencies", correct: true },
+              {
+                text: " Create detailed 3D models of project outcomes",
+                correct: false,
+              },
+              {
+                text: " Visualize project timelines and task dependencies",
+                correct: true,
+              },
               { text: " Organize team-building activities", correct: false },
             ],
           },
@@ -861,35 +992,71 @@ export const paths = [
               "Resource leveling is a technique used in project scheduling to:",
             answers: [
               { text: " Increase project risk", correct: false },
-              { text: " Adjust the project timeline based on resource availability", correct: true },
-              { text: " Decrease the quality of the final product", correct: false },
-              { text: " Allocate additional budget to marketing", correct: false },
+              {
+                text: " Adjust the project timeline based on resource availability",
+                correct: true,
+              },
+              {
+                text: " Decrease the quality of the final product",
+                correct: false,
+              },
+              {
+                text: " Allocate additional budget to marketing",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "What scheduling tool feature is most beneficial for managing multiple game development projects simultaneously?",
             answers: [
-              { text: " Color coding for different art assets", correct: false },
-              { text: " The ability to play test builds directly within the tool", correct: false },
-              { text: " Portfolio management and overview capabilities", correct: true },
-              { text: " Integration with 3D modeling software", correct: false },
+              {
+                text: " Color coding for different art assets",
+                correct: false,
+              },
+              {
+                text: " The ability to play test builds directly within the tool",
+                correct: false,
+              },
+              {
+                text: " Portfolio management and overview capabilities",
+                correct: true,
+              },
+              {
+                text: " Integration with 3D modeling software",
+                correct: false,
+              },
             ],
           },
           {
-            question:
-              "In the context of game production, 'milestones' are:",
+            question: "In the context of game production, 'milestones' are:",
             answers: [
-              { text: " Irrelevant and outdated management practices", correct: false },
-              { text: " Fixed dates by which a particular version of the game must be released to the public", correct: false },
-              { text: " Key points in the project timeline where specific objectives must be met", correct: true },
-              { text: " Only used in marketing and sales strategies", correct: false },
+              {
+                text: " Irrelevant and outdated management practices",
+                correct: false,
+              },
+              {
+                text: " Fixed dates by which a particular version of the game must be released to the public",
+                correct: false,
+              },
+              {
+                text: " Key points in the project timeline where specific objectives must be met",
+                correct: true,
+              },
+              {
+                text: " Only used in marketing and sales strategies",
+                correct: false,
+              },
             ],
           },
         ],
       },
       {
         skill: "Agile and Scrum Methodologies",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
@@ -907,27 +1074,46 @@ export const paths = [
             answers: [
               { text: " Detailed technical specifications", correct: false },
               { text: " High-level business requirements", correct: false },
-              { text: " Short descriptions of features from the perspective of the end user", correct: true },
-              { text: " Long-term project goals and objectives", correct: false },
+              {
+                text: " Short descriptions of features from the perspective of the end user",
+                correct: true,
+              },
+              {
+                text: " Long-term project goals and objectives",
+                correct: false,
+              },
             ],
           },
           {
-            question:
-              "A 'sprint' in Scrum is:",
+            question: "A 'sprint' in Scrum is:",
             answers: [
-              { text: " A long, uninterrupted period of design work", correct: false },
-              { text: " A type of meeting to discuss project finances", correct: false },
-              { text: " A short, time-boxed period during which a specific work has to be completed", correct: true },
-              { text: " An informal gathering of the development team", correct: false },
+              {
+                text: " A long, uninterrupted period of design work",
+                correct: false,
+              },
+              {
+                text: " A type of meeting to discuss project finances",
+                correct: false,
+              },
+              {
+                text: " A short, time-boxed period during which a specific work has to be completed",
+                correct: true,
+              },
+              {
+                text: " An informal gathering of the development team",
+                correct: false,
+              },
             ],
           },
           {
-            question:
-              "The primary purpose of the Sprint Retrospective is to:",
+            question: "The primary purpose of the Sprint Retrospective is to:",
             answers: [
               { text: " Plan the next sprint", correct: false },
               { text: " Review and adjust the project budget", correct: false },
-              { text: " Reflect on the past sprint and identify improvements for the next sprint", correct: true },
+              {
+                text: " Reflect on the past sprint and identify improvements for the next sprint",
+                correct: true,
+              },
               { text: " Celebrate the project launch", correct: false },
             ],
           },
@@ -948,9 +1134,14 @@ export const paths = [
   {
     career: "Game Programmer",
     type: "hard",
+
     skills: [
       {
         skill: "Programming Languages",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
@@ -982,23 +1173,36 @@ export const paths = [
             ],
           },
           {
-            question:
-              "Python is often used in game development for:",
+            question: "Python is often used in game development for:",
             answers: [
-              { text: " High-performance game physics calculations", correct: false },
-              { text: " Scripting tools and development pipelines", correct: true },
+              {
+                text: " High-performance game physics calculations",
+                correct: false,
+              },
+              {
+                text: " Scripting tools and development pipelines",
+                correct: true,
+              },
               { text: " Real-time multiplayer networking", correct: false },
               { text: " 3D graphics rendering", correct: false },
             ],
           },
           {
-            question:
-              "What advantage does Java offer in game development?",
+            question: "What advantage does Java offer in game development?",
             answers: [
-              { text: " Native support for virtual reality development", correct: false },
-              { text: " Write once, run anywhere (cross-platform compatibility)", correct: true },
+              {
+                text: " Native support for virtual reality development",
+                correct: false,
+              },
+              {
+                text: " Write once, run anywhere (cross-platform compatibility)",
+                correct: true,
+              },
               { text: " Direct access to graphics hardware", correct: false },
-              { text: " Built-in support for game engine development", correct: false },
+              {
+                text: " Built-in support for game engine development",
+                correct: false,
+              },
             ],
           },
           {
@@ -1007,7 +1211,10 @@ export const paths = [
             answers: [
               { text: " Speed comparable to C++", correct: false },
               { text: " Integration with Visual Studio", correct: false },
-              { text: " Ease of use and comprehensive API for Unity", correct: true },
+              {
+                text: " Ease of use and comprehensive API for Unity",
+                correct: true,
+              },
               { text: " Ability to compile to native code", correct: false },
             ],
           },
@@ -1015,10 +1222,13 @@ export const paths = [
       },
       {
         skill: "Game Engines",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
-            question:
-              "Unreal Engine is known for its:",
+            question: "Unreal Engine is known for its:",
             answers: [
               { text: " Exclusive use in 2D game development", correct: false },
               { text: " Blueprint visual scripting system", correct: true },
@@ -1027,8 +1237,7 @@ export const paths = [
             ],
           },
           {
-            question:
-              "Unity's primary scripting language is:",
+            question: "Unity's primary scripting language is:",
             answers: [
               { text: " Python", correct: false },
               { text: " C#", correct: true },
@@ -1070,6 +1279,10 @@ export const paths = [
       },
       {
         skill: "Graphics Programming",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
@@ -1092,13 +1305,21 @@ export const paths = [
             ],
           },
           {
-            question:
-              "Deferred rendering is beneficial for:",
+            question: "Deferred rendering is beneficial for:",
             answers: [
-              { text: " Games with a small number of light sources", correct: false },
+              {
+                text: " Games with a small number of light sources",
+                correct: false,
+              },
               { text: " 2D games with simple graphics", correct: false },
-              { text: " Games that require complex lighting and shading effects", correct: true },
-              { text: " Mobile games optimized for battery life", correct: false },
+              {
+                text: " Games that require complex lighting and shading effects",
+                correct: true,
+              },
+              {
+                text: " Mobile games optimized for battery life",
+                correct: false,
+              },
             ],
           },
           {
@@ -1112,19 +1333,28 @@ export const paths = [
             ],
           },
           {
-            question:
-              "Vulkan API is designed to provide:",
+            question: "Vulkan API is designed to provide:",
             answers: [
               { text: " High-fidelity audio processing", correct: false },
               { text: " Advanced AI capabilities for games", correct: false },
-              { text: " High-efficiency, cross-platform graphics and compute operations", correct: true },
-              { text: " A built-in game development environment", correct: false },
+              {
+                text: " High-efficiency, cross-platform graphics and compute operations",
+                correct: true,
+              },
+              {
+                text: " A built-in game development environment",
+                correct: false,
+              },
             ],
           },
         ],
       },
       {
         skill: "Artificial Intelligence",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
@@ -1137,18 +1367,19 @@ export const paths = [
             ],
           },
           {
-            question:
-              "In game AI, decision trees are used for:",
+            question: "In game AI, decision trees are used for:",
             answers: [
               { text: " Generating random game levels", correct: false },
               { text: " Creating realistic game physics", correct: false },
-              { text: " Making decisions based on a set of conditions", correct: true },
+              {
+                text: " Making decisions based on a set of conditions",
+                correct: true,
+              },
               { text: " Managing multiplayer game sessions", correct: false },
             ],
           },
           {
-            question:
-              "What is the primary use of neural networks in game AI?",
+            question: "What is the primary use of neural networks in game AI?",
             answers: [
               { text: " To create detailed game maps", correct: false },
               { text: " For procedural content generation", correct: false },
@@ -1161,7 +1392,10 @@ export const paths = [
               "Finite State Machines (FSM) in game development are best suited for:",
             answers: [
               { text: " Managing game economy", correct: false },
-              { text: " Controlling non-player character (NPC behavior)", correct: true },
+              {
+                text: " Controlling non-player character (NPC behavior)",
+                correct: true,
+              },
               { text: " Rendering high-resolution textures", correct: false },
               { text: " Streaming game levels", correct: false },
             ],
@@ -1170,9 +1404,18 @@ export const paths = [
             question:
               "The behavior tree AI model is preferred over FSM for game AI because it:",
             answers: [
-              { text: " Is easier to implement for simple behaviors", correct: false },
-              { text: " Provides a more flexible and scalable approach to complex AI decision-making", correct: true },
-              { text: " Uses less memory and processing power", correct: false },
+              {
+                text: " Is easier to implement for simple behaviors",
+                correct: false,
+              },
+              {
+                text: " Provides a more flexible and scalable approach to complex AI decision-making",
+                correct: true,
+              },
+              {
+                text: " Uses less memory and processing power",
+                correct: false,
+              },
               { text: " Can only be used in 2D games", correct: false },
             ],
           },
@@ -1180,6 +1423,10 @@ export const paths = [
       },
       {
         skill: "Network Programming",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
@@ -1197,18 +1444,29 @@ export const paths = [
             answers: [
               { text: " Rendering graphics", correct: false },
               { text: " Processing input from peripherals", correct: false },
-              { text: " Managing game state and synchronizing it among clients", correct: true },
+              {
+                text: " Managing game state and synchronizing it among clients",
+                correct: true,
+              },
               { text: " Storing persistent player data", correct: false },
             ],
           },
           {
-            question:
-              "Peer-to-peer networking is characterized by:",
+            question: "Peer-to-peer networking is characterized by:",
             answers: [
-              { text: " Each client acting as both a server and a client", correct: true },
+              {
+                text: " Each client acting as both a server and a client",
+                correct: true,
+              },
               { text: " Centralized control of game state", correct: false },
-              { text: " The use of dedicated servers for game logic", correct: false },
-              { text: " Lower latency than client-server models", correct: false },
+              {
+                text: " The use of dedicated servers for game logic",
+                correct: false,
+              },
+              {
+                text: " Lower latency than client-server models",
+                correct: false,
+              },
             ],
           },
           {
@@ -1227,7 +1485,10 @@ export const paths = [
             answers: [
               { text: " Designing game levels", correct: false },
               { text: " Writing game narratives", correct: false },
-              { text: " Minimizing latency and ensuring synchronization", correct: true },
+              {
+                text: " Minimizing latency and ensuring synchronization",
+                correct: true,
+              },
               { text: " Creating AI opponents", correct: false },
             ],
           },
@@ -1238,9 +1499,14 @@ export const paths = [
   {
     career: "soft skills",
     type: "soft",
+
     skills: [
       {
         skill: "Critical & Creative Thinking",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
@@ -1265,46 +1531,96 @@ export const paths = [
             question:
               "In a game design scenario, which example demonstrates creative thinking?",
             answers: [
-              { text: " Replicating a well-known game mechanic exactly as it is", correct: false },
-              { text: " Generating unique gameplay mechanics that challenge player expectations", correct: true },
-              { text: " Using stock assets without modification", correct: false },
-              { text: " Avoiding any deviation from industry conventions", correct: false },
+              {
+                text: " Replicating a well-known game mechanic exactly as it is",
+                correct: false,
+              },
+              {
+                text: " Generating unique gameplay mechanics that challenge player expectations",
+                correct: true,
+              },
+              {
+                text: " Using stock assets without modification",
+                correct: false,
+              },
+              {
+                text: " Avoiding any deviation from industry conventions",
+                correct: false,
+              },
             ],
           },
           {
-            question:
-              "How can creative thinking benefit game art creation?",
+            question: "How can creative thinking benefit game art creation?",
             answers: [
-              { text: " By strictly adhering to established art styles", correct: false },
-              { text: " By encouraging artists to avoid experimentation", correct: false },
-              { text: " By fostering innovation and allowing for unconventional artistic choices", correct: true },
-              { text: " By limiting the use of color and texture variations", correct: false },
+              {
+                text: " By strictly adhering to established art styles",
+                correct: false,
+              },
+              {
+                text: " By encouraging artists to avoid experimentation",
+                correct: false,
+              },
+              {
+                text: " By fostering innovation and allowing for unconventional artistic choices",
+                correct: true,
+              },
+              {
+                text: " By limiting the use of color and texture variations",
+                correct: false,
+              },
             ],
           },
           {
-            question:
-              "Critical thinking in game programming involves:",
+            question: "Critical thinking in game programming involves:",
             answers: [
-              { text: " Relying solely on code libraries without questioning their efficiency", correct: false },
-              { text: " Identifying and addressing performance bottlenecks in code", correct: true },
-              { text: " Avoiding debugging and testing to save time", correct: false },
-              { text: " Writing code without any consideration for optimization", correct: false },
+              {
+                text: " Relying solely on code libraries without questioning their efficiency",
+                correct: false,
+              },
+              {
+                text: " Identifying and addressing performance bottlenecks in code",
+                correct: true,
+              },
+              {
+                text: " Avoiding debugging and testing to save time",
+                correct: false,
+              },
+              {
+                text: " Writing code without any consideration for optimization",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "What role does critical thinking play in narrative design?",
             answers: [
-              { text: " Following a linear storyline without deviation", correct: false },
-              { text: " Creating plot twists that surprise and engage players", correct: true },
-              { text: " Avoiding any character development to keep the story simple", correct: false },
-              { text: " Sticking to traditional storytelling techniques without innovation", correct: false },
+              {
+                text: " Following a linear storyline without deviation",
+                correct: false,
+              },
+              {
+                text: " Creating plot twists that surprise and engage players",
+                correct: true,
+              },
+              {
+                text: " Avoiding any character development to keep the story simple",
+                correct: false,
+              },
+              {
+                text: " Sticking to traditional storytelling techniques without innovation",
+                correct: false,
+              },
             ],
           },
         ],
       },
       {
         skill: "Independent Learning",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
@@ -1332,46 +1648,97 @@ export const paths = [
             question:
               "In the context of independent learning, what is a common approach to mastering new game engine features?",
             answers: [
-              { text: " Waiting for official documentation before attempting to use new features", correct: false },
-              { text: " Experimenting with new features, exploring online tutorials, and seeking community advice", correct: true },
-              { text: " Relying solely on instructors to provide in-depth training", correct: false },
-              { text: " Avoiding new features to stick with familiar tools", correct: false },
+              {
+                text: " Waiting for official documentation before attempting to use new features",
+                correct: false,
+              },
+              {
+                text: " Experimenting with new features, exploring online tutorials, and seeking community advice",
+                correct: true,
+              },
+              {
+                text: " Relying solely on instructors to provide in-depth training",
+                correct: false,
+              },
+              {
+                text: " Avoiding new features to stick with familiar tools",
+                correct: false,
+              },
             ],
           },
           {
-            question:
-              "How can independent learning benefit game artists?",
+            question: "How can independent learning benefit game artists?",
             answers: [
-              { text: " By avoiding exposure to different art styles", correct: false },
-              { text: " By restricting art creation to traditional mediums only", correct: false },
-              { text: " By allowing artists to explore diverse art techniques and evolve their skills", correct: true },
-              { text: " By limiting access to reference materials", correct: false },
+              {
+                text: " By avoiding exposure to different art styles",
+                correct: false,
+              },
+              {
+                text: " By restricting art creation to traditional mediums only",
+                correct: false,
+              },
+              {
+                text: " By allowing artists to explore diverse art techniques and evolve their skills",
+                correct: true,
+              },
+              {
+                text: " By limiting access to reference materials",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "What is a characteristic of independent learning in game programming?",
             answers: [
-              { text: " Avoiding any coding challenges outside of assigned tasks", correct: false },
-              { text: " Taking the initiative to work on personal coding projects and side projects", correct: true },
-              { text: " Relying solely on coding bootcamps for skill development", correct: false },
-              { text: " Ignoring feedback and suggestions from peers", correct: false },
+              {
+                text: " Avoiding any coding challenges outside of assigned tasks",
+                correct: false,
+              },
+              {
+                text: " Taking the initiative to work on personal coding projects and side projects",
+                correct: true,
+              },
+              {
+                text: " Relying solely on coding bootcamps for skill development",
+                correct: false,
+              },
+              {
+                text: " Ignoring feedback and suggestions from peers",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "How can independent learning benefit narrative designers?",
             answers: [
-              { text: " By adhering strictly to established storytelling formulas", correct: false },
-              { text: " By avoiding exposure to different narrative genres", correct: false },
-              { text: " By allowing for the exploration of unconventional storytelling techniques and genres", correct: true },
-              { text: " By sticking to familiar storylines without deviation", correct: false },
+              {
+                text: " By adhering strictly to established storytelling formulas",
+                correct: false,
+              },
+              {
+                text: " By avoiding exposure to different narrative genres",
+                correct: false,
+              },
+              {
+                text: " By allowing for the exploration of unconventional storytelling techniques and genres",
+                correct: true,
+              },
+              {
+                text: " By sticking to familiar storylines without deviation",
+                correct: false,
+              },
             ],
           },
         ],
       },
       {
         skill: "Industry Trends",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
@@ -1399,46 +1766,89 @@ export const paths = [
             question:
               "What can happen if game developers ignore industry trends?",
             answers: [
-              { text: " They will always produce successful games without change", correct: false },
-              { text: " They may miss out on opportunities for growth and relevance", correct: true },
-              { text: " They will have a more predictable and stable career", correct: false },
-              { text: " They will receive more recognition from industry peers", correct: false },
+              {
+                text: " They will always produce successful games without change",
+                correct: false,
+              },
+              {
+                text: " They may miss out on opportunities for growth and relevance",
+                correct: true,
+              },
+              {
+                text: " They will have a more predictable and stable career",
+                correct: false,
+              },
+              {
+                text: " They will receive more recognition from industry peers",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "How can keeping up with industry trends benefit game artists?",
             answers: [
-              { text: " By restricting them to a single art style", correct: false },
+              {
+                text: " By restricting them to a single art style",
+                correct: false,
+              },
               { text: " By limiting their creative freedom", correct: false },
-              { text: " By allowing them to evolve their skills and adapt to new artistic techniques", correct: true },
-              { text: " By focusing solely on traditional art forms", correct: false },
+              {
+                text: " By allowing them to evolve their skills and adapt to new artistic techniques",
+                correct: true,
+              },
+              {
+                text: " By focusing solely on traditional art forms",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "In game programming, what is a potential consequence of ignoring industry trends?",
             answers: [
-              { text: " Faster development of cutting-edge games", correct: false },
+              {
+                text: " Faster development of cutting-edge games",
+                correct: false,
+              },
               { text: " Improved game performance", correct: false },
-              { text: " Falling behind in technology and limiting career opportunities", correct: true },
-              { text: " Greater compatibility with legacy hardware", correct: false },
+              {
+                text: " Falling behind in technology and limiting career opportunities",
+                correct: true,
+              },
+              {
+                text: " Greater compatibility with legacy hardware",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "How can narrative designers benefit from staying informed about industry trends?",
             answers: [
-              { text: " By always sticking to traditional storytelling techniques", correct: false },
+              {
+                text: " By always sticking to traditional storytelling techniques",
+                correct: false,
+              },
               { text: " By avoiding new narrative genres", correct: false },
-              { text: " By being able to experiment with innovative storytelling methods and adapt to changing player expectations", correct: true },
-              { text: " By using the same narrative formula for every game", correct: false },
+              {
+                text: " By being able to experiment with innovative storytelling methods and adapt to changing player expectations",
+                correct: true,
+              },
+              {
+                text: " By using the same narrative formula for every game",
+                correct: false,
+              },
             ],
           },
         ],
       },
       {
         skill: "Networking ",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
@@ -1463,49 +1873,93 @@ export const paths = [
             ],
           },
           {
-            question:
-              "How can networking skills help game artists?",
+            question: "How can networking skills help game artists?",
             answers: [
-              { text: " By avoiding communication with other artists to maintain artistic purity", correct: false },
-              { text: " By limiting interactions to art creation only", correct: false },
-              { text: " By facilitating collaborations with other artists and industry professionals", correct: true },
-              { text: " By ignoring feedback and suggestions from peers", correct: false },
+              {
+                text: " By avoiding communication with other artists to maintain artistic purity",
+                correct: false,
+              },
+              {
+                text: " By limiting interactions to art creation only",
+                correct: false,
+              },
+              {
+                text: " By facilitating collaborations with other artists and industry professionals",
+                correct: true,
+              },
+              {
+                text: " By ignoring feedback and suggestions from peers",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "In game programming, how can networking skills benefit developers?",
             answers: [
-              { text: " By avoiding teamwork and working in isolation", correct: false },
-              { text: " By limiting interactions to coding tasks only", correct: false },
-              { text: " By fostering collaborations with colleagues, sharing knowledge, and solving complex problems together", correct: true },
-              { text: " By disregarding industry events and conferences", correct: false },
+              {
+                text: " By avoiding teamwork and working in isolation",
+                correct: false,
+              },
+              {
+                text: " By limiting interactions to coding tasks only",
+                correct: false,
+              },
+              {
+                text: " By fostering collaborations with colleagues, sharing knowledge, and solving complex problems together",
+                correct: true,
+              },
+              {
+                text: " By disregarding industry events and conferences",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "What is a potential consequence of lacking networking skills in the game industry?",
             answers: [
-              { text: " Faster career growth and opportunities", correct: false },
-              { text: " Limited access to valuable industry insights and connections", correct: true },
+              {
+                text: " Faster career growth and opportunities",
+                correct: false,
+              },
+              {
+                text: " Limited access to valuable industry insights and connections",
+                correct: true,
+              },
               { text: " Enhanced creativity and innovation", correct: false },
               { text: " Isolation from industry trends", correct: false },
             ],
           },
           {
-            question:
-              "How can networking skills benefit narrative designers?",
+            question: "How can networking skills benefit narrative designers?",
             answers: [
-              { text: " By avoiding collaboration with other writers", correct: false },
-              { text: " By limiting interactions to writing tasks only", correct: false },
-              { text: " By establishing connections with fellow writers and industry professionals for feedback and opportunities", correct: true },
-              { text: " By disregarding player feedback and preferences", correct: false },
+              {
+                text: " By avoiding collaboration with other writers",
+                correct: false,
+              },
+              {
+                text: " By limiting interactions to writing tasks only",
+                correct: false,
+              },
+              {
+                text: " By establishing connections with fellow writers and industry professionals for feedback and opportunities",
+                correct: true,
+              },
+              {
+                text: " By disregarding player feedback and preferences",
+                correct: false,
+              },
             ],
           },
         ],
       },
       {
         skill: "Personal Responsibility ",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
@@ -1530,31 +1984,60 @@ export const paths = [
             ],
           },
           {
-            question:
-              "How can personal responsibility benefit game artists?",
+            question: "How can personal responsibility benefit game artists?",
             answers: [
-              { text: " By ignoring project deadlines to focus on perfection", correct: false },
-              { text: " By limiting involvement in team discussions", correct: false },
-              { text: " By ensuring timely delivery of high-quality art assets and contributing to project success", correct: true },
-              { text: " By avoiding any involvement in project planning", correct: false },
+              {
+                text: " By ignoring project deadlines to focus on perfection",
+                correct: false,
+              },
+              {
+                text: " By limiting involvement in team discussions",
+                correct: false,
+              },
+              {
+                text: " By ensuring timely delivery of high-quality art assets and contributing to project success",
+                correct: true,
+              },
+              {
+                text: " By avoiding any involvement in project planning",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "In game programming, what is a key aspect of personal responsibility?",
             answers: [
-              { text: " Ignoring project timelines and milestones", correct: false },
-              { text: " Avoiding collaboration with team members", correct: false },
-              { text: " Taking ownership of code quality, meeting deadlines, and assisting teammates", correct: true },
-              { text: " Blaming others for code-related issues", correct: false },
+              {
+                text: " Ignoring project timelines and milestones",
+                correct: false,
+              },
+              {
+                text: " Avoiding collaboration with team members",
+                correct: false,
+              },
+              {
+                text: " Taking ownership of code quality, meeting deadlines, and assisting teammates",
+                correct: true,
+              },
+              {
+                text: " Blaming others for code-related issues",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "What can happen if a game developer lacks personal responsibility?",
             answers: [
-              { text: " Enhanced team cohesion and project success", correct: false },
-              { text: " Missed project deadlines and a negative impact on the team", correct: true },
+              {
+                text: " Enhanced team cohesion and project success",
+                correct: false,
+              },
+              {
+                text: " Missed project deadlines and a negative impact on the team",
+                correct: true,
+              },
               { text: " Improved work-life balance", correct: false },
               { text: " Increased innovation and creativity", correct: false },
             ],
@@ -1563,16 +2046,32 @@ export const paths = [
             question:
               "How can personal responsibility benefit narrative designers?",
             answers: [
-              { text: " By avoiding any involvement in story development", correct: false },
-              { text: " By delivering well-crafted narratives on time and actively participating in the storytelling process", correct: true },
-              { text: " By ignoring player feedback on the narrative", correct: false },
-              { text: " By refusing to make revisions to the story", correct: false },
+              {
+                text: " By avoiding any involvement in story development",
+                correct: false,
+              },
+              {
+                text: " By delivering well-crafted narratives on time and actively participating in the storytelling process",
+                correct: true,
+              },
+              {
+                text: " By ignoring player feedback on the narrative",
+                correct: false,
+              },
+              {
+                text: " By refusing to make revisions to the story",
+                correct: false,
+              },
             ],
           },
         ],
       },
       {
         skill: "Teamwork",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
@@ -1597,22 +2096,42 @@ export const paths = [
             ],
           },
           {
-            question:
-              "How can teamwork skills benefit game artists?",
+            question: "How can teamwork skills benefit game artists?",
             answers: [
-              { text: " By working in isolation to maintain creative purity", correct: false },
-              { text: " By limiting communication with team members", correct: false },
-              { text: " By collaborating with artists and other team members to create a cohesive game experience", correct: true },
-              { text: " By disregarding team feedback and suggestions", correct: false },
+              {
+                text: " By working in isolation to maintain creative purity",
+                correct: false,
+              },
+              {
+                text: " By limiting communication with team members",
+                correct: false,
+              },
+              {
+                text: " By collaborating with artists and other team members to create a cohesive game experience",
+                correct: true,
+              },
+              {
+                text: " By disregarding team feedback and suggestions",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "In game programming, what is a critical component of effective teamwork?",
             answers: [
-              { text: " Avoiding code reviews and discussions with colleagues", correct: false },
-              { text: " Isolating oneself from the team to focus on personal coding tasks", correct: false },
-              { text: " Collaborating with team members, sharing knowledge, and resolving coding challenges together", correct: true },
+              {
+                text: " Avoiding code reviews and discussions with colleagues",
+                correct: false,
+              },
+              {
+                text: " Isolating oneself from the team to focus on personal coding tasks",
+                correct: false,
+              },
+              {
+                text: " Collaborating with team members, sharing knowledge, and resolving coding challenges together",
+                correct: true,
+              },
               { text: " Ignoring team objectives and goals", correct: false },
             ],
           },
@@ -1620,64 +2139,127 @@ export const paths = [
             question:
               "What is a potential consequence of lacking teamwork skills in the game industry?",
             answers: [
-              { text: " Enhanced project efficiency and success", correct: false },
-              { text: " Decreased team morale and project delays", correct: true },
+              {
+                text: " Enhanced project efficiency and success",
+                correct: false,
+              },
+              {
+                text: " Decreased team morale and project delays",
+                correct: true,
+              },
               { text: " Improved individual recognition", correct: false },
               { text: " Increased creative freedom", correct: false },
             ],
           },
           {
-            question:
-              "How can teamwork skills benefit narrative designers?",
+            question: "How can teamwork skills benefit narrative designers?",
             answers: [
-              { text: " By avoiding collaboration with other writers", correct: false },
-              { text: " By limiting interactions to writing tasks only", correct: false },
-              { text: " By actively participating in team discussions, incorporating feedback, and contributing to a cohesive narrative", correct: true },
-              { text: " By disregarding team input on the narrative", correct: false },
+              {
+                text: " By avoiding collaboration with other writers",
+                correct: false,
+              },
+              {
+                text: " By limiting interactions to writing tasks only",
+                correct: false,
+              },
+              {
+                text: " By actively participating in team discussions, incorporating feedback, and contributing to a cohesive narrative",
+                correct: true,
+              },
+              {
+                text: " By disregarding team input on the narrative",
+                correct: false,
+              },
             ],
           },
         ],
       },
       {
         skill: "Communication Skills",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
               "Why are effective communication skills important in game development?",
             answers: [
-              { text: " To avoid any communication with team members and stakeholders", correct: false },
+              {
+                text: " To avoid any communication with team members and stakeholders",
+                correct: false,
+              },
               { text: " To create a chaotic work environment", correct: false },
-              { text: " To facilitate clear understanding, collaboration, and the conveyance of ideas", correct: true },
-              { text: " To prioritize individual work over team interaction", correct: false },
+              {
+                text: " To facilitate clear understanding, collaboration, and the conveyance of ideas",
+                correct: true,
+              },
+              {
+                text: " To prioritize individual work over team interaction",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "How can strong communication skills benefit game artists?",
             answers: [
-              { text: " By limiting discussions with team members to art-related matters only", correct: false },
-              { text: " By fostering clear communication of artistic ideas, feedback, and project requirements", correct: true },
-              { text: " By avoiding all forms of written communication", correct: false },
-              { text: " By ignoring any feedback from the art team lead", correct: false },
+              {
+                text: " By limiting discussions with team members to art-related matters only",
+                correct: false,
+              },
+              {
+                text: " By fostering clear communication of artistic ideas, feedback, and project requirements",
+                correct: true,
+              },
+              {
+                text: " By avoiding all forms of written communication",
+                correct: false,
+              },
+              {
+                text: " By ignoring any feedback from the art team lead",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "In game programming, what is a key aspect of effective communication?",
             answers: [
-              { text: " Refusing to document code and project progress", correct: false },
-              { text: " Limiting interactions with team members to coding tasks only", correct: false },
-              { text: " Clearly communicating code changes, updates, and collaborating with team members", correct: true },
-              { text: " Ignoring the team's coding standards and guidelines", correct: false },
+              {
+                text: " Refusing to document code and project progress",
+                correct: false,
+              },
+              {
+                text: " Limiting interactions with team members to coding tasks only",
+                correct: false,
+              },
+              {
+                text: " Clearly communicating code changes, updates, and collaborating with team members",
+                correct: true,
+              },
+              {
+                text: " Ignoring the team's coding standards and guidelines",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "What can happen if game developers lack communication skills?",
             answers: [
-              { text: " Improved team cohesion and understanding", correct: false },
-              { text: " Misunderstandings, conflicts, and decreased productivity", correct: true },
-              { text: " Faster project completion without collaboration", correct: false },
+              {
+                text: " Improved team cohesion and understanding",
+                correct: false,
+              },
+              {
+                text: " Misunderstandings, conflicts, and decreased productivity",
+                correct: true,
+              },
+              {
+                text: " Faster project completion without collaboration",
+                correct: false,
+              },
               { text: " Enhanced creativity and innovation", correct: false },
             ],
           },
@@ -1685,44 +2267,92 @@ export const paths = [
             question:
               "How can communication skills benefit narrative designers?",
             answers: [
-              { text: " By avoiding all communication with team members", correct: false },
-              { text: " By clearly conveying the narrative vision, receiving feedback, and collaborating with the team to create a cohesive story", correct: true },
-              { text: " By ignoring all feedback on the narrative", correct: false },
-              { text: " By sticking to the original narrative without considering input from others", correct: false },
+              {
+                text: " By avoiding all communication with team members",
+                correct: false,
+              },
+              {
+                text: " By clearly conveying the narrative vision, receiving feedback, and collaborating with the team to create a cohesive story",
+                correct: true,
+              },
+              {
+                text: " By ignoring all feedback on the narrative",
+                correct: false,
+              },
+              {
+                text: " By sticking to the original narrative without considering input from others",
+                correct: false,
+              },
             ],
           },
         ],
       },
       {
         skill: "Time Management",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
               "Why is effective time management crucial in game development?",
             answers: [
-              { text: " To prioritize perfection over project deadlines", correct: false },
-              { text: " To create a relaxed work environment with no pressure", correct: false },
-              { text: " To meet project milestones and deliverables on time", correct: true },
-              { text: " To avoid any project planning and scheduling", correct: false },
+              {
+                text: " To prioritize perfection over project deadlines",
+                correct: false,
+              },
+              {
+                text: " To create a relaxed work environment with no pressure",
+                correct: false,
+              },
+              {
+                text: " To meet project milestones and deliverables on time",
+                correct: true,
+              },
+              {
+                text: " To avoid any project planning and scheduling",
+                correct: false,
+              },
             ],
           },
           {
-            question:
-              "How can good time management benefit game artists?",
+            question: "How can good time management benefit game artists?",
             answers: [
-              { text: " By avoiding project deadlines to focus on perfection", correct: false },
-              { text: " By delivering art assets on schedule, contributing to project progress, and avoiding crunch time", correct: true },
-              { text: " By ignoring project schedules and timelines", correct: false },
-              { text: " By focusing solely on art creation without considering project deadlines", correct: false },
+              {
+                text: " By avoiding project deadlines to focus on perfection",
+                correct: false,
+              },
+              {
+                text: " By delivering art assets on schedule, contributing to project progress, and avoiding crunch time",
+                correct: true,
+              },
+              {
+                text: " By ignoring project schedules and timelines",
+                correct: false,
+              },
+              {
+                text: " By focusing solely on art creation without considering project deadlines",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "In game programming, what is a key aspect of effective time management?",
             answers: [
-              { text: " Ignoring project timelines and milestones", correct: false },
-              { text: " Prioritizing personal coding tasks over team objectives", correct: false },
-              { text: " Managing time efficiently, meeting deadlines, and contributing to project goals", correct: true },
+              {
+                text: " Ignoring project timelines and milestones",
+                correct: false,
+              },
+              {
+                text: " Prioritizing personal coding tasks over team objectives",
+                correct: false,
+              },
+              {
+                text: " Managing time efficiently, meeting deadlines, and contributing to project goals",
+                correct: true,
+              },
               { text: " Avoiding any planning or scheduling", correct: false },
             ],
           },
@@ -1730,8 +2360,14 @@ export const paths = [
             question:
               "What is a potential consequence of poor time management in the game industry?",
             answers: [
-              { text: " Faster project completion without adhering to schedules", correct: false },
-              { text: " Missed project deadlines, increased stress, and potential project failure", correct: true },
+              {
+                text: " Faster project completion without adhering to schedules",
+                correct: false,
+              },
+              {
+                text: " Missed project deadlines, increased stress, and potential project failure",
+                correct: true,
+              },
               { text: " Enhanced creativity and innovation", correct: false },
               { text: " Improved work-life balance", correct: false },
             ],
@@ -1740,108 +2376,223 @@ export const paths = [
             question:
               "How can good time management benefit narrative designers?",
             answers: [
-              { text: " By avoiding any consideration of project schedules", correct: false },
-              { text: " By delivering narrative content on time, allowing for revisions, and contributing to project success", correct: true },
-              { text: " By sticking to rigid story development timelines without flexibility", correct: false },
-              { text: " By ignoring project deadlines and milestones", correct: false },
+              {
+                text: " By avoiding any consideration of project schedules",
+                correct: false,
+              },
+              {
+                text: " By delivering narrative content on time, allowing for revisions, and contributing to project success",
+                correct: true,
+              },
+              {
+                text: " By sticking to rigid story development timelines without flexibility",
+                correct: false,
+              },
+              {
+                text: " By ignoring project deadlines and milestones",
+                correct: false,
+              },
             ],
           },
         ],
       },
       {
         skill: "Project Management",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
               "Why is effective project management important in game development?",
             answers: [
-              { text: " To prioritize individual work over team coordination", correct: false },
+              {
+                text: " To prioritize individual work over team coordination",
+                correct: false,
+              },
               { text: " To create a chaotic work environment", correct: false },
-              { text: " To ensure efficient allocation of resources, meeting project goals, and delivering on time", correct: true },
-              { text: " To avoid any form of project planning", correct: false },
+              {
+                text: " To ensure efficient allocation of resources, meeting project goals, and delivering on time",
+                correct: true,
+              },
+              {
+                text: " To avoid any form of project planning",
+                correct: false,
+              },
             ],
           },
           {
-            question:
-              "How can good project management benefit game artists?",
+            question: "How can good project management benefit game artists?",
             answers: [
-              { text: " By avoiding any involvement in project planning", correct: false },
-              { text: " By contributing to project planning, ensuring resource allocation, and meeting art asset delivery milestones", correct: true },
-              { text: " By ignoring project deadlines and schedules", correct: false },
-              { text: " By focusing solely on individual art creation without considering project goals", correct: false },
+              {
+                text: " By avoiding any involvement in project planning",
+                correct: false,
+              },
+              {
+                text: " By contributing to project planning, ensuring resource allocation, and meeting art asset delivery milestones",
+                correct: true,
+              },
+              {
+                text: " By ignoring project deadlines and schedules",
+                correct: false,
+              },
+              {
+                text: " By focusing solely on individual art creation without considering project goals",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "In game programming, what is a key aspect of effective project management?",
             answers: [
-              { text: " Relying solely on individual coding tasks without considering team objectives", correct: false },
-              { text: " Managing coding projects, allocating resources, and ensuring code quality within project timelines", correct: true },
-              { text: " Avoiding any form of project planning and organization", correct: false },
-              { text: " Ignoring project milestones and deadlines", correct: false },
+              {
+                text: " Relying solely on individual coding tasks without considering team objectives",
+                correct: false,
+              },
+              {
+                text: " Managing coding projects, allocating resources, and ensuring code quality within project timelines",
+                correct: true,
+              },
+              {
+                text: " Avoiding any form of project planning and organization",
+                correct: false,
+              },
+              {
+                text: " Ignoring project milestones and deadlines",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "What is a potential consequence of poor project management in the game industry?",
             answers: [
-              { text: " Enhanced teamwork and project success", correct: false },
-              { text: " Inefficient resource allocation, missed deadlines, and potential project failure", correct: true },
+              {
+                text: " Enhanced teamwork and project success",
+                correct: false,
+              },
+              {
+                text: " Inefficient resource allocation, missed deadlines, and potential project failure",
+                correct: true,
+              },
               { text: " Increased innovation and creativity", correct: false },
-              { text: " Decreased stress and work-life balance", correct: false },
+              {
+                text: " Decreased stress and work-life balance",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "How can good project management benefit narrative designers?",
             answers: [
-              { text: " By avoiding any involvement in project planning and organization", correct: false },
-              { text: " By contributing to project planning, ensuring narrative milestones are met, and collaborating with the team to create a cohesive story", correct: true },
-              { text: " By sticking to rigid story development timelines without flexibility", correct: false },
-              { text: " By disregarding project schedules and deadlines", correct: false },
+              {
+                text: " By avoiding any involvement in project planning and organization",
+                correct: false,
+              },
+              {
+                text: " By contributing to project planning, ensuring narrative milestones are met, and collaborating with the team to create a cohesive story",
+                correct: true,
+              },
+              {
+                text: " By sticking to rigid story development timelines without flexibility",
+                correct: false,
+              },
+              {
+                text: " By disregarding project schedules and deadlines",
+                correct: false,
+              },
             ],
           },
         ],
       },
       {
         skill: "Conflict Resolution",
+        scale: {
+          values: [1, 2, 3, 4, 5],
+          selected: 1,
+        },
         questions: [
           {
             question:
               "Why is conflict resolution important in game development teams?",
             answers: [
-              { text: " To encourage constant conflict and competition among team members", correct: false },
-              { text: " To create a stressful work environment", correct: false },
-              { text: " To address conflicts, maintain team cohesion, and ensure effective collaboration", correct: true },
-              { text: " To avoid any form of interaction among team members", correct: false },
+              {
+                text: " To encourage constant conflict and competition among team members",
+                correct: false,
+              },
+              {
+                text: " To create a stressful work environment",
+                correct: false,
+              },
+              {
+                text: " To address conflicts, maintain team cohesion, and ensure effective collaboration",
+                correct: true,
+              },
+              {
+                text: " To avoid any form of interaction among team members",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "How can effective conflict resolution benefit game artists?",
             answers: [
-              { text: " By avoiding any involvement in conflicts", correct: false },
-              { text: " By addressing conflicts professionally, promoting a positive work environment, and focusing on art creation", correct: true },
-              { text: " By ignoring conflicts and allowing them to escalate", correct: false },
-              { text: " By prioritizing personal interests over team harmony", correct: false },
+              {
+                text: " By avoiding any involvement in conflicts",
+                correct: false,
+              },
+              {
+                text: " By addressing conflicts professionally, promoting a positive work environment, and focusing on art creation",
+                correct: true,
+              },
+              {
+                text: " By ignoring conflicts and allowing them to escalate",
+                correct: false,
+              },
+              {
+                text: " By prioritizing personal interests over team harmony",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "In game programming, what is a key aspect of conflict resolution?",
             answers: [
-              { text: " Ignoring conflicts and avoiding discussions with team members", correct: false },
-              { text: " Effectively addressing conflicts, finding solutions, and maintaining a collaborative coding environment", correct: true },
-              { text: " Encouraging conflicts to motivate the team", correct: false },
-              { text: " Avoiding any form of communication during conflicts", correct: false },
+              {
+                text: " Ignoring conflicts and avoiding discussions with team members",
+                correct: false,
+              },
+              {
+                text: " Effectively addressing conflicts, finding solutions, and maintaining a collaborative coding environment",
+                correct: true,
+              },
+              {
+                text: " Encouraging conflicts to motivate the team",
+                correct: false,
+              },
+              {
+                text: " Avoiding any form of communication during conflicts",
+                correct: false,
+              },
             ],
           },
           {
             question:
               "What can happen if conflicts are not resolved effectively in the game industry?",
             answers: [
-              { text: " Enhanced team cohesion and productivity", correct: false },
-              { text: " Increased stress and team disintegration", correct: true },
+              {
+                text: " Enhanced team cohesion and productivity",
+                correct: false,
+              },
+              {
+                text: " Increased stress and team disintegration",
+                correct: true,
+              },
               { text: " Improved individual recognition", correct: false },
               { text: " Enhanced creativity and innovation", correct: false },
             ],
@@ -1850,10 +2601,22 @@ export const paths = [
             question:
               "How can effective conflict resolution benefit narrative designers?",
             answers: [
-              { text: " By avoiding any involvement in conflicts", correct: false },
-              { text: " By addressing conflicts professionally, ensuring a harmonious storytelling process, and collaborating with the team to create a cohesive narrative", correct: true },
-              { text: " By ignoring conflicts and maintaining a rigid narrative approach", correct: false },
-              { text: " By prioritizing personal narrative preferences over team harmony", correct: false },
+              {
+                text: " By avoiding any involvement in conflicts",
+                correct: false,
+              },
+              {
+                text: " By addressing conflicts professionally, ensuring a harmonious storytelling process, and collaborating with the team to create a cohesive narrative",
+                correct: true,
+              },
+              {
+                text: " By ignoring conflicts and maintaining a rigid narrative approach",
+                correct: false,
+              },
+              {
+                text: " By prioritizing personal narrative preferences over team harmony",
+                correct: false,
+              },
             ],
           },
         ],
