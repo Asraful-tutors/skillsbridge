@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { useAppSelector } from "@/lib/store/hooks";
 
 interface SkillEntry {
   skill: {
@@ -14,12 +15,23 @@ interface SkillEntry {
 interface ChartData {
   data: SkillEntry[];
   disableAnimation?: boolean;
+  rating: number;
 }
 
-const ChartComponent = ({ data, disableAnimation }: ChartData) => {
+const ChartComponent = ({ data, disableAnimation, rating }: ChartData) => {
+  // @ts-ignore
+  const { career } = useAppSelector((state) => state.path.selectedPath);
+  const filteredData = data.filter(
+    (entry) => entry.skill.title.toLowerCase() === career.toLowerCase()
+  );
+
+  if (filteredData.length === 0) {
+    return <div>No data available for the selected career.</div>;
+  }
+  console.log("rating", rating);
   return (
     <div className="my-4 flex flex-col gap-3.5 ">
-      {data.map((entry, index) => (
+      {filteredData.map((entry, index) => (
         <div key={index} className="flex items-center gap-5">
           <h3 className="text-lg font-semibold text-[#4D4D9B] min-w-[286px]">
             {entry.skill.title}
@@ -38,9 +50,7 @@ const ChartComponent = ({ data, disableAnimation }: ChartData) => {
                     !disableAnimation
                       ? {
                           backgroundColor:
-                            entry.selectedScale >= value
-                              ? "#9d64d6"
-                              : "#D9D9D9",
+                            value <= rating ? "#9d64d6" : "#D9D9D9",
                         }
                       : {}
                   }
