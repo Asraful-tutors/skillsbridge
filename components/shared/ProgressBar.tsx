@@ -26,11 +26,11 @@ export const ProgressBar = ({
 
   return (
     <motion.div className="w-full mb-4">
-      <motion.div className="bg-gray-200 h-4 rounded-full overflow-hidden relative">
+      <motion.div className="h-5 rounded-full overflow-hidden flex flex-row">
         {[...Array(stepSegments)].map((_, index) => (
           <motion.div
             key={index}
-            className={`h-4 absolute z-${
+            className={`h-5 xl:rounded-lg xl:mx-[2px] z-${
               stepSegments - index
             } ${calculateSegmentColor(index)}`}
             animate={{
@@ -41,7 +41,8 @@ export const ProgressBar = ({
               duration: 0.5,
               ease: "easeInOut",
             }}
-          ></motion.div>
+          >
+          </motion.div>
         ))}
       </motion.div>
     </motion.div>

@@ -57,12 +57,11 @@ model User {
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
-  accounts  Account[]
-  sessions  Session[]
-  profile   UserProfile?   @relation("UserProfile")
-  paths     UserPath[]
-  skills    UserSkill[]
-  subSkills UserSubSkill[]
+  accounts Account[]
+  sessions Session[]
+  profile  UserProfile? @relation("UserProfile")
+  paths    UserPath[]
+  skills   UserSkill[]
 
   @@map("users")
 }
@@ -82,6 +81,7 @@ model UserPath {
   userId     Int     @map("user_id")
   pathId     Int     @map("path_id")
   active     Boolean
+  selfScore  Int     @map("self_score")
   completion Float
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -92,10 +92,9 @@ model UserPath {
 }
 
 model UserSkill {
-  userId    Int   @map("user_id")
-  skillId   Int   @map("skill_id")
-  selfScore Int   @map("self_score")
-  score     Float
+  userId  Int   @map("user_id")
+  skillId Int   @map("skill_id")
+  score   Float
 
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   skill Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)
@@ -104,41 +103,43 @@ model UserSkill {
   @@map("user_skills")
 }
 
-model UserSubSkill {
-  userId     Int   @map("user_id")
-  subSkillId Int   @map("sub_skill_id")
-  score      Float
-
-  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  subSkill SubSkill @relation(fields: [subSkillId], references: [id], onDelete: Cascade)
-
-  @@id([userId, subSkillId])
-  @@map("user_sub_skills")
-}
-
 model Skill {
   id   Int    @id @default(autoincrement())
   name String
   type String // "hard" or "soft"
+  // image String
 
-  subSkills                 SubSkill[]
-  userSkills                UserSkill[]
-  milestones                Milestone[]
-  MilestoneSkillRequirement MilestoneSkillRequirement[]
+  userSkills                 UserSkill[]
+  milestones                 Milestone[]
+  milestoneSkillRequirements MilestoneSkillRequirement[]
+  paths                      Path[]
+  skillQuestions             SkillQuestion[]
 
   @@map("skills")
 }
 
-model SubSkill {
-  id       Int    @id @default(autoincrement())
-  name     String
-  type     String // "hard" or "soft"
-  parentId Int    @map("parent_id")
+model SkillQuestion {
+  id      Int     @id @default(autoincrement())
+  skillId Int     @map("skill_id")
+  text    String?
+  type    String // "select" or "text"
+  level   Int
 
-  parent        Skill          @relation(fields: [parentId], references: [id])
-  userSubSkills UserSubSkill[]
+  skill   Skill                 @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  options SkillQuestionOption[]
 
-  @@map("sub_skills")
+  @@map("skill_questions")
+}
+
+model SkillQuestionOption {
+  id         Int     @id @default(autoincrement())
+  questionId Int     @map("question_id")
+  text       String
+  correct    Boolean @default(false)
+
+  question SkillQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@map("skill_question_options")
 }
 
 model Path {
@@ -148,8 +149,9 @@ model Path {
 
   milestones Milestone[]
   userPaths  UserPath[]
+  skills     Skill[]
 
-  @@map("learning_paths")
+  @@map("paths")
 }
 
 model Milestone {
