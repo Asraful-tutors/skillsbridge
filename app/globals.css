@@ -99,3 +99,10 @@
   background: #9d64d6;
   border-radius: 16px;
 }
+
+.clip-left {
+  clip-path: polygon(0 0, 100% 0%, 80% 100%, 0% 100%);
+}
+.clip-right {
+  clip-path: polygon(0 0, 100% 0%, 100% 100%, 20% 100%);
+}

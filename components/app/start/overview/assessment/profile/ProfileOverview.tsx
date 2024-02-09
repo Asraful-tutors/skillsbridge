@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useAppSelector } from "@/lib/store/hooks";
 import SkillAssessment from "../../SkillAssessment";
 import ChartComponent from "./ChartComponent";
+import HardSkillsOverview from "@/components/shared/HardSkillsOverview";
 
 function calculateRating(percentage: any) {
   if (percentage >= 80) {
@@ -33,13 +34,14 @@ export default function ProfileOverview() {
   const answers = useAppSelector(
     (state) => state.skillAssessmentSession.answers
   );
-
+  console.log(questions, answers);
   const totalQuestions = questions.length;
   const correctCount = answers.filter(
     (answer) => answer.answer?.correct === true
   ).length;
   const accuracyPercentage = (correctCount / totalQuestions) * 100;
 
+  console.log("answers", answers);
   const rating = calculateRating(accuracyPercentage);
 
   return (
@@ -48,7 +50,7 @@ export default function ProfileOverview() {
         Skills Overview
       </h1>
       <SkillAssessment title="Hard Skills">
-        <ChartComponent
+        <HardSkillsOverview
           disableAnimation={false}
           data={selectedHardSkills}
           // @ts-ignore
