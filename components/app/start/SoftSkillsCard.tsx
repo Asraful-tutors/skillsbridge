@@ -22,15 +22,16 @@ export default function SoftSkillsCard({
     onScaleClick(value);
   };
   return (
-    <motion.div className="p-8 rounded-2xl bg-white_background flex items-center flex-wrap gap-10 w-full md:min-w-[704px]">
+    <motion.div className="p-8 rounded-2xl bg-white_background flex items-center flex-col md:flex-row gap-10 w-full md:min-w-[704px]">
       <section className="flex flex-1 items-center gap-2.5">
-        <Image
-          src={img}
+        {/* <Image
+          src={}
           alt={title}
           width={64}
           height={64}
           className="w-16 rounded-md aspect-auto object-center object-cover"
-        />
+        /> */}
+        <div className="w-16 h-16 rounded-md aspect-auto object-center object-cover bg-gray-200"></div>
         <div className="flex flex-col">
           <h4 className="text-xl font-semibold leading-[150%] text-black">
             {title}

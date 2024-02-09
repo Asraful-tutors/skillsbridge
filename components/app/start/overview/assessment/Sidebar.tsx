@@ -43,10 +43,10 @@ export default function Sidebar() {
   useEffect(() => {
     const determineCompletedSteps = () => {
       switch (currentSkillType) {
-        case "hardSkills":
+        case "hard":
           setCompletedSteps([]);
           break;
-        case "softSkills":
+        case "soft":
           setCompletedSteps([0]);
           break;
         default:

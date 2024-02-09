@@ -5,8 +5,9 @@ import { motion } from "framer-motion";
 import { useAppSelector } from "@/lib/store/hooks";
 
 import { Button } from "@/components/ui/button";
-import { LearningPaths } from "@/lib/data/learning-paths";
+
 import PathsCard from "@/components/app/start/PathsCard";
+import { paths } from "@/lib/data/path";
 
 const staggerVariants = {
   visible: { opacity: 1, transition: { staggerChildren: 0.5, delay: 0.1 } },
@@ -16,7 +17,7 @@ const staggerVariants = {
 export default function SelectLearningPath({ onNext }: { onNext: () => void }) {
   const selectedPath = useAppSelector((state) => state.path.selectedPath);
 
-  const isNextDisabled = !selectedPath?.title;
+  const isNextDisabled = !selectedPath?.career;
 
   return (
     <motion.div
@@ -38,19 +39,26 @@ export default function SelectLearningPath({ onNext }: { onNext: () => void }) {
         className="flex items-center justify-center flex-wrap gap-6"
         variants={staggerVariants}
       >
-        {LearningPaths.map((path, key) => (
-          <PathsCard key={key} {...path} />
+        {paths.map((path, key) => (
+          <PathsCard
+            key={key}
+            // @ts-ignore
+            img={path.img}
+            career={path.career}
+          />
         ))}
       </motion.section>
 
-      <Button
-        disabled={isNextDisabled}
-        variant={"violate"}
-        onClick={onNext}
-        className="max-w-[284px] mx-auto"
-      >
-        Next
-      </Button>
+      <div className="w-full mx-auto flex items-center justify-center">
+        <Button
+          disabled={isNextDisabled}
+          variant={"violate"}
+          onClick={onNext}
+          className="max-w-[284px] mx-auto"
+        >
+          Next
+        </Button>
+      </div>
     </motion.div>
   );
 }

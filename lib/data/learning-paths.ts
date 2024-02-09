@@ -6,18 +6,18 @@ export type LearningPath = {
 export const LearningPaths: LearningPath[] = [
   {
     img: "/images/game-designer.svg",
-    title: "Game Designer",
+    title: "Artist",
   },
   {
     img: "/images/game-programmer.svg",
-    title: "Game Programmer",
+    title: "Game Design",
   },
   {
     img: "/images/game-producer.svg",
-    title: "Game Producer",
+    title: "Producer",
   },
   {
     img: "/images/game-artist.svg",
-    title: "Game Atrist",
+    title: "Game Programmer",
   },
 ];

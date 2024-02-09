@@ -16,14 +16,17 @@ interface ChartData {
   disableAnimation?: boolean;
 }
 
-const ChartComponent = ({ data, disableAnimation }: ChartData) => {
-  console.log("data", data);
+const HardSkillsOverview = ({ data, disableAnimation }: ChartData) => {
+  console.log("game", data);
   return (
     <div className="my-4 flex flex-col gap-3.5 ">
       {data.map((entry, index) => (
         <div key={index} className="flex items-center gap-5">
           <h3 className="text-lg font-semibold text-[#4D4D9B] min-w-[286px]">
-            {entry.skill.title}
+            {
+              // @ts-ignore
+              entry.skill.title
+            }
           </h3>
           <div className="flex rounded-md py-4">
             {entry.skill.scale.values.map((value, innerIndex) => (
@@ -88,4 +91,4 @@ const ChartComponent = ({ data, disableAnimation }: ChartData) => {
   );
 };
 
-export default ChartComponent;
+export default HardSkillsOverview;
