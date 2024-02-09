@@ -1,5 +1,5 @@
+import { LearningPath } from "@/lib/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { LearningPath } from "@/lib/data/learning-paths";
 
 interface PathState {
   selectedPath: LearningPath | null;

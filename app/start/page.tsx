@@ -44,7 +44,7 @@ function StartPage() {
         duration: 0.5,
         ease: "easeInOut",
       }}
-      className="grid place-content-center h-full md:min-h-[75dvh] w-full"
+      className="grid place-content-center h-full md:min-h-[75dvh] w-full py-8"
     >
       {renderCurrentStep()}
     </motion.div>

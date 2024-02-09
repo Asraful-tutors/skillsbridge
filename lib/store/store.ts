@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import hardSkillReducer from "./hardSkill/hardSkill";
 import pathReducer from "./path/pathSlice";
 import softSkillReducer from "./softSkill/softSkill";
+import skillAssessmentSessionReducer from "./skillAssessmentSession/skillAssessmentSession";
 
 export const makeStore = () => {
   return configureStore({
@@ -10,6 +11,7 @@ export const makeStore = () => {
       path: pathReducer,
       hardSkill: hardSkillReducer,
       softSkill: softSkillReducer,
+      skillAssessmentSession: skillAssessmentSessionReducer,
     },
   });
 };
