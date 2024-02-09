@@ -10,18 +10,19 @@ interface CardProps {
     scale: {
       values: number[];
       selected: number;
-      new: number;
+      required: number;
     };
+    milestone: number;
   };
 }
 
-export function SkillCard({ skill }: CardProps) {
+export function RequiredSkillCard({ skill }: CardProps) {
   return (
-    <div className="bg-[#F0F1F5] overflow-hidden w-fit rounded-[20px] px-[30px] py-5 mb-[46px]">
-      <h3 className="text-xl font-semibold text-[#4D4D9B] mb-[60px]">
+    <div className="bg-[#F0F1F5] overflow-hidden w-fit rounded-[20px] px-[30px] py-5 mb-[10px]">
+      <h3 className="text-xl font-semibold text-[#4D4D9B] mb-[40px]">
         {skill.title}
       </h3>
-      <div className="flex flex-row mb-5">
+      <div className="flex flex-row mb-10">
         {skill.scale.values.map((value, i) => (
           <div
           key={i}
@@ -39,10 +40,10 @@ export function SkillCard({ skill }: CardProps) {
               i === skill.scale.values.length - 1 ? 'rounded-r-full' : ''
             }`}
             animate={{ 
-              backgroundColor: skill.scale.selected >= value ? "#9E54FF" : ((skill.scale.new >= value) ? "#14AE5C" : "#D9D9D9")
+              backgroundColor: skill.scale.selected >= value ? "#9E54FF" : ((skill.scale.required >= value) ? "#0F7EB8" : "#D9D9D9")
              }}
             ></motion.div>
-            {i + 1 === skill.scale.new && (
+            {i + 1 === skill.scale.selected && (
               <svg
               xmlns="http://www.w3.org/2000/svg"
               width="18"
@@ -77,6 +78,13 @@ export function SkillCard({ skill }: CardProps) {
           </span>
         </div>
       </div>
+      <h2 className="text-sm mb-[6px]">Current level: {skill.scale.selected}&nbsp;&nbsp;•&nbsp;&nbsp;Required level: {skill.scale.required}</h2>
+      <a
+      href={`/milestone/0${skill.milestone}`}
+      className="font-bold text-[#4E00B2] underline"
+      >
+        Go to Milestone {skill.milestone}
+      </a>
     </div>
   )
 }

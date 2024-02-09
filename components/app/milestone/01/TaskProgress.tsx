@@ -6,7 +6,6 @@ export default function TaskProgress({
 }: {
   progress: number
 }) {
-  progress = 1
   return (
     <motion.div className="flex flex-col">
       <div className="flex flex-row mb-[11px]">
