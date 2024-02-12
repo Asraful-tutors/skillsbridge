@@ -49,7 +49,7 @@ export default function Milestone_04({ available }: MilestoneProps) {
   ];
 
   return (
-    <motion.div className="w-full text-black max-w-screen-2xl h-full my-8 rounded-2xl mx-auto grid grid-cols-1 xl:grid-cols-10 gap-12 xl:pr-0 bg-white_background">
+    <motion.div className={`w-full text-black max-w-screen-2xl h-full my-8 rounded-2xl mx-auto grid ${available ? 'grid-cols-1' : 'grid-cols-1 xl:grid-cols-10'} gap-12 xl:pr-0 bg-white_background`}>
       <div className="col-span-5 2xl:col-span-6 my-[77px] mx-12">
         <h4 className="text-base font-medium opacity-55 mb-2">Milestone 04</h4>
         <h1 className="text-[40px] font-bold mb-[18px]">JavaScript Algorithms and Data Structures</h1>
@@ -92,16 +92,18 @@ export default function Milestone_04({ available }: MilestoneProps) {
           }
         </Button>
       </div>
-      <div className="col-span-5 2xl:col-span-4 bg-[#E2E2FE] flex flex-col items-center rounded-b-2xl xl:rounded-r-2xl py-[32px]">
-        <div>
-          <h2 className="mb-5 text-2xl font-bold">To unlock, you require</h2>
-          <div className="flex flex-col items-center xl:items-start">
-            {skillsData.map((skill, i) => (
-              <RequiredSkillCard key={i} skill={skill}/>
-            ))}
+      {!available && 
+        <div className="col-span-5 2xl:col-span-4 bg-[#E2E2FE] flex flex-col items-center rounded-b-2xl xl:rounded-r-2xl py-[32px]">
+          <div>
+            <h2 className="mb-5 text-2xl font-bold">To unlock, you require</h2>
+            <div className="flex flex-col items-center xl:items-start">
+              {skillsData.map((skill, i) => (
+                <RequiredSkillCard key={i} skill={skill}/>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      }
     </motion.div>
   );
 }
