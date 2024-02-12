@@ -25,7 +25,7 @@ export function SkillCard({ skill }: CardProps) {
         {skill.scale.values.map((value, i) => (
           <div
           key={i}
-          className={`flex flex-col items-center gap-0.5 relative mr-1 bg-[#DDDDDD] shadow ${
+          className={`flex flex-col items-center gap-0.5 relative bg-[#DDDDDD] shadow-inner shadow-[#320864]/[.25] py-[3px] px-[2px] ${
             i === 0 ? 'rounded-l-full' : ''
           } ${
             i === skill.scale.values.length - 1 ? 'rounded-r-full' : ''
@@ -33,7 +33,7 @@ export function SkillCard({ skill }: CardProps) {
             <span className="text-xs text-gray-500 absolute -bottom-5 left-0">{i}</span>
             <motion.div
             key={i}
-            className={`w-[94px] h-3 cursor-pointer ${
+            className={`w-[94px] h-[8px] cursor-pointer border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
               i === 0 ? 'rounded-l-full' : ''
             } ${
               i === skill.scale.values.length - 1 ? 'rounded-r-full' : ''
