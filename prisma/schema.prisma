@@ -96,6 +96,7 @@ model UserSkill {
   userId  Int   @map("user_id")
   skillId Int   @map("skill_id")
   score   Float
+  selfScore Float  @map("self_score")
 
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   skill Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)

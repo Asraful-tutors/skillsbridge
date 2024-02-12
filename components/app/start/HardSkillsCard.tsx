@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 
 import { HardSkill } from "@/lib/data/hardSkills";
-import Image from "next/image";
 import { useState } from "react";
 
 export interface HardSkillCardProps extends HardSkill {
@@ -9,10 +8,7 @@ export interface HardSkillCardProps extends HardSkill {
 }
 
 export default function HardSkillsCard({
-  img,
-  language,
-  title,
-  scale,
+  name,
   onScaleClick,
 }: HardSkillCardProps) {
   const [selectedScale, setSelectedScale] = useState(0);
@@ -21,6 +17,7 @@ export default function HardSkillsCard({
     setSelectedScale(value);
     onScaleClick(value);
   };
+
   return (
     <motion.div className="p-8 rounded-2xl bg-white_background flex items-center flex-col md:flex-row gap-10 w-full md:min-w-[704px]">
       <section className="flex flex-1 items-center gap-2.5">
@@ -34,7 +31,7 @@ export default function HardSkillsCard({
         <div className="w-16 h-16 rounded-md aspect-auto object-center object-cover bg-gray-200"></div>
         <div className="flex flex-col">
           <h4 className="text-xl font-semibold leading-[150%] text-black">
-            {title}
+            {name}
           </h4>
           {/* <p className="text-base font-normal leading-[150%] text-black text-opacity-50">
             {language.join(", ")}
@@ -43,14 +40,15 @@ export default function HardSkillsCard({
       </section>
       <section className="flex flex-1 items-center gap-1.5">
         {/* scale */}
-        {scale.values.map((value, index) => (
+        {Array.from({ length: 5 }, (_, index) => index).map((value) => (
           <motion.div
-            key={index}
+            key={value}
             animate={{
-              backgroundColor: selectedScale >= value ? "#9d64d6" : "#D9D9D9",
+              backgroundColor:
+                selectedScale >= value + 1 ? "#9d64d6" : "#D9D9D9",
             }}
             className={`w-16 h-3 rounded-md cursor-pointer `}
-            onClick={() => handleScaleClick(value)}
+            onClick={() => handleScaleClick(value + 1)}
           ></motion.div>
         ))}
       </section>

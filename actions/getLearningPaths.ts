@@ -1,0 +1,121 @@
+"use server";
+
+import prisma from "@/lib/prisma";
+
+export const getLearningPaths = async () => {
+  return await prisma.path.findMany({});
+};
+
+export const getFilteredPaths = async (pathId: number) => {
+  return await prisma.path.findFirst({
+    where: {
+      id: pathId,
+    },
+  });
+};
+
+// get hard skills based on selected path
+
+export const getHardSkillsForPath = async (pathId: number) => {
+  const hardSkills = await prisma.path.findFirst({
+    where: {
+      id: pathId,
+    },
+    include: {
+      skills: {
+        where: {
+          type: "hard",
+        },
+        include: {
+          milestones: true,
+          skillQuestions: true,
+        },
+      },
+    },
+  });
+
+  return hardSkills?.skills || [];
+};
+
+// get soft skills based on selected path
+
+export const getSoftSkillsForPath = async () => {
+  const softSkills = await prisma.path.findFirst({
+    where: {
+      id: 5,
+    },
+    include: {
+      skills: {
+        where: {
+          type: "soft",
+        },
+        include: {
+          milestones: true,
+          skillQuestions: true,
+        },
+      },
+    },
+  });
+
+  return softSkills?.skills || [];
+};
+
+export const getUserSelectedPaths = async (userId: number) => {
+  const response = await prisma.userPath.findFirst({
+    where: {
+      userId: userId,
+    },
+    include: {
+      path: true,
+    },
+  });
+
+  return response;
+};
+
+export const updateUsersLearningPaths = async (
+  userId: number,
+  pathId: number,
+  updates: any
+) => {
+  const defaultUpdates = {
+    active: true,
+    selfScore: 0,
+    completion: 0,
+  };
+
+  const mergedUpdates = { ...defaultUpdates, ...updates };
+
+  const existingRecord = await prisma.userPath.findFirst({
+    where: {
+      userId: userId,
+    },
+  });
+
+  if (existingRecord) {
+    // If the record exists, update it
+    const response = await prisma.userPath.update({
+      where: {
+        userId_pathId: {
+          userId: userId,
+          pathId: existingRecord.pathId,
+        },
+      },
+      data: {
+        pathId: pathId,
+      },
+    });
+    return response;
+  } else {
+    // If the record doesn't exist, create a new one
+    const response = await prisma.userPath.create({
+      data: {
+        userId: userId,
+        pathId: pathId,
+        ...mergedUpdates,
+      },
+    });
+
+    return response;
+  }
+};

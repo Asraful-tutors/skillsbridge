@@ -52,6 +52,8 @@ export default function ProfileOverview() {
       <SkillAssessment title="Hard Skills">
         <HardSkillsOverview
           disableAnimation={false}
+          // @ts-ignore
+
           data={selectedHardSkills}
           // @ts-ignore
           rating={rating}
@@ -60,6 +62,8 @@ export default function ProfileOverview() {
       <SkillAssessment title="Soft Skills">
         <ChartComponent
           disableAnimation={false}
+          // @ts-ignore
+
           data={selectedSoftSkills}
           // @ts-ignore
           rating={rating}

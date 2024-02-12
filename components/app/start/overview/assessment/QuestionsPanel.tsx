@@ -1,106 +1,100 @@
 import { motion } from "framer-motion";
-
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import {
-  addSelectedAnswer,
-  setCurrentSkillType,
-  setCurrentStep,
-  setQuestions,
-} from "@/lib/store/skillAssessmentSession/skillAssessmentSession";
 import { Button } from "@/components/ui/button";
-import { useEffect } from "react";
-import { paths } from "@/lib/data/path";
-import Link from "next/link";
 import { ProgressBar } from "@/components/shared/ProgressBar";
+import Link from "next/link";
+import { paths } from "@/lib/data/path";
+import { useEffect, useState } from "react";
 
-export default function QuestionsPanel({
-  selectedCareer,
-}: {
-  selectedCareer: any;
-}) {
-  const dispatch = useAppDispatch();
-  const questions = useAppSelector(
-    (state) => state.skillAssessmentSession.questions
-  );
-  const currentStep = useAppSelector(
-    (state) => state.skillAssessmentSession.currentStep
-  );
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { upsertSelectedAnswers } from "@/actions/assessment";
 
-  const currentSkillType = useAppSelector(
-    (state) => state.skillAssessmentSession.currentSkillType
-  );
-
-  useEffect(() => {
-    // Find the selected career in your paths array
-    const selectedCareerData = paths.find(
-      (data) => data.career === selectedCareer?.career
-    );
-    console.log("selectedCareerData", selectedCareerData);
-
-    if (selectedCareerData) {
-      const allQuestions = selectedCareerData.skills.reduce(
-        (
-          acc: {
-            question: string;
-            type: string; // Add the type information
-            answers: { text: string; correct: boolean }[];
-          }[],
-          skill
-        ) => {
-          const skillQuestions = skill.questions.map((question: any) => ({
-            question: question.question,
-            type: selectedCareerData.type, // Set the type for each question
-            answers: question.answers,
-          }));
-          return [...acc, ...skillQuestions];
-        },
-        []
-      );
-
-      dispatch(setQuestions(allQuestions));
-      dispatch(setCurrentSkillType(selectedCareerData.type as any));
-    }
-  }, [dispatch, selectedCareer]);
-
-  const handleAnswerSelection = (question: string, answer: any) => {
-    dispatch(addSelectedAnswer({ question, answer }));
+interface QuestionOption {
+  text: string;
+  correct: boolean;
+}
+interface SelectedAnswers {
+  [key: string]: {
+    answer: QuestionOption;
+    questionId: number;
+    skillId: number;
   };
+}
 
-  const handleNext = () => {
-    if (currentStep === questions.length - 1) {
+interface Question {
+  text: string;
+  options: QuestionOption[];
+  id: number; // Add this line
+  skillId: number;
+  // Include other properties of the question if needed
+}
+export default function QuestionsPanel({
+  hardSkillQuestions,
+}: {
+  hardSkillQuestions: Question[];
+}) {
+  const [questions, setQuestions] = useState([]);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [currentSkillType, setCurrentSkillType] = useState("hard");
+  const [selectedAnswers, setSelectedAnswers] = useState<SelectedAnswers>({});
+  console.log("selectedAnswers", selectedAnswers);
+
+  const handleAnswerSelection = (
+    questionText: string,
+    answer: QuestionOption,
+    questionId: number,
+    skillId: number
+  ) => {
+    setSelectedAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [questionText]: { answer, questionId, skillId },
+    }));
+  };
+  const handleNext = async () => {
+    if (currentStep === hardSkillQuestions.length - 1) {
       if (currentSkillType === "hard") {
-        dispatch(setCurrentSkillType("soft"));
+        setCurrentSkillType("soft");
 
         const softQuestions = paths
-          .filter((skill: any) => skill.type !== "hard")
-          .flatMap((skill: any) => skill.skills)
-          .flatMap((skill: any) => skill.questions);
+          .filter((skill) => skill.type !== "hard")
+          .flatMap((skill) => skill.skills)
+          .flatMap((skill) => skill.questions);
 
-        // Set the questions for "soft" skills
-        dispatch(setQuestions(softQuestions));
-        dispatch(setCurrentStep(0));
+        setCurrentStep(0);
+        // Reset selected answers when moving to the next set of questions
+        setSelectedAnswers({});
+        console.log("calling api");
+        // Use setTimeout to make sure state is updated before making the API call
+        setTimeout(async () => {
+          await upsertSelectedAnswers(selectedAnswers);
+          console.log("finished calling api");
+        }, 0);
       } else {
         alert("Assessment finished!");
       }
     } else {
-      // Reset the selected answer when moving to the next question
-      dispatch(
-        addSelectedAnswer({ question: currentQuestion.question, answer: null })
-      );
-
-      // Move to the next question for "hard" skills
-      dispatch(setCurrentStep(currentStep + 1));
+      setCurrentStep((prevStep) => prevStep + 1);
     }
   };
 
+  // useEffect(() => {
+  //   handleNext();
+
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [currentStep, currentSkillType]);
   const handleBack = () => {
-    dispatch(setCurrentStep(currentStep - 1));
+    setCurrentStep((prevStep) => Math.max(0, prevStep - 1));
   };
 
-  const currentQuestion = questions[currentStep];
-  console.log("currentStep", currentStep);
-  console.log("currentSkillType", currentSkillType);
-  console.log("currentQuestion", currentQuestion);
+  if (
+    !hardSkillQuestions ||
+    !Array.isArray(hardSkillQuestions) ||
+    hardSkillQuestions.length === 0
+  ) {
+    return <div>Loading or no questions available.</div>;
+  }
+
+  const currentQuestion = hardSkillQuestions[currentStep];
 
   if (!currentQuestion) {
     return <div>No questions available for the current step.</div>;
@@ -108,37 +102,39 @@ export default function QuestionsPanel({
 
   return (
     <motion.div className="flex flex-col gap-16">
-      <ProgressBar currentStep={currentStep} totalSteps={questions.length} />
+      <ProgressBar
+        currentStep={currentStep}
+        totalSteps={hardSkillQuestions.length}
+      />
       <div className="flex flex-col gap-8">
         <p>
           {" "}
-          Q: {currentStep + 1} ({questions.length - currentStep - 1} questions
-          are remaining)
+          Q: {currentStep + 1} ({hardSkillQuestions.length - currentStep - 1}{" "}
+          questions are remaining)
         </p>
         <h2 className="text-black text-base font-semibold leading-[150%]">
-          {currentQuestion.question}
+          {currentQuestion.text}
         </h2>
-        <ul className="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-7">
-          {currentQuestion.answers.map((answer: any, index: number) => (
-            <li key={index}>
-              <label
-                htmlFor={answer.text}
-                className="text-black text-base font-semibold leading-[150%] flex items-center gap-2"
-              >
-                <input
-                  type="radio"
-                  name="answer"
-                  id={answer.text}
-                  value={answer.text}
-                  onChange={() =>
-                    handleAnswerSelection(currentQuestion.question, answer)
-                  }
-                />
-                {answer.text}
-              </label>
-            </li>
+        {/* Add the question text above the answer choices */}
+        <RadioGroup className="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-7">
+          {currentQuestion.options.map((answer, index) => (
+            <div className="flex items-center space-x-2" key={index}>
+              <RadioGroupItem
+                onClick={() =>
+                  handleAnswerSelection(
+                    currentQuestion.text,
+                    answer,
+                    currentQuestion.id,
+                    currentQuestion.skillId
+                  )
+                }
+                value={answer.text}
+                id={answer.text}
+              />
+              <Label htmlFor={answer.text}>{answer.text}</Label>
+            </div>
           ))}
-        </ul>
+        </RadioGroup>
       </div>
 
       <div className="flex items-center justify-between gap-10 py-5">
@@ -151,8 +147,8 @@ export default function QuestionsPanel({
           Back
         </Button>
 
-        {currentSkillType === "soft" && currentStep === questions.length - 1 ? (
-          // Render a link or navigate directly using onClick
+        {currentSkillType === "soft" &&
+        currentStep === hardSkillQuestions.length - 1 ? (
           <Button
             variant={"violate"}
             asChild
@@ -163,6 +159,7 @@ export default function QuestionsPanel({
         ) : (
           <Button
             onClick={handleNext}
+            disabled={!selectedAnswers[currentQuestion.text]}
             variant={"violate"}
             className="max-w-[284px] w-full  border border-Moderate_violet"
           >
