@@ -8,11 +8,6 @@ export default {
 		CredentialsProvider,
 		GitHubProvider,
 	],
-	callbacks: {
-		session({ newSession, session, trigger, user }) {
-			return session;
-		},
-	},
 	secret: process.env.SECRET,
 } satisfies NextAuthConfig;
 

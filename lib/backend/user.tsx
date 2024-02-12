@@ -3,7 +3,7 @@ import { compare, hash } from "bcryptjs";
 import { BackendError, PublicError, zodThrow } from "./errors";
 import prisma from "./prisma";
 import { SignUpSchema } from "@/schemas";
-import { signIn } from "../../auth";
+import { signIn, signOut } from "../../auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 /**
@@ -88,9 +88,13 @@ export async function register(options: RegisterOptions) {
 			}
 		}
 	})
-	signIn("credentials", {
+	await signIn("credentials", {
 		email,
 		password,
-		redirectTo: DEFAULT_LOGIN_REDIRECT,
+		redirectTo: DEFAULT_LOGIN_REDIRECT
 	})
+}
+
+export async function logOut() {
+	await signOut();
 }
