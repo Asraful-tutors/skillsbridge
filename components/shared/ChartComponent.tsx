@@ -17,7 +17,6 @@ interface ChartData {
 }
 
 const ChartComponent = ({ data, disableAnimation }: ChartData) => {
-  disableAnimation = false
   return (
     <div className="my-4 flex flex-col gap-3.5 ">
       {data?.map((entry, index) => (
