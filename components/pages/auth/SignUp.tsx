@@ -9,14 +9,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { register } from "@/actions/register";
 import { useTransition } from "react";
+import { register } from "@/lib/backend/user";
 
 type SignUpProps = {
   // onRequestAccess: () => void;
 };
 
-export default function SignUp({}: SignUpProps) {
+export default function SignUp({ }: SignUpProps) {
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof SignUpSchema>>({
     defaultValues: {

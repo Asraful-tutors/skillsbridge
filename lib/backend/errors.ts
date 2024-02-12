@@ -1,10 +1,24 @@
 import { NextResponse } from "next/server";
+import { ParseParams, ZodTypeAny } from "zod";
 
 export function toResponse(error: Error | unknown) {
 	if (error instanceof BackendError) {
 		return error.toResponse();
 	}
 	return NextResponse.json({ message: "Internal server error" }, { status: 500 })
+}
+
+export function zodThrow<T extends ZodTypeAny>(zobj: T, data: unknown, params?: Partial<ParseParams & { status: number }>): ReturnType<T["parse"]> {
+
+	const match = zobj.safeParse(data, params)
+	if (!match.success) {
+		if (match.error.issues.length > 1) {
+			throw new PublicError(params?.status ?? 400, `Invalid parameters: ${match.error.issues.map(v => v.message).join(", ")}`)
+		} else {
+			throw new PublicError(params?.status ?? 400, match.error.issues[0].message)
+		}
+	}
+	return match.data as ReturnType<T['parse']>;
 }
 
 /** Error invisible to users by default. Displays as internal server error */

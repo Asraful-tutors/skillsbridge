@@ -69,8 +69,8 @@ model User {
 
 model UserProfile {
   userId    Int     @id @map("user_id")
-  firstname String?
-  lastname  String?
+  firstName String?
+  lastName  String?
   bio       String?
 
   user User @relation("UserProfile", fields: [userId], references: [id], onDelete: Cascade)
