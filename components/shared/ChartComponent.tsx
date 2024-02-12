@@ -17,6 +17,7 @@ interface ChartData {
 }
 
 const ChartComponent = ({ data, disableAnimation }: ChartData) => {
+  disableAnimation = false
   return (
     <div className="my-4 flex flex-col gap-3.5 ">
       {data?.map((entry, index) => (
@@ -28,7 +29,11 @@ const ChartComponent = ({ data, disableAnimation }: ChartData) => {
             {Array.from({ length: 5 }, (_, innerIndex) => (
               <div
                 key={innerIndex}
-                className="flex flex-col items-center gap-0.5 relative mr-1 bg-[#DDDDDD] shadow"
+                className={`flex flex-col items-center gap-0.5 relative bg-[#DDDDDD] shadow-inner shadow-[#320864]/[.25] py-[3px] px-[2px] ${
+                  innerIndex === 0 ? 'rounded-l-full' : ''
+                } ${
+                  innerIndex === 4 ? 'rounded-r-full' : ''
+                }`}
               >
                 <span className="text-xs text-gray-500 absolute -bottom-5 left-0">
                   {innerIndex}
@@ -40,11 +45,15 @@ const ChartComponent = ({ data, disableAnimation }: ChartData) => {
                           backgroundColor:
                             entry.selfScore >= innerIndex + 1
                               ? "#9d64d6"
-                              : "#D9D9D9",
+                              : "rgba(238, 230, 248, 0.2)",
                         }
                       : {}
                   }
-                  className="w-24 h-3 cursor-pointer"
+                  className={`w-[94px] h-[8px] cursor-pointer border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
+                    innerIndex === 0 ? 'rounded-l-full' : ''
+                  } ${
+                    innerIndex === 4 ? 'rounded-r-full' : ''
+                  }`}
                 ></motion.div>
                 {entry.selfScore === innerIndex + 1 && (
                   <svg
