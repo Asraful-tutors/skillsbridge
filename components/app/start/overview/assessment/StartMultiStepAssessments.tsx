@@ -2,21 +2,43 @@ import WhiteWrapper from "@/components/layout/WhiteWrapper";
 import { motion } from "framer-motion";
 import Sidebar from "./Sidebar";
 import QuestionsPanel from "./QuestionsPanel";
-import { useAppDispatch } from "@/lib/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useEffect } from "react";
 import {
   setCurrentSkillType,
   setQuestions,
 } from "@/lib/store/skillAssessmentSession/skillAssessmentSession";
 import { hardSkillsAssessmentData } from "@/lib/data/skillAssessmentsSessions";
+import { paths } from "@/lib/data/path";
+import { useQuery } from "@tanstack/react-query";
+import { getHardQuestions } from "@/actions/assessment";
+import useUserPaths from "@/components/hooks/useUserPaths";
 
 export default function StartMultiStepAssessments() {
-  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user.userData);
+  const { userPaths, userPathsLoading, userPathsError } = useUserPaths(user);
+  console.log("userPaths", userPaths);
+  const {
+    data: hardSkillQuestions,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["questions"],
+    queryFn: () => {
+      if (!user || !userPaths) {
+        throw new Error("User ID is undefined");
+      }
+      return getHardQuestions(userPaths?.path.id);
+    },
 
-  useEffect(() => {
-    dispatch(setQuestions(hardSkillsAssessmentData[0].questions));
-    dispatch(setCurrentSkillType("hardSkills"));
-  }, [dispatch]);
+    enabled: !!userPaths,
+  });
+
+  console.log("hardSkillQuestions", hardSkillQuestions);
+
+  if (isLoading) return "Loading...";
+
+  if (isError) return <>Something went wrong!</>;
 
   return (
     <motion.div>
@@ -31,7 +53,10 @@ export default function StartMultiStepAssessments() {
         {/* questions and answers with progressbar */}
         <motion.div className="w-full lg:col-span-5 xl:col-span-4">
           <WhiteWrapper>
-            <QuestionsPanel />
+            <QuestionsPanel
+              // @ts-ignore
+              hardSkillQuestions={hardSkillQuestions || []}
+            />
           </WhiteWrapper>
         </motion.div>
       </motion.div>

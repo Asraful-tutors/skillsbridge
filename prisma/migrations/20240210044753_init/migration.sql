@@ -38,6 +38,7 @@ CREATE TABLE "users" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT,
     "email" TEXT,
+    "password" TEXT,
     "email_verified" DATETIME,
     "image" TEXT,
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -58,34 +59,23 @@ CREATE TABLE "user_paths" (
     "user_id" INTEGER NOT NULL,
     "path_id" INTEGER NOT NULL,
     "active" BOOLEAN NOT NULL,
+    "self_score" INTEGER NOT NULL,
     "completion" REAL NOT NULL,
 
     PRIMARY KEY ("user_id", "path_id"),
     CONSTRAINT "user_paths_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT "user_paths_path_id_fkey" FOREIGN KEY ("path_id") REFERENCES "learning_paths" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT "user_paths_path_id_fkey" FOREIGN KEY ("path_id") REFERENCES "paths" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
 CREATE TABLE "user_skills" (
     "user_id" INTEGER NOT NULL,
     "skill_id" INTEGER NOT NULL,
-    "self_score" INTEGER NOT NULL,
     "score" REAL NOT NULL,
 
     PRIMARY KEY ("user_id", "skill_id"),
     CONSTRAINT "user_skills_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "user_skills_skill_id_fkey" FOREIGN KEY ("skill_id") REFERENCES "skills" ("id") ON DELETE CASCADE ON UPDATE CASCADE
-);
-
--- CreateTable
-CREATE TABLE "user_sub_skills" (
-    "user_id" INTEGER NOT NULL,
-    "sub_skill_id" INTEGER NOT NULL,
-    "score" REAL NOT NULL,
-
-    PRIMARY KEY ("user_id", "sub_skill_id"),
-    CONSTRAINT "user_sub_skills_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT "user_sub_skills_sub_skill_id_fkey" FOREIGN KEY ("sub_skill_id") REFERENCES "sub_skills" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -96,16 +86,26 @@ CREATE TABLE "skills" (
 );
 
 -- CreateTable
-CREATE TABLE "sub_skills" (
+CREATE TABLE "skill_questions" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "name" TEXT NOT NULL,
+    "skill_id" INTEGER NOT NULL,
+    "text" TEXT,
     "type" TEXT NOT NULL,
-    "parent_id" INTEGER NOT NULL,
-    CONSTRAINT "sub_skills_parent_id_fkey" FOREIGN KEY ("parent_id") REFERENCES "skills" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    "level" INTEGER NOT NULL,
+    CONSTRAINT "skill_questions_skill_id_fkey" FOREIGN KEY ("skill_id") REFERENCES "skills" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
-CREATE TABLE "learning_paths" (
+CREATE TABLE "skill_question_options" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "question_id" INTEGER NOT NULL,
+    "text" TEXT NOT NULL,
+    "correct" BOOLEAN NOT NULL DEFAULT false,
+    CONSTRAINT "skill_question_options_question_id_fkey" FOREIGN KEY ("question_id") REFERENCES "skill_questions" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "paths" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT,
     "icon" TEXT
@@ -117,7 +117,7 @@ CREATE TABLE "milestones" (
     "path_id" INTEGER NOT NULL,
     "name" TEXT,
     "description" TEXT,
-    CONSTRAINT "milestones_path_id_fkey" FOREIGN KEY ("path_id") REFERENCES "learning_paths" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT "milestones_path_id_fkey" FOREIGN KEY ("path_id") REFERENCES "paths" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -157,6 +157,14 @@ CREATE TABLE "options" (
 );
 
 -- CreateTable
+CREATE TABLE "_PathToSkill" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL,
+    CONSTRAINT "_PathToSkill_A_fkey" FOREIGN KEY ("A") REFERENCES "paths" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "_PathToSkill_B_fkey" FOREIGN KEY ("B") REFERENCES "skills" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
 CREATE TABLE "_MilestoneToSkill" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL,
@@ -181,6 +189,12 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "milestone_skill_requirements_skill_id_score_key" ON "milestone_skill_requirements"("skill_id", "score");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_PathToSkill_AB_unique" ON "_PathToSkill"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_PathToSkill_B_index" ON "_PathToSkill"("B");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_MilestoneToSkill_AB_unique" ON "_MilestoneToSkill"("A", "B");

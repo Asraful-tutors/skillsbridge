@@ -1,16 +1,40 @@
 "use client";
 
+import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { SignUpSchema } from "@/schemas";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { register } from "@/actions/register";
+import { useTransition } from "react";
 
 type SignUpProps = {
   // onRequestAccess: () => void;
 };
 
 export default function SignUp({}: SignUpProps) {
+  const [isPending, startTransition] = useTransition();
+  const form = useForm<z.infer<typeof SignUpSchema>>({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+    },
+    resolver: zodResolver(SignUpSchema),
+  });
+
+  const onSubmit = (values: z.infer<typeof SignUpSchema>) => {
+    console.log(values);
+    startTransition(() => {
+      register(values);
+    });
+  };
+
   return (
     <motion.div
       initial={{
@@ -56,12 +80,35 @@ export default function SignUp({}: SignUpProps) {
             <h2 className="header">Sign up for an account</h2>
             <p className="desc">Lorem Ipsum is simply dummy text</p>
           </div>
-          <div className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="flex items-center gap-8">
-              <Input type="text" placeholder="First Name" className="input " />
-              <Input type="text" placeholder="Last Name" className="input" />
+              <Input
+                type="text"
+                placeholder="First Name"
+                className="input "
+                {...form.register("firstName")}
+                disabled={isPending}
+              />
+              <Input
+                type="text"
+                placeholder="Last Name"
+                className="input"
+                {...form.register("lastName")}
+                disabled={isPending}
+              />
             </div>
-            <Input type="email" placeholder="Email Address" />
+            <Input
+              type="email"
+              placeholder="Email Address"
+              {...form.register("email")}
+              disabled={isPending}
+            />
+            <Input
+              type="password"
+              placeholder="******"
+              {...form.register("password")}
+              disabled={isPending}
+            />
             <p className="desc text-left">
               By creating an account, you agreeing to our{" "}
               <span className="font-semibold">Privacy Policy</span>, and{" "}
@@ -69,10 +116,11 @@ export default function SignUp({}: SignUpProps) {
                 Electronic Communication Policy
               </span>
             </p>
-            <Button asChild variant={"violate"}>
-              <Link href="/start">Request Access</Link>
+            <Button type="submit" variant={"violate"} disabled={isPending}>
+              {/* <Link href="/start">Request Access</Link> */}
+              Request Access
             </Button>
-          </div>
+          </form>
         </div>
       </section>
     </motion.div>

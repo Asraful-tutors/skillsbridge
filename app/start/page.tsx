@@ -17,11 +17,11 @@ function StartPage() {
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 1:
-        return <SelectLearningPath onNext={handleNext} />;
+        return <SelectLearningPath setCurrentStep={setCurrentStep} />;
       case 2:
-        return <HardSkillsPage onNext={handleNext} />;
+        return <HardSkillsPage setCurrentStep={setCurrentStep} />;
       case 3:
-        return <SoftSkills onNext={handleNext} />;
+        return <SoftSkills />;
 
       default:
         return null;

@@ -1,35 +1,89 @@
 import { motion } from "framer-motion";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { useAppSelector } from "@/lib/store/hooks";
 
 import { Button } from "@/components/ui/button";
-import { HardSkill, hardSkills } from "@/lib/data/hardSkills";
 import HardSkillsCard from "@/components/app/start/HardSkillsCard";
-import { addSelectedSkill } from "@/lib/store/hardSkill/hardSkill";
+import { useQuery } from "@tanstack/react-query";
+import useUserPaths from "@/components/hooks/useUserPaths";
+import {
+  getFilteredPaths,
+  getHardSkillsForPath,
+} from "@/actions/getLearningPaths";
+import Loading from "@/app/loading";
+import { useMemo, useState } from "react";
+import { upsertHardSkills } from "@/actions/usersSkillsAssessment";
 
 const staggerVariants = {
   visible: { opacity: 1, transition: { staggerChildren: 0.5, delay: 0.1 } },
   hidden: { opacity: 0 },
 };
 
-export default function HardSkillsPage({ onNext }: { onNext: () => void }) {
-  const dispatch = useAppDispatch();
-  const selectedSkill = useAppSelector(
-    (state) => state.hardSkill.selectedSkills
-  );
+export default function HardSkillsPage({
+  setCurrentStep,
+}: {
+  setCurrentStep: any;
+}) {
+  const user = useAppSelector((state) => state.user.userData);
+  const { userPaths, userPathsLoading, userPathsError } = useUserPaths(user);
+  const [scaledSkills, setScaledSkills] = useState<
+    { skillId: number; selfScore: number }[]
+  >([]);
 
-  const handleScaleClick = (skill: HardSkill, selectedScale: number) => {
-    dispatch(addSelectedSkill({ skill, selectedScale }));
+  const nextStep = () => {
+    setCurrentStep((prev: number) => prev + 1);
   };
 
-  const isNextDisabled = hardSkills.some((skill) => {
-    const isSelected = selectedSkill.find((s) => s.skill === skill);
-    return !isSelected || isSelected.selectedScale === 0;
+  const {
+    data: hardSkills,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["hardSkills"],
+    queryFn: () => {
+      if (!userPaths || !userPaths.path) {
+        throw new Error("User paths or path ID is undefined");
+      }
+      return getHardSkillsForPath(userPaths.path.id);
+    },
+    enabled: !!userPaths,
   });
+  console.log("hardSkills", hardSkills);
+
+  const handleScaleClick = (skillId: number, selfScore: number) => {
+    setScaledSkills((prevSkills) => [
+      ...prevSkills.filter((skill) => skill.skillId !== skillId),
+      { skillId, selfScore },
+    ]);
+  };
+
+  const handleNextClick = async () => {
+    if (!user) {
+      console.error("User is not defined");
+      return;
+    }
+    // Upsert scaled skills
+    await upsertHardSkills(user.id, scaledSkills).then(() => nextStep());
+    // Continue with onNext logic
+    // onNext()
+  };
+
+  const isNextDisabled = useMemo(() => {
+    const scaledSkillsCount = scaledSkills.length;
+    const totalSkillsCount = hardSkills?.length || 0;
+    return scaledSkillsCount !== totalSkillsCount;
+  }, [scaledSkills, hardSkills]);
+
+  if (isLoading)
+    return (
+      <>
+        <Loading />
+      </>
+    );
+
+  if (isError) return <>Something went wrong</>;
 
   return (
     <motion.div
-      initial="hidden"
-      animate="visible"
       layout
       variants={staggerVariants}
       className="flex flex-col items-center justify-center h-full w-full gap-10"
@@ -42,16 +96,16 @@ export default function HardSkillsPage({ onNext }: { onNext: () => void }) {
         </p>
       </section>
       <motion.section
-        className="grid grid-cols-1 gap-5"
+        className="grid grid-cols-1 gap-5 px-4"
         variants={staggerVariants}
       >
-        {hardSkills.map((skill, key) => (
+        {hardSkills?.map((data, key) => (
+          // @ts-ignore
           <HardSkillsCard
             key={key}
-            {...skill}
-            onScaleClick={(selectedScale) =>
-              handleScaleClick(skill, selectedScale)
-            }
+            id={data.id}
+            name={data.name}
+            onScaleClick={(selfScore) => handleScaleClick(data.id, selfScore)}
           />
         ))}
       </motion.section>
@@ -59,8 +113,8 @@ export default function HardSkillsPage({ onNext }: { onNext: () => void }) {
       <Button
         disabled={isNextDisabled}
         variant={"violate"}
-        onClick={onNext}
-        className="max-w-[284px] mx-auto"
+        onClick={handleNextClick}
+        className="w-[284px] mx-auto"
       >
         Next
       </Button>
