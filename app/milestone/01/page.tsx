@@ -1,9 +1,9 @@
 "use client";
+
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import WhiteWrapper from "@/components/layout/WhiteWrapper";
 import TaskProgress from "@/components/app/milestone/01/TaskProgress";
 
 export default function Milestone_01() {
