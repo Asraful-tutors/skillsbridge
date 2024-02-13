@@ -135,8 +135,8 @@ export const Skills = {
     type: "hard",
   }),
 
-  ProjectManagementTools: skillFactory.create({
-    name: "Project Management Tools",
+  ProjectManagement: skillFactory.create({
+    name: "Project Management",
     paths: ezConnect(Paths.Producer),
     type: "hard",
   }),
