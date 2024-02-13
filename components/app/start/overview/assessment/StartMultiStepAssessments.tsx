@@ -10,9 +10,48 @@ import {
 } from "@/lib/store/skillAssessmentSession/skillAssessmentSession";
 import { hardSkillsAssessmentData } from "@/lib/data/skillAssessmentsSessions";
 import { paths } from "@/lib/data/path";
+import { useQuery } from "@tanstack/react-query";
+import { getHardQuestions, getSoftQuestions } from "@/actions/assessment";
+import useUserPaths from "@/components/hooks/useUserPaths";
 
 export default function StartMultiStepAssessments() {
-  const selectedCareer = useAppSelector((state) => state.path.selectedPath);
+  const user = useAppSelector((state) => state.user.userData);
+  const { userPaths, userPathsLoading, userPathsError } = useUserPaths(user);
+  const {
+    data: hardSkillQuestions,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["hardQNA"],
+    queryFn: () => {
+      if (!user || !userPaths) {
+        throw new Error("User ID is undefined");
+      }
+      return getHardQuestions(userPaths?.path.id);
+    },
+
+    enabled: !!userPaths,
+  });
+
+  const {
+    data: softSkillQuestions,
+    isLoading: isSoftSkillLoading,
+    isError: isSoftSkillError,
+  } = useQuery({
+    queryKey: ["softQNA"],
+    queryFn: () => {
+      if (!user || !userPaths) {
+        throw new Error("User ID is undefined");
+      }
+      return getSoftQuestions(userPaths?.path.id);
+    },
+
+    enabled: !!userPaths,
+  });
+
+  if (isLoading) return "Loading...";
+
+  if (isError) return <>Something went wrong!</>;
 
   return (
     <motion.div>
@@ -27,7 +66,12 @@ export default function StartMultiStepAssessments() {
         {/* questions and answers with progressbar */}
         <motion.div className="w-full lg:col-span-5 xl:col-span-4">
           <WhiteWrapper>
-            <QuestionsPanel selectedCareer={selectedCareer} />
+            <QuestionsPanel
+              // @ts-ignore
+              hardSkillQuestions={hardSkillQuestions || []}
+              // @ts-ignore
+              softSkillQuestions={softSkillQuestions || []}
+            />
           </WhiteWrapper>
         </motion.div>
       </motion.div>

@@ -28,7 +28,7 @@ const ChartComponent = ({ data, disableAnimation, rating }: ChartData) => {
   if (filteredData.length === 0) {
     return <div>No data available for the selected career.</div>;
   }
-  console.log("rating", rating);
+
   return (
     <div className="my-4 flex flex-col gap-3.5 ">
       {filteredData.map((entry, index) => (

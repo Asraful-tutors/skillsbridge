@@ -9,10 +9,7 @@ export interface SoftSkillCardProps extends SoftSkills {
 }
 
 export default function SoftSkillsCard({
-  img,
-  language,
-  title,
-  scale,
+  name,
   onScaleClick,
 }: SoftSkillCardProps) {
   const [selectedScale, setSelectedScale] = useState(0);
@@ -34,7 +31,7 @@ export default function SoftSkillsCard({
         <div className="w-16 h-16 rounded-md aspect-auto object-center object-cover bg-gray-200"></div>
         <div className="flex flex-col">
           <h4 className="text-xl font-semibold leading-[150%] text-black">
-            {title}
+            {name}
           </h4>
           {/* <p className="text-base font-normal leading-[150%] text-black text-opacity-50">
             {language.join(", ")}
@@ -43,14 +40,15 @@ export default function SoftSkillsCard({
       </section>
       <section className="flex flex-1 items-center gap-1.5">
         {/* scale */}
-        {scale.values.map((value, index) => (
+        {Array.from({ length: 5 }, (_, index) => index).map((value) => (
           <motion.div
-            key={index}
+            key={value}
             animate={{
-              backgroundColor: selectedScale >= value ? "#9d64d6" : "#D9D9D9",
+              backgroundColor:
+                selectedScale >= value + 1 ? "#9d64d6" : "#D9D9D9",
             }}
             className={`w-16 h-3 rounded-md cursor-pointer `}
-            onClick={() => handleScaleClick(value)}
+            onClick={() => handleScaleClick(value + 1)}
           ></motion.div>
         ))}
       </section>

@@ -19,6 +19,7 @@ const softSkillsSlice = createSlice({
     ) => {
       const { skill, selectedScale } = action.payload;
       const existingIndex = state.selectedSkills.findIndex(
+        //@ts-ignore
         (entry) => entry.skill.title === skill.title
       );
 
