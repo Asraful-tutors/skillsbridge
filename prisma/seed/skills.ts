@@ -10,7 +10,7 @@ const skillQuestionFactory = new class extends ModelFactory<Prisma.SkillQuestion
 const selectQuestions = readFileSync(join(__dirname, 'skill-assesment-questions-select.tsv'), 'utf8');
 const textQuestions = readFileSync(join(__dirname, 'skill-assesment-questions-text.tsv'), 'utf8');
 
-function parseSelectQuestions(input: string, mode: "select" | "text") {
+function parseQuestions(input: string, mode: "select" | "text") {
   let results = [] as ReturnType<typeof skillQuestionFactory['create']>[];
   let line = "";
   let value = "";
@@ -37,7 +37,7 @@ function parseSelectQuestions(input: string, mode: "select" | "text") {
                   skill: ezConnect(matchingSkill),
                   type: "select",
                   options: {
-                    create: options
+                    create: [...options]
                   },
                   text,
                 }))
@@ -229,5 +229,5 @@ export const Skills = {
   }),
 } as const
 
-export const SelectQuestions = parseSelectQuestions(selectQuestions, "select")
-export const TextQuestions = parseSelectQuestions(textQuestions, "text")
+export const SelectQuestions = parseQuestions(selectQuestions, "select")
+export const TextQuestions = parseQuestions(textQuestions, "text")
