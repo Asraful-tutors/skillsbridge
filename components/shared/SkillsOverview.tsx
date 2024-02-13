@@ -32,7 +32,9 @@ const SkillsOverview = ({ data, disableAnimation }: ChartData) => {
             {Array.from({ length: 5 }, (_, innerIndex) => (
               <div
                 key={innerIndex}
-                className="flex flex-col items-center gap-0.5 relative mr-1 bg-[#DDDDDD] shadow"
+                className={`flex flex-col items-center gap-0.5 relative bg-[#DDDDDD] shadow-inner shadow-[#320864]/[.25] py-[3px] px-[2px] ${
+                  innerIndex === 0 ? "rounded-l-full" : ""
+                } ${innerIndex === 4 ? "rounded-r-full" : ""}`}
               >
                 <span className="text-xs text-gray-500 absolute -bottom-5 left-0">
                   {innerIndex}
@@ -49,7 +51,9 @@ const SkillsOverview = ({ data, disableAnimation }: ChartData) => {
                         }
                       : {}
                   }
-                  className="w-24 h-3 cursor-pointer"
+                  className={`w-[94px] h-[8px] cursor-pointer border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
+                    innerIndex === 0 ? "rounded-l-full" : ""
+                  } ${innerIndex === 4 ? "rounded-r-full" : ""}`}
                 ></motion.div>
                 {entry.selfScore === innerIndex + 1 && (
                   <svg
