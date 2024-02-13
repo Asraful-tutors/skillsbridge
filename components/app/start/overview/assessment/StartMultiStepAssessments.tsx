@@ -11,19 +11,18 @@ import {
 import { hardSkillsAssessmentData } from "@/lib/data/skillAssessmentsSessions";
 import { paths } from "@/lib/data/path";
 import { useQuery } from "@tanstack/react-query";
-import { getHardQuestions } from "@/actions/assessment";
+import { getHardQuestions, getSoftQuestions } from "@/actions/assessment";
 import useUserPaths from "@/components/hooks/useUserPaths";
 
 export default function StartMultiStepAssessments() {
   const user = useAppSelector((state) => state.user.userData);
   const { userPaths, userPathsLoading, userPathsError } = useUserPaths(user);
-  console.log("userPaths", userPaths);
   const {
     data: hardSkillQuestions,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["questions"],
+    queryKey: ["hardQNA"],
     queryFn: () => {
       if (!user || !userPaths) {
         throw new Error("User ID is undefined");
@@ -34,7 +33,21 @@ export default function StartMultiStepAssessments() {
     enabled: !!userPaths,
   });
 
-  console.log("hardSkillQuestions", hardSkillQuestions);
+  const {
+    data: softSkillQuestions,
+    isLoading: isSoftSkillLoading,
+    isError: isSoftSkillError,
+  } = useQuery({
+    queryKey: ["softQNA"],
+    queryFn: () => {
+      if (!user || !userPaths) {
+        throw new Error("User ID is undefined");
+      }
+      return getSoftQuestions(userPaths?.path.id);
+    },
+
+    enabled: !!userPaths,
+  });
 
   if (isLoading) return "Loading...";
 
@@ -56,6 +69,8 @@ export default function StartMultiStepAssessments() {
             <QuestionsPanel
               // @ts-ignore
               hardSkillQuestions={hardSkillQuestions || []}
+              // @ts-ignore
+              softSkillQuestions={softSkillQuestions || []}
             />
           </WhiteWrapper>
         </motion.div>

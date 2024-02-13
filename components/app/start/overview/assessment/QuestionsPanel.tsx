@@ -21,6 +21,11 @@ interface SelectedAnswers {
   };
 }
 
+export interface SkillScore {
+  skillId: number;
+  score: number; // Score out of 5
+  // Add other properties as needed, e.g., totalQuestions, correctAnswers
+}
 interface Question {
   text: string;
   options: QuestionOption[];
@@ -30,14 +35,53 @@ interface Question {
 }
 export default function QuestionsPanel({
   hardSkillQuestions,
+  softSkillQuestions,
 }: {
   hardSkillQuestions: Question[];
+  softSkillQuestions: Question[];
 }) {
   const [questions, setQuestions] = useState([]);
+  const [currentSkillQuestions, setCurrentSkillQuestions] =
+    useState(hardSkillQuestions);
   const [currentStep, setCurrentStep] = useState(0);
   const [currentSkillType, setCurrentSkillType] = useState("hard");
   const [selectedAnswers, setSelectedAnswers] = useState<SelectedAnswers>({});
-  console.log("selectedAnswers", selectedAnswers);
+  const [skillScores, setSkillScores] = useState<SkillScore[]>([]);
+  console.log("softSkillQuestions", softSkillQuestions);
+  useEffect(() => {
+    if (currentSkillType === "hard") {
+      setCurrentSkillQuestions(hardSkillQuestions);
+    } else {
+      setCurrentSkillQuestions(softSkillQuestions);
+    }
+  }, [currentSkillType, hardSkillQuestions, softSkillQuestions]);
+
+  const formatSelectedAnswersAndCalculateScores = () => {
+    const formattedAnswers: {
+      [key: number]: { correctAnswers: number; totalQuestions: number };
+    } = {};
+    const skillScoresData: SkillScore[] = [];
+
+    for (const [, answerData] of Object.entries(selectedAnswers)) {
+      const { skillId, questionId } = answerData;
+      formattedAnswers[skillId] = formattedAnswers[skillId] || {
+        correctAnswers: 0,
+        totalQuestions: 0,
+      };
+
+      if (answerData.answer.correct) {
+        formattedAnswers[skillId].correctAnswers++;
+      }
+      formattedAnswers[skillId].totalQuestions++;
+    }
+
+    for (const [skillId, answerData] of Object.entries(formattedAnswers)) {
+      const score = (answerData.correctAnswers / answerData.totalQuestions) * 5;
+      skillScoresData.push({ skillId: parseInt(skillId), score }); // Convert skillId to integer
+    }
+
+    setSkillScores(skillScoresData);
+  };
 
   const handleAnswerSelection = (
     questionText: string,
@@ -50,51 +94,50 @@ export default function QuestionsPanel({
       [questionText]: { answer, questionId, skillId },
     }));
   };
+
   const handleNext = async () => {
-    if (currentStep === hardSkillQuestions.length - 1) {
+    if (currentStep === currentSkillQuestions.length - 1) {
       if (currentSkillType === "hard") {
         setCurrentSkillType("soft");
-
-        const softQuestions = paths
-          .filter((skill) => skill.type !== "hard")
-          .flatMap((skill) => skill.skills)
-          .flatMap((skill) => skill.questions);
-
         setCurrentStep(0);
         // Reset selected answers when moving to the next set of questions
         setSelectedAnswers({});
-        console.log("calling api");
-        // Use setTimeout to make sure state is updated before making the API call
-        setTimeout(async () => {
-          await upsertSelectedAnswers(selectedAnswers);
-          console.log("finished calling api");
-        }, 0);
+        formatSelectedAnswersAndCalculateScores();
       } else {
-        alert("Assessment finished!");
+        // Here, you can fetch the soft questions and answers
+        setCurrentSkillQuestions(softSkillQuestions);
+        setCurrentStep(0);
+        // Reset selected answers when moving to the next set of questions
+        setSelectedAnswers({});
+        formatSelectedAnswersAndCalculateScores();
       }
     } else {
       setCurrentStep((prevStep) => prevStep + 1);
     }
   };
 
-  // useEffect(() => {
-  //   handleNext();
+  useEffect(() => {
+    // This useEffect will run whenever skillScores is updated
+    if (currentSkillType === "soft" && currentSkillQuestions.length > 0) {
+      upsertSelectedAnswers(skillScores).then(() => {
+        console.log("API call completed");
+      });
+    }
+  }, [skillScores, currentSkillType]);
 
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [currentStep, currentSkillType]);
   const handleBack = () => {
     setCurrentStep((prevStep) => Math.max(0, prevStep - 1));
   };
 
   if (
-    !hardSkillQuestions ||
-    !Array.isArray(hardSkillQuestions) ||
-    hardSkillQuestions.length === 0
+    !currentSkillQuestions ||
+    !Array.isArray(currentSkillQuestions) ||
+    currentSkillQuestions.length === 0
   ) {
     return <div>Loading or no questions available.</div>;
   }
 
-  const currentQuestion = hardSkillQuestions[currentStep];
+  const currentQuestion = currentSkillQuestions[currentStep];
 
   if (!currentQuestion) {
     return <div>No questions available for the current step.</div>;
@@ -104,12 +147,12 @@ export default function QuestionsPanel({
     <motion.div className="flex flex-col gap-16">
       <ProgressBar
         currentStep={currentStep}
-        totalSteps={hardSkillQuestions.length}
+        totalSteps={currentSkillQuestions.length}
       />
       <div className="flex flex-col gap-8">
         <p>
           {" "}
-          Q: {currentStep + 1} ({hardSkillQuestions.length - currentStep - 1}{" "}
+          Q: {currentStep + 1} ({currentSkillQuestions.length - currentStep - 1}{" "}
           questions are remaining)
         </p>
         <h2 className="text-black text-base font-semibold leading-[150%]">
@@ -148,7 +191,7 @@ export default function QuestionsPanel({
         </Button>
 
         {currentSkillType === "soft" &&
-        currentStep === hardSkillQuestions.length - 1 ? (
+        currentStep === currentSkillQuestions.length - 1 ? (
           <Button
             variant={"violate"}
             asChild

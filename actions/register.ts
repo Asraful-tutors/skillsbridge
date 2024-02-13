@@ -21,9 +21,11 @@ export const register = async (values: z.infer<typeof SignUpSchema>) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const existingUser = await getUserByEmail(email);
+  console.log("existingUser", validatedFields);
 
   if (existingUser) {
-    return { error: "Email already in use!" };
+    const loginResponse = await loginUser(email, password); // Pass only the email for login
+    return { success: "User registered and logged in successfully!" };
   }
 
   console.log("existingUser", existingUser);
@@ -57,7 +59,7 @@ export const register = async (values: z.infer<typeof SignUpSchema>) => {
 
 const loginUser = async (email: string, password: string) => {
   const user = await prisma.user.findUnique({ where: { email } });
-
+  console.log("user", user);
   if (!user) {
     return { error: "User not found!" };
   }

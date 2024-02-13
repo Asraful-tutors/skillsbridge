@@ -72,6 +72,7 @@ CREATE TABLE "user_skills" (
     "user_id" INTEGER NOT NULL,
     "skill_id" INTEGER NOT NULL,
     "score" REAL NOT NULL,
+    "self_score" REAL NOT NULL,
 
     PRIMARY KEY ("user_id", "skill_id"),
     CONSTRAINT "user_skills_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
