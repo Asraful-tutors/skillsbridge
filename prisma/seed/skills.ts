@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from "@prisma/client"
+import { Prisma } from "@prisma/client"
 import { ModelFactory, ezConnect } from "./seed-util"
 import { readFileSync } from 'fs';
 import { join } from "path";
@@ -21,8 +21,8 @@ function parseQuestions(input: string, mode: "select" | "text") {
   let text = ''
   let options = [] as { text: string, correct: boolean }[]
 
-  for (let i = 0; i < input.length; i++) {
-    const char = input.charAt(i);
+  for (let i = 0; i < input.length + 1; i++) {
+    const char = i < input.length ? input.charAt(i) : '\n';
     switch (char) {
       case '\t':
         if (value && tabIndex <= 2 && values[tabIndex]) { // New question
