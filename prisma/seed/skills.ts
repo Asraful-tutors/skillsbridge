@@ -1,3 +1,5 @@
+/// <reference path="../prisma.d.ts" />
+
 import { Prisma } from "@prisma/client"
 import { ModelFactory, ezConnect } from "./seed-util"
 import { readFileSync } from 'fs';
@@ -35,19 +37,19 @@ function parseQuestions(input: string, mode: "select" | "text") {
                 results.push(skillQuestionFactory.create({
                   level: 5,
                   skill: ezConnect(matchingSkill),
-                  type: "select",
-                  options: {
-                    create: [...options]
-                  },
                   text,
+                  data: {
+                    type: "select",
+                    options: [...options]
+                  }
                 }))
                 break;
               case "text":
                 results.push(skillQuestionFactory.create({
                   level: 5,
                   skill: ezConnect(matchingSkill),
-                  type: "text",
                   text,
+                  data: { type: "text" }
                 }))
                 break;
             }
@@ -91,141 +93,141 @@ export const Skills = {
   DigitalPaintingAndDrawing: skillFactory.create({
     name: "Digital Painting and Drawing",
     paths: ezConnect(Paths.Artist),
-    type: "hard",
+    type: "HARD",
   }),
   ModelingandAnimation: skillFactory.create({
     name: "3D Modeling and Animation",
     paths: ezConnect(Paths.Artist),
-    type: "hard",
+    type: "HARD",
   }),
   Texturing: skillFactory.create({
     name: "Texturing",
     paths: ezConnect(Paths.Artist),
-    type: "hard",
+    type: "HARD",
   }),
   Sculpting: skillFactory.create({
     name: "Sculpting",
     paths: ezConnect(Paths.Artist),
-    type: "hard",
+    type: "HARD",
   }),
   KnowledgeOfGameEngines: skillFactory.create({
     name: "Knowledge of Game Engines",
     paths: ezConnect(Paths.Artist),
-    type: "hard",
+    type: "HARD",
   }),
 
   GameMechanics: skillFactory.create({
     name: "Game Mechanics",
     paths: ezConnect(Paths.GameDesign),
-    type: "hard",
+    type: "HARD",
   }),
   LevelDesign: skillFactory.create({
     name: "Level Design",
     paths: ezConnect(Paths.GameDesign),
-    type: "hard",
+    type: "HARD",
   }),
   NarrativeDesign: skillFactory.create({
     name: "Narrative Design",
     paths: ezConnect(Paths.GameDesign),
-    type: "hard",
+    type: "HARD",
   }),
   Playtesting: skillFactory.create({
     name: "Playtesting",
     paths: ezConnect(Paths.GameDesign),
-    type: "hard",
+    type: "HARD",
   }),
 
   ProjectManagement: skillFactory.create({
     name: "Project Management",
     paths: ezConnect(Paths.Producer),
-    type: "hard",
+    type: "HARD",
   }),
   BudgetingAndFinancialSoftware: skillFactory.create({
     name: "Budgeting and Financial Software",
     paths: ezConnect(Paths.Producer),
-    type: "hard",
+    type: "HARD",
   }),
   SchedulingTools: skillFactory.create({
     name: "Scheduling Tools",
     paths: ezConnect(Paths.Producer),
-    type: "hard",
+    type: "HARD",
   }),
   AgileAndScrumMethodologies: skillFactory.create({
     name: "Agile and Scrum Methodologies",
     paths: ezConnect(Paths.Producer),
-    type: "hard",
+    type: "HARD",
   }),
 
   ProgrammingLanguages: skillFactory.create({
     name: "Programming Languages",
     paths: ezConnect(Paths.GameProgrammer),
-    type: "hard",
+    type: "HARD",
   }),
   GameEngines: skillFactory.create({
     name: "Game Engines",
     paths: ezConnect(Paths.GameProgrammer),
-    type: "hard",
+    type: "HARD",
   }),
   GraphicsProgramming: skillFactory.create({
     name: "Graphics Programming",
     paths: ezConnect(Paths.GameProgrammer),
-    type: "hard",
+    type: "HARD",
   }),
   ArtificialIntelligence: skillFactory.create({
     name: "Artificial Intelligence",
     paths: ezConnect(Paths.GameProgrammer),
-    type: "hard",
+    type: "HARD",
   }),
   NetworkProgramming: skillFactory.create({
     name: "Network Programming",
     paths: ezConnect(Paths.GameProgrammer),
-    type: "hard",
+    type: "HARD",
   }),
 
   CriticalAndCreativeThinking: skillFactory.create({
     name: "Critical & Creative Thinking",
     paths: ezConnect(Paths.SoftSkills),
-    type: "soft",
+    type: "SOFT",
   }),
   IndependentLearning: skillFactory.create({
     name: "Independent Learning",
     paths: ezConnect(Paths.SoftSkills),
-    type: "soft",
+    type: "SOFT",
   }),
   IndustryTrends: skillFactory.create({
     name: "Industry Trends",
     paths: ezConnect(Paths.SoftSkills),
-    type: "soft",
+    type: "SOFT",
   }),
   Networking: skillFactory.create({
     name: "Networking",
     paths: ezConnect(Paths.SoftSkills),
-    type: "soft",
+    type: "SOFT",
   }),
   PersonalResponsibility: skillFactory.create({
     name: "Personal Responsibility",
     paths: ezConnect(Paths.SoftSkills),
-    type: "soft",
+    type: "SOFT",
   }),
   Teamwork: skillFactory.create({
     name: "Teamwork",
     paths: ezConnect(Paths.SoftSkills),
-    type: "soft",
+    type: "SOFT",
   }),
   CommunicationSkills: skillFactory.create({
     name: "Communication Skills",
     paths: ezConnect(Paths.SoftSkills),
-    type: "soft",
+    type: "SOFT",
   }),
   TimeManagement: skillFactory.create({
     name: "Time Management",
     paths: ezConnect(Paths.SoftSkills),
-    type: "soft",
+    type: "SOFT",
   }),
   ConflictResolution: skillFactory.create({
     name: "Conflict Resolution",
     paths: ezConnect(Paths.SoftSkills),
-    type: "soft",
+    type: "SOFT",
   }),
 } as const
 

@@ -2,9 +2,13 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator json {
+  provider = "prisma-json-types-generator"
+}
+
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model Account {
@@ -50,7 +54,7 @@ model Session {
 
 model User {
   id            Int       @id @default(autoincrement())
-  name          String?
+  name          String?   @db.VarChar(64)
   email         String?   @unique
   password      String?
   emailVerified DateTime? @map("email_verified")
@@ -58,20 +62,21 @@ model User {
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
-  accounts Account[]
-  sessions Session[]
-  profile  UserProfile? @relation("UserProfile")
-  paths    UserPath[]
-  skills   UserSkill[]
+  accounts    Account[]
+  sessions    Session[]
+  profile     UserProfile?       @relation("UserProfile")
+  paths       UserPath[]
+  skills      UserSkill[]
+  assessments AssessmentRecord[]
 
   @@map("users")
 }
 
 model UserProfile {
   userId    Int     @id @map("user_id")
-  firstName String?
-  lastName  String?
-  bio       String?
+  firstName String? @db.VarChar(64)
+  lastName  String? @db.VarChar(64)
+  bio       String? @db.Text
 
   user User @relation("UserProfile", fields: [userId], references: [id], onDelete: Cascade)
 
@@ -104,48 +109,41 @@ model UserSkill {
   @@map("user_skills")
 }
 
+enum SkillType {
+  HARD
+  SOFT
+}
+
 model Skill {
-  id   Int    @id @default(autoincrement())
-  name String
-  type String // "hard" or "soft"
-  // image String
+  id   Int       @id @default(autoincrement())
+  name String    @db.VarChar(64)
+  type SkillType // "hard" or "soft"
 
   userSkills                 UserSkill[]
   milestones                 Milestone[]
   milestoneSkillRequirements MilestoneSkillRequirement[]
   paths                      Path[]
-  skillQuestions             SkillQuestion[]
+  questions                  SkillQuestion[]
 
   @@map("skills")
 }
 
 model SkillQuestion {
-  id      Int     @id @default(autoincrement())
-  skillId Int     @map("skill_id")
-  text    String?
-  type    String // "select" or "text"
+  id      Int    @id @default(autoincrement())
+  skillId Int    @map("skill_id")
+  text    String @db.Text
   level   Int
+  /// [SkillQuestionData]
+  data    Json
 
-  skill   Skill                 @relation(fields: [skillId], references: [id], onDelete: Cascade)
-  options SkillQuestionOption[]
+  skill Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
   @@map("skill_questions")
 }
 
-model SkillQuestionOption {
-  id         Int     @id @default(autoincrement())
-  questionId Int     @map("question_id")
-  text       String
-  correct    Boolean @default(false)
-
-  question SkillQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
-
-  @@map("skill_question_options")
-}
-
 model Path {
   id   Int     @id @default(autoincrement())
-  name String?
+  name String  @db.VarChar(64)
   icon String?
 
   milestones Milestone[]
@@ -158,8 +156,8 @@ model Path {
 model Milestone {
   id          Int     @id @default(autoincrement())
   pathId      Int     @map("path_id")
-  name        String?
-  description String?
+  name        String  @db.VarChar(64)
+  description String? @db.Text
 
   skills            Skill[]
   assessments       Assessment[]
@@ -177,7 +175,7 @@ model MilestoneSkillRequirement {
   skill     Skill     @relation(fields: [skillId], references: [id], onDelete: Cascade)
   milestone Milestone @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
 
-  @@unique([skillId, score])
+  @@unique([milestoneId, skillId])
   @@map("milestone_skill_requirements")
 }
 
@@ -190,28 +188,47 @@ model Assessment {
   questions Question[]
   milestone Milestone  @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
 
+  records AssessmentRecord[]
+
   @@map("assessments")
 }
 
 model Question {
   id           Int     @id @default(autoincrement())
   assessmentId Int     @map("assessment_id")
-  text         String?
-  type         String // "select" or "text"
+  text         String? @db.Text
+  /// [QuestionData]
+  data         Json
 
-  options    Option[]
-  assessment Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  assessment     Assessment       @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  questionRecord QuestionRecord[]
 
   @@map("questions")
 }
 
-model Option {
+model AssessmentRecord {
+  id           Int     @id @default(autoincrement())
+  userId       Int     @map("user_id")
+  assessmentId Int     @map("assessment_id")
+  sealed       Boolean @default(false)
+
+  user       User?            @relation(fields: [userId], references: [id])
+  assessment Assessment?      @relation(fields: [assessmentId], references: [id])
+  questions  QuestionRecord[]
+
+  @@map("user_assessments")
+}
+
+model QuestionRecord {
   id         Int     @id @default(autoincrement())
+  recordId   Int     @map("record_id")
   questionId Int     @map("question_id")
-  text       String
-  correct    Boolean @default(false)
+  sealed     Boolean @default(false)
+  /// [QuestionRecordData]
+  data       Json
 
-  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  record   AssessmentRecord? @relation(fields: [recordId], references: [id])
+  question Question?         @relation(fields: [questionId], references: [id])
 
-  @@map("options")
+  @@map("user_assessment_questions")
 }

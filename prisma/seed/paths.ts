@@ -1,13 +1,15 @@
+/// <reference path="../prisma.d.ts" />
+
 import { Prisma } from "@prisma/client"
 import { ModelFactory } from "./seed-util"
 
 const pathFactory = new class extends ModelFactory<Prisma.PathCreateInput> { }
 
 function makeArray<T, T2>(n: number, map: (index: number) => T2): T2[] {
-	return Array(n).fill(null).map((v,i) => map(i));
+	return Array(n).fill(null).map((v, i) => map(i));
 }
 
-function createOption(correct: boolean): Prisma.OptionCreateWithoutQuestionInput {
+function createOption(correct: boolean): Extract<PrismaJson.QuestionData, { type: "select" }>['options'][number] {
 	return {
 		text: `This is ${correct ? "a correct" : "an incorrect"} option.`,
 		correct,
@@ -16,14 +18,16 @@ function createOption(correct: boolean): Prisma.OptionCreateWithoutQuestionInput
 
 function createQuestion(): Prisma.QuestionCreateWithoutAssessmentInput {
 	const COUNT = 4;
-  const correctI = Math.floor(Math.random() * COUNT);
-	const options =	makeArray(COUNT, (i) => createOption(correctI == i))
-	const isText = Math.random() > 0.8;
+	const correctI = Math.floor(Math.random() * COUNT);
+	const options = makeArray(COUNT, (i) => createOption(correctI == i))
+	const type = Math.random() > 0.8 ? "text" : "select";
 	return {
-		 type: isText ? 'text' : 'select',
-		 text: 'This is a question',
-		 options: isText ? undefined : {
-			create: options
+		text: 'This is a question',
+		data: type === "text" ? {
+			type,
+		} : {
+			type,
+			options,
 		}
 	}
 }
