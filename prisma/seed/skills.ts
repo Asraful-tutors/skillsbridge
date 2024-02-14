@@ -1,78 +1,92 @@
-import { Prisma, PrismaClient } from "@prisma/client"
-import { ModelFactory, ezConnect } from "./seed-util"
-import { readFileSync } from 'fs';
+import { Prisma, PrismaClient } from "@prisma/client";
+import { ModelFactory, ezConnect } from "./seed-util";
+import { readFileSync } from "fs";
 import { join } from "path";
 import { Paths } from "./paths";
 
-const skillFactory = new class extends ModelFactory<Prisma.SkillCreateInput> { }
-const skillQuestionFactory = new class extends ModelFactory<Prisma.SkillQuestionCreateInput> { }
+const skillFactory =
+  new (class extends ModelFactory<Prisma.SkillCreateInput> {})();
+const skillQuestionFactory =
+  new (class extends ModelFactory<Prisma.SkillQuestionCreateInput> {})();
 
-const selectQuestions = readFileSync(join(__dirname, 'skill-assesment-questions-select.tsv'), 'utf8');
-const textQuestions = readFileSync(join(__dirname, 'skill-assesment-questions-text.tsv'), 'utf8');
+const selectQuestions = readFileSync(
+  join(__dirname, "skill-assesment-questions-select.tsv"),
+  "utf8"
+);
+const textQuestions = readFileSync(
+  join(__dirname, "skill-assesment-questions-text.tsv"),
+  "utf8"
+);
 
-function parseSelectQuestions(input: string, mode: "select" | "text") {
-  let results = [] as ReturnType<typeof skillQuestionFactory['create']>[];
+function parseQuestions(input: string, mode: "select" | "text") {
+  let results = [] as ReturnType<(typeof skillQuestionFactory)["create"]>[];
   let line = "";
   let value = "";
-  let values = ['', '', '', '', ''] as string[]
-  let tabIndex = 0
+  let values = ["", "", "", "", ""] as string[];
+  let tabIndex = 0;
 
-  let skill = ''
-  let text = ''
-  let options = [] as { text: string, correct: boolean }[]
+  let skill = "";
+  let text = "";
+  let options = [] as { text: string; correct: boolean }[];
 
   for (let i = 0; i < input.length; i++) {
     const char = input.charAt(i);
     switch (char) {
-      case '\t':
-        if (value && tabIndex <= 2 && values[tabIndex]) { // New question
-          const matchingSkill = Object.values(Skills).find(v => v.name === skill);
+      case "\t":
+        if (value && tabIndex <= 2 && values[tabIndex]) {
+          // New question
+          const matchingSkill = Object.values(Skills).find(
+            (v) => v.name === skill
+          );
           if (!matchingSkill) {
             console.warn(`Cannot find skill "${skill}"`);
           } else {
             switch (mode) {
               case "select":
-                results.push(skillQuestionFactory.create({
-                  level: 5,
-                  skill: ezConnect(matchingSkill),
-                  type: "select",
-                  options: {
-                    create: options
-                  },
-                  text,
-                }))
+                results.push(
+                  skillQuestionFactory.create({
+                    level: 5,
+                    skill: ezConnect(matchingSkill),
+                    type: "select",
+                    options: {
+                      create: [...options],
+                    },
+                    text,
+                  })
+                );
                 break;
               case "text":
-                results.push(skillQuestionFactory.create({
-                  level: 5,
-                  skill: ezConnect(matchingSkill),
-                  type: "text",
-                  text,
-                }))
+                results.push(
+                  skillQuestionFactory.create({
+                    level: 5,
+                    skill: ezConnect(matchingSkill),
+                    type: "text",
+                    text,
+                  })
+                );
                 break;
             }
           }
           options.length = 0;
         }
-        values[tabIndex] = value ? value : values[tabIndex]
+        values[tabIndex] = value ? value : values[tabIndex];
         value = "";
         tabIndex++;
         break;
-      case '\n':
-      case '\r':
-
+      case "\n":
+      case "\r":
         if (!line) continue;
 
-        values[tabIndex] = value || tabIndex >= 4 ? value : values[tabIndex]
+        values[tabIndex] = value || tabIndex >= 4 ? value : values[tabIndex];
 
-        const [v0, v1, v2, option, correct] = values
-        skill = v1.trim()
-        text = v2.trim()
+        const [v0, v1, v2, option, correct] = values;
+        skill = v1.trim();
+        text = v2.trim();
 
         options.push({
           text: option,
           correct: !!correct,
-        })
+        });
 
         line = "";
         value = "";
@@ -135,8 +149,8 @@ export const Skills = {
     type: "hard",
   }),
 
-  ProjectManagementTools: skillFactory.create({
-    name: "Project Management Tools",
+  ProjectManagement: skillFactory.create({
+    name: "Project Management",
     paths: ezConnect(Paths.Producer),
     type: "hard",
   }),
@@ -227,7 +241,7 @@ export const Skills = {
     paths: ezConnect(Paths.SoftSkills),
     type: "soft",
   }),
-} as const
+} as const;
 
-export const SelectQuestions = parseSelectQuestions(selectQuestions, "select")
-export const TextQuestions = parseSelectQuestions(textQuestions, "text")
+export const SelectQuestions = parseQuestions(selectQuestions, "select");
+export const TextQuestions = parseQuestions(textQuestions, "text");

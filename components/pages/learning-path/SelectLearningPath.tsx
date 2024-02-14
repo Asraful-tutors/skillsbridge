@@ -37,7 +37,7 @@ export default function SelectLearningPath({
   const [selectedPath, setSelectedPath] = useState<LearningPath | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  console.log("selectedPath", selectedPath);
+
   const isNextDisabled = !selectedPath;
 
   const nextStep = () => {
