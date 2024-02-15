@@ -4,6 +4,7 @@ import { auth } from "../../auth";
 import Errors, { BackendError, PublicError, zodThrow } from "./errors";
 import { z } from "zod";
 import { Prisma } from "@prisma/client";
+import { shuffle } from "../utils";
 
 type StartAssessmentOptions = {
 	mode?: "auto-seal" | "allow-multiple" | "fail-if-active",
@@ -31,6 +32,17 @@ export async function startAssessment(assessmentId: number, options?: StartAsses
 		}
 	})
 	if (!assessment) throw Errors.NotFound("Assessment")
+
+	const questions = assessment.questions.map((v, i) => ({
+		questionId: v.id,
+		index: i,
+	}) satisfies Prisma.QuestionRecordUncheckedCreateWithoutRecordInput)
+
+	shuffle(questions)
+
+	for (let i = 0; i < questions.length; i++) {
+		questions[i].index = i;
+	}
 
 	const createArgs = {
 		data: {
@@ -147,7 +159,7 @@ export async function answerQuestion(recordId: number, questionRecordId: number,
 }
 
 /**
- * Seals record of the current user.
+ * Seals a record of the current user.
  */
 export async function sealRecord(recordId: number) {
 	zodThrow(z.number().positive(), recordId)
