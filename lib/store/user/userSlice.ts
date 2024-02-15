@@ -2,7 +2,7 @@
 
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "@/lib/types/types";
-import prisma from "@/lib/prisma";
+import prisma from "@/lib/backend/prisma";
 import { auth } from "@/auth";
 
 interface UserState {
