@@ -18,6 +18,7 @@ interface ChartData {
 }
 
 const SkillsOverview = ({ data, disableAnimation }: ChartData) => {
+  console.log("data", data);
   return (
     <div className="my-4 flex flex-col gap-3.5 ">
       {data?.map((entry, index) => (

@@ -27,6 +27,13 @@ interface UserSkillUpdateInput {
 export const getHardQuestions = async (id: number) => {
   const questions = await prisma.skillQuestion.findMany({
     where: {
+      options: {
+        some: {
+          NOT: {
+            id,
+          },
+        },
+      },
       skill: {
         type: "hard",
         paths: {
@@ -42,9 +49,9 @@ export const getHardQuestions = async (id: number) => {
           paths: true,
         },
       },
+
       options: true,
     },
-    distinct: ["skillId"],
   });
 
   return questions;

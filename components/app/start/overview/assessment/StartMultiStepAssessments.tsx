@@ -32,6 +32,7 @@ export default function StartMultiStepAssessments() {
 
     enabled: !!userPaths,
   });
+  console.log("hardSkillQuestions", hardSkillQuestions);
 
   const {
     data: softSkillQuestions,

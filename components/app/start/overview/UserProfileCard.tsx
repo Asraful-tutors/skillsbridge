@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function UserProfileCard() {
+export default function UserProfileCard({ link }: { link?: string }) {
   return (
     <motion.div className="flex flex-col items-center justify-center gap-[50px]">
       <div className="flex flex-col items-center justify-center gap-[50px] bg-[#F2F7F7] p-10 rounded-2xl">
@@ -61,7 +61,7 @@ export default function UserProfileCard() {
         </div>
       </div>
       <Button asChild variant={"violate"} className="max-w-[284px] mx-auto">
-        <Link href={"/start/overview/assessment"}>Next</Link>
+        <Link href={link ? link : "/start/overview/assessment"}>Next</Link>
       </Button>
     </motion.div>
   );
