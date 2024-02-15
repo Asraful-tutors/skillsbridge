@@ -24,11 +24,12 @@ export default function StartAssessment({
         </div>
         <div className="flex flex-col gap-2.5">
           <h1 className="header text-xl">
-            Hello there! Get ready to learn more about yourself
+            Get ready to learn more about yourself!
           </h1>
           <p className="desc max-w-[404px] mx-auto text-sm">
-            Take this test to discover your skills level and plan for your
-            personal and professional growth.
+            This quick evaluation will reveal the gap between your perceived
+            skills and actual abilities. This isn’t just an assessment: it's the
+            first step towards a learning journey uniquely tailored for you.
           </p>
         </div>
         <Button
@@ -36,7 +37,7 @@ export default function StartAssessment({
           variant={"violate"}
           className="max-w-[284px] mx-auto"
         >
-          Next
+          Start Assessment
         </Button>
       </section>
     </WhiteWrapper>

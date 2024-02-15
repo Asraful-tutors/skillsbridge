@@ -134,9 +134,9 @@ export default function SelectLearningPath({
       <section className="space-y-1">
         <h1 className="header">Select your learning Path</h1>
         <p className="desc max-w-[633px] max-auto text-[#828282]">
-          Lorem ipsum dolor sit amet consectetur. Dictumst tortor metus ut
-          bibendum ut consectetur. Eu cras consectetur vestibulum ornare diam
-          magna ac.
+          Get guided through tailored study materials and skill assessments. And
+          if your goals evolve, switching paths is simple. Your journey, your
+          choice.
         </p>
       </section>
       <motion.section

@@ -91,8 +91,8 @@ export default function HardSkillsPage({
       <section className="space-y-1">
         <h1 className="header">Evaluate your level of Hard Skills</h1>
         <p className="desc text-[#616060]">
-          Skillsbridge will tailor feedback to your role&apos;s communication
-          needs
+          Your self-evaluation helps us tailor your learning experience to
+          bridge gaps and enhance strengths.
         </p>
       </section>
       <motion.section
