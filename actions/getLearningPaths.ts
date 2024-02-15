@@ -1,6 +1,6 @@
 "use server";
 
-import prisma from "@/lib/prisma";
+import prisma from "@/lib/backend/prisma";
 
 export const getLearningPaths = async () => {
   return await prisma.path.findMany({});
@@ -24,7 +24,7 @@ export const getHardSkillsForPath = async (pathId: number) => {
     include: {
       skills: {
         where: {
-          type: "hard",
+          type: "HARD",
         },
         include: {
           milestones: true,
@@ -44,7 +44,7 @@ export const getSoftSkillsForPath = async () => {
     include: {
       skills: {
         where: {
-          type: "soft",
+          type: "SOFT",
         },
         include: {
           milestones: true,
@@ -81,7 +81,7 @@ export const getUserSelectedPathSkills = async (userId: number) => {
       skills: {
         where: {
           skill: {
-            type: "hard",
+            type: "HARD",
           },
         },
         include: {

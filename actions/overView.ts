@@ -1,6 +1,6 @@
 "use server";
 
-import prisma from "@/lib/prisma";
+import prisma from "@/lib/backend/prisma";
 
 // get users assessed hard skillspoints
 export const getHardSkills = async (userId: number) => {
@@ -8,7 +8,7 @@ export const getHardSkills = async (userId: number) => {
     where: {
       userId,
       skill: {
-        type: "hard",
+        type: "HARD",
       },
     },
     include: {
@@ -23,7 +23,7 @@ export const getSoftSkills = async (userId: number) => {
     where: {
       userId,
       skill: {
-        type: "soft",
+        type: "SOFT",
       },
     },
     include: {

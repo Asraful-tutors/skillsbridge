@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import Header from "@/components/shared/Header";
-import prisma from "@/lib/prisma";
+import prisma from "@/lib/backend/prisma";
 import { redirect } from "next/navigation";
 
 export default async function RootLayout({

@@ -1,7 +1,7 @@
 "use server";
 
 import { SkillScore } from "@/components/app/start/overview/assessment/QuestionsPanel";
-import prisma from "@/lib/prisma";
+import prisma from "@/lib/backend/prisma";
 import { PrismaClientValidationError } from "@prisma/client/runtime/library";
 
 interface SelectedAnswer {
@@ -35,7 +35,7 @@ export const getHardQuestions = async (id: number) => {
         },
       },
       skill: {
-        type: "hard",
+        type: "HARD",
         paths: {
           some: {
             id: id,
@@ -62,7 +62,7 @@ export const getSoftQuestions = async (id: number) => {
   const questions = await prisma.skillQuestion.findMany({
     where: {
       skill: {
-        type: "soft",
+        type: "SOFT",
         paths: {
           some: {
             id: 5,
