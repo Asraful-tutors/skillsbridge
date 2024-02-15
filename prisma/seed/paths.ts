@@ -78,6 +78,7 @@ export const Paths = {
 	SoftSkills: pathFactory.create({
 		name: "Soft Skills",
 		icon: "/images/game-artist.svg",
-		milestones: placeHolderMilestones,
+		// milestones: placeHolderMilestones,
+		alwaysActive: true,
 	}),
 }

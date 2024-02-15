@@ -80,13 +80,14 @@ model UserPath {
   userId     Int
   pathId     Int
   active     Boolean
-  selfScore  Int
+  selfScore  Int?
   completion Float
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   path Path @relation(fields: [pathId], references: [id], onDelete: Cascade)
 
   @@id([userId, pathId])
+  @@unique([userId, pathId])
 }
 
 model UserSkill {
@@ -98,6 +99,7 @@ model UserSkill {
   skill Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
   @@id([userId, skillId])
+  @@unique([userId, skillId])
 }
 
 enum SkillType {
@@ -131,9 +133,10 @@ model SkillQuestion {
 }
 
 model Path {
-  id   Int     @id @default(autoincrement())
-  name String  @db.VarChar(64)
-  icon String?
+  id           Int     @id @default(autoincrement())
+  name         String  @db.VarChar(64)
+  icon         String?
+  alwaysActive Boolean @default(false)
 
   milestones Milestone[]
   userPaths  UserPath[]

@@ -87,9 +87,27 @@ export async function register(options: RegisterOptions) {
 					firstName,
 					lastName,
 				}
-			}
+			},
 		}
 	})
+
+	const alwaysActivePaths = await prisma.path.findMany({
+		where: {
+			alwaysActive: true,
+		}
+	})
+
+	if (alwaysActivePaths.length) {
+		await prisma.userPath.createMany({
+			data: alwaysActivePaths.map(v => ({
+				active: true,
+				completion: 0,
+				pathId: v.id,
+				userId: user.id,
+			}))
+		})
+	}
+
 	await signIn("credentials", {
 		email,
 		password,
