@@ -1,10 +1,34 @@
 import Image from "next/image";
+import React, { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import UserBoard from "@/components/app/dashboard/UserBoard";
 
 export default function Header() {
+  const [visible, setVisible] = useState(false)
+
+  const handleVisibility = () => {
+    setVisible(!visible)
+  }
+
+  const handleOutsideClick = (e: any) => {
+    // Check if the click is outside the popup window
+    if (visible && e.target.closest('.popup-container') === null) {
+      setVisible(false)
+    }
+  }
+
+  React.useEffect(() => {
+    document.addEventListener('click', handleOutsideClick)
+
+    return () => {
+      document.removeEventListener('click', handleOutsideClick)
+    }
+  }, [visible])
+
   return (
-    <nav className="flex items-center justify-between w-full gap-4">
+    <nav className="fixed top-0 right-0 flex items-center justify-between w-full z-[70]">
       {/* left */}
-      <section className="clip-left bg-white_background max-w-[502px] px-10 py-5 flex items-center gap-10 w-full -mt-2">
+      <section className="clip-left bg-white_background max-w-[597px] h-[90px] px-5 md:px-10 py-[13px] flex items-center justify-start gap-5 md:gap-10 w-full">
         <Image
           src={"/logo/logo.svg"}
           width={129}
@@ -14,7 +38,7 @@ export default function Header() {
           loading="lazy"
           className="w-[129.984px] h-12 object-center object-cover"
         />
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 hidden md:block">
           <h2 className="header text-2xl text-start font-semibold">
             Milestone Journey
           </h2>
@@ -23,8 +47,8 @@ export default function Header() {
       </section>
 
       {/* right */}
-      <section className="clip-right bg-white_background max-w-[502px] px-10 py-5 flex items-center justify-end gap-10 w-full ">
-        <div className="w-10 h-10 bg-[#E1E1E1] p-2 rounded-sm">
+      <section className="clip-right bg-white_background max-w-[597px] h-[90px] px-5 md:px-10 py-[13px] flex items-center justify-end w-full gap-5 md:gap-10">
+        <Button className="w-10 h-10 bg-[#E1E1E1] p-2 rounded-sm hover:bg-[#E1E1E1] hover:opacity-70 hidden md:block">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -37,8 +61,11 @@ export default function Header() {
               fill="#6767D2"
             />
           </svg>
-        </div>
-        <div className="flex items-center gap-3 bg-[#13A098] px-[18px] py-2 rounded-full">
+        </Button>
+        <Button
+        className="flex items-center h-[64px] bg-[#13A098] rounded-full"
+        onClick={handleVisibility}
+        >
           <Image
             src={"/images/user.png"}
             width={40}
@@ -46,16 +73,18 @@ export default function Header() {
             alt="logo"
             decoding="async"
             loading="lazy"
-            className="w-10 h-10 object-center object-cover rounded-full aspect-auto"
+            className="w-10 h-10 object-center object-cover rounded-full aspect-auto mr-[13px]"
           />
-          <div className="flex flex-col gap-1">
-            <h2 className="text-white text-xl font-semibold ">Sam Thomas</h2>
-            <p className="text-sm font-normal text-white">
-              Learning Path - <span className="font-semibold">Game design</span>
-            </p>
+          <div className="flex flex-col items-start">
+            <h3 className="text-xl font-medium">{"Sam Thomas"}</h3> {/* replace with user name */}
+            <div className="flex flex-row text-[#FFFFFF]/[.81] text-base">
+              <h3 className="hidden lg:block">Learning path&nbsp;&nbsp;-&nbsp;&nbsp;</h3>
+              <h3 className="font-bold">{"Game Design"}</h3> {/* replace with user path */}
+            </div>
           </div>
-        </div>
+        </Button>
       </section>
+      <UserBoard visible={visible} />
     </nav>
   );
 }

@@ -40,7 +40,7 @@ export function RequiredSkillCard({ skill }: CardProps) {
               i === skill.scale.values.length - 1 ? 'rounded-r-full' : ''
             }`}
             animate={{ 
-              backgroundColor: skill.scale.selected >= value ? "#9E54FF" : ((skill.scale.required >= value) ? "#0F7EB8" : "#D9D9D9")
+              backgroundColor: skill.scale.selected >= value ? "#9E54FF" : ((skill.scale.required >= value) ? "#F24822" : "#D9D9D9")
              }}
             ></motion.div>
             {i + 1 === skill.scale.selected && (

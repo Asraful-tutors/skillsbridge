@@ -42,28 +42,21 @@ export default function Milestone_01() {
     },
   ];
 
-  const score = {
-    total: 50,
-    correct: 42,
-    wrong: 8,
-  }
-
   return (
-    <motion.div className="w-full text-black max-w-screen-2xl h-full my-8 rounded-2xl mx-auto grid grid-cols-1 xl:grid-cols-2 gap-12 py-[34px] px-[52px] bg-white_background">
-      <div className="xl:col-span-2 border-b-[1px] border-[#B1ABAB] w-full">
+    <motion.div className="w-full text-black max-w-screen-2xl h-full my-8 rounded-2xl mx-auto flex flex-col gap-12 py-[34px] px-[52px] bg-white_background">
+      <div className="border-b-[1px] border-[#B1ABAB] w-full">
         <h1 className="text-2xl font-bold m-6">Scorecard</h1>
       </div>
-      <div className="flex flex-col items-center xl:items-start">
+      <div className="grid grid-cols-1 xl:grid-cols-2">
         {skillsData.map((skill, i) => (
-          <SkillCard key={i} skill={skill}/>
+          <SkillCard key={i} skill={skill} />
         ))}
       </div>
       <div className="flex flex-col items-center">
-        <ProgressGauge score={score} />
         <Button
           /* onClick={} */
           variant={"violate"}
-          className="max-w-[284px] mt-[83px]"
+          className="max-w-[284px]"
         >
           Next
         </Button>
