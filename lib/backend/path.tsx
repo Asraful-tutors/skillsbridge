@@ -1,11 +1,9 @@
 "use server"
 import prisma from "./prisma";
 import { auth } from "../../auth";
-import Errors, { BackendError, PublicError, zodThrow } from "./errors";
+import Errors, { BackendError, PublicError, zodOrThrow } from "./errors";
 import { z } from "zod";
 import { Prisma } from "@prisma/client";
-
-
 
 type ActivatePathOptions = {
 	mode?: "switch" | "multiple" | "fail",
@@ -17,7 +15,7 @@ type ActivatePathOptions = {
  * @returns Created user path
  */
 export async function activatePath(pathId: number, options?: ActivatePathOptions) {
-	zodThrow(z.number().positive(), pathId)
+	zodOrThrow(z.number().int().positive(), pathId)
 	const { mode = "switch" } = options ?? {};
 	const session = await auth()
 	if (!session?.user.id) throw Errors.InvalidSession();
@@ -30,7 +28,6 @@ export async function activatePath(pathId: number, options?: ActivatePathOptions
 			pathId,
 			active: true,
 			completion: 0,
-			selfScore: -1,
 		},
 		update: {
 			active: true,
@@ -93,7 +90,7 @@ export async function activatePath(pathId: number, options?: ActivatePathOptions
  * @returns Updated user path
  */
 export async function deactivatePath(pathId: number) {
-	zodThrow(z.number().positive(), pathId)
+	zodOrThrow(z.number().int().positive(), pathId)
 	const session = await auth()
 	if (!session?.user.id) throw Errors.InvalidSession();
 

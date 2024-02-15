@@ -1,14 +1,29 @@
 "use server"
 import prisma from "./prisma";
 import { auth } from "../../auth";
-import Errors, { BackendError, PublicError, zodThrow } from "./errors";
-import { z } from "zod";
+import Errors, { BackendError, PublicError, zodOrThrow } from "./errors";
+import { symbol, z } from "zod";
 import { Prisma } from "@prisma/client";
 import { shuffle } from "../utils";
 
+type OrDesc<T extends string> = T | `${T}-desc`
+
+type Sorters = "question-type"
+
 type StartAssessmentOptions = {
+	/** @default "auto-seal" */
 	mode?: "auto-seal" | "allow-multiple" | "fail-if-active",
+	/**
+	 * Sort the questions (most to least important)
+	 * @example
+	 * // Sort by skill name in reverse, then sort by skill-type
+	 * ["skill-type", "skill-name-desc"]
+	 * @default []
+	 */
+	sorters?: Array<OrDesc<Sorters>>,
 }
+
+const META = Symbol("meta")
 
 /**
  * Starts an assessment, creates an assessment record.
@@ -16,8 +31,8 @@ type StartAssessmentOptions = {
  * @returns Created record
  */
 export async function startAssessment(assessmentId: number, options?: StartAssessmentOptions) {
-	zodThrow(z.number().positive(), assessmentId)
-	const { mode = "auto-seal" } = options ?? {};
+	zodOrThrow(z.number().int().positive(), assessmentId)
+	const { mode = "auto-seal", sorters = [] } = options ?? {};
 	const session = await auth()
 	if (!session?.user.id) throw Errors.InvalidSession();
 
@@ -33,12 +48,37 @@ export async function startAssessment(assessmentId: number, options?: StartAsses
 	})
 	if (!assessment) throw Errors.NotFound("Assessment")
 
+	type Meta = {
+		type: string,
+	}
+
 	const questions = assessment.questions.map((v, i) => ({
 		questionId: v.id,
 		index: i,
-	}) satisfies Prisma.QuestionRecordUncheckedCreateWithoutRecordInput)
+		[META]: {
+			type: v.data.type,
+		}
+	}) satisfies Prisma.QuestionRecordUncheckedCreateWithoutRecordInput & { [META]: Meta })
 
 	shuffle(questions)
+
+	for (let i = sorters.length - 1; i >= 0; i--) {
+		const _sorter = sorters[i];
+		const reverse = _sorter.endsWith("-desc")
+		const sorter = (reverse ? _sorter.substring(0, _sorter.length - 5) : _sorter) as Sorters;
+		questions.sort((a, b) => {
+			if (reverse) {
+				[b, a] = [a, b]
+			}
+			switch (sorter) {
+				case "question-type":
+					return a[META].type.localeCompare(b[META].type)
+
+				default:
+					throw Errors.InvalidArgument("sorters")
+			}
+		})
+	}
 
 	for (let i = 0; i < questions.length; i++) {
 		questions[i].index = i;
@@ -60,6 +100,14 @@ export async function startAssessment(assessmentId: number, options?: StartAsses
 				orderBy: {
 					index: "asc",
 				},
+				include: {
+					question: {
+						select: {
+							data: true,
+							text: true,
+						},
+					}
+				}
 			}
 		}
 	} satisfies Prisma.AssessmentRecordCreateArgs
@@ -117,8 +165,8 @@ type AnswerType = {
  * Marks the question answered in a record.
  */
 export async function answerQuestion(recordId: number, questionRecordId: number, answer: AnswerType) {
-	zodThrow(z.number().positive(), recordId)
-	zodThrow(z.number().positive(), questionRecordId)
+	zodOrThrow(z.number().int().positive(), recordId)
+	zodOrThrow(z.number().int().positive(), questionRecordId)
 	const session = await auth()
 	if (!session?.user.id) throw Errors.InvalidSession();
 
@@ -162,7 +210,7 @@ export async function answerQuestion(recordId: number, questionRecordId: number,
  * Seals a record of the current user.
  */
 export async function sealRecord(recordId: number) {
-	zodThrow(z.number().positive(), recordId)
+	zodOrThrow(z.number().int().positive(), recordId)
 	const session = await auth()
 	if (!session?.user.id) throw Errors.InvalidSession();
 

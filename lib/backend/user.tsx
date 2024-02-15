@@ -1,15 +1,13 @@
 "use server"
 import { compare, hash } from "bcryptjs";
-import { BackendError, PublicError, zodThrow } from "./errors";
+import { BackendError, PublicError, zodOrThrow } from "./errors";
 import prisma from "./prisma";
 import { SignUpSchema } from "@/schemas";
 import { signIn, signOut } from "../../auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
-
-
 /**
- * Validates the credentials
+ * Validates user credentials
  * @param credentials 
  */
 export async function validateCredentials(credentials: { email: string, password: string }) {
@@ -59,7 +57,7 @@ type RegisterOptions = {
 export async function register(options: RegisterOptions) {
 	if (!options) throw new PublicError(400, "Missing credentials");
 
-	const data = zodThrow(SignUpSchema, options)
+	const data = zodOrThrow(SignUpSchema, options)
 
 	const { email, password, firstName, lastName } = data;
 

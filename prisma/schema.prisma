@@ -87,20 +87,20 @@ model UserPath {
   path Path @relation(fields: [pathId], references: [id], onDelete: Cascade)
 
   @@id([userId, pathId])
-  @@unique([userId, pathId])
+  @@index([userId])
 }
 
 model UserSkill {
-  userId  Int
-  skillId Int
-  score   Float
-  selfScore Float  @map("self_score")
+  userId    Int
+  skillId   Int
+  score     Float?
+  selfScore Float?
 
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   skill Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
   @@id([userId, skillId])
-  @@unique([userId, skillId])
+  @@index([userId])
 }
 
 enum SkillType {
@@ -203,12 +203,13 @@ model SkillAssessmentRecord {
 }
 
 model SkillQuestionRecord {
-  id         Int     @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   recordId   Int
   questionId Int
   skillId    Int
   index      Int
-  sealed     Boolean @default(false)
+  sealed     Boolean   @default(false)
+  skillType  SkillType
   /// [QuestionRecordData]
   data       Json?
 

@@ -15,7 +15,7 @@ export function toString(error: BackendError | Error | unknown) {
 	return "Internal server error"
 }
 
-export function zodThrow<T extends ZodTypeAny>(zobj: T, data: unknown, params?: Partial<ParseParams & { status: number }>): ReturnType<T["parse"]> {
+export function zodOrThrow<T extends ZodTypeAny>(zobj: T, data: unknown, params?: Partial<ParseParams & { status: number }>): ReturnType<T["parse"]> {
 
 	const match = zobj.safeParse(data, params)
 	if (!match.success) {
