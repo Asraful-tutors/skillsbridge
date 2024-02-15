@@ -132,9 +132,8 @@ export async function answerQuestion(recordId: number, questionRecordId: number,
 			break;
 	}
 
-	const record = await prisma.assessmentRecord.findUnique({ where: { id: recordId } })
+	const record = await prisma.assessmentRecord.findUnique({ where: { id: recordId, userId } })
 	if (!record) throw Errors.NotFound("Assessment")
-	if (record.userId !== userId) throw Errors.Forbidden()
 
 	return await prisma.questionRecord.update({
 		data: {
