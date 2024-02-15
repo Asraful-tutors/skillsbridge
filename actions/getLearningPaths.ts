@@ -41,9 +41,6 @@ export const getHardSkillsForPath = async (pathId: number) => {
 
 export const getSoftSkillsForPath = async () => {
   const softSkills = await prisma.path.findFirst({
-    where: {
-      id: 5,
-    },
     include: {
       skills: {
         where: {

@@ -48,6 +48,7 @@ export default function QuestionsPanel({
   const [currentSkillType, setCurrentSkillType] = useState("hard");
   const [selectedAnswers, setSelectedAnswers] = useState<SelectedAnswers>({});
   const [skillScores, setSkillScores] = useState<SkillScore[]>([]);
+
   useEffect(() => {
     if (currentSkillType === "hard") {
       setCurrentSkillQuestions(hardSkillQuestions);
@@ -150,7 +151,6 @@ export default function QuestionsPanel({
   ) {
     return <div>Loading or no questions available.</div>;
   }
-  console.log("selsected", selectedAnswers, skillScores);
 
   const currentQuestion = currentSkillQuestions[currentStep];
 
