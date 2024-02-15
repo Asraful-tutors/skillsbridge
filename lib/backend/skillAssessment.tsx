@@ -275,3 +275,26 @@ export async function listActiveSkillRecords() {
 		},
 	})
 }
+
+export async function getDetailedSkillRecord(recordId: number) {
+	zodOrThrow(z.number().int().positive(), recordId)
+	const session = await auth()
+	if (!session?.user.id) throw Errors.InvalidSession();
+
+	const userId = session.user.id;
+
+	return await prisma.skillAssessmentRecord.findUniqueOrThrow({
+		where: {
+			id: recordId,
+			userId,
+		},
+		include: {
+			questions: {
+				orderBy: {
+					index: "asc",
+				},
+			}
+		}
+	})
+}
+

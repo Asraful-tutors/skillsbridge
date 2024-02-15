@@ -18,6 +18,7 @@ export async function activatePath(pathId: number, options?: ActivatePathOptions
 	zodOrThrow(z.number().int().positive(), pathId)
 	const { mode = "switch" } = options ?? {};
 	const session = await auth()
+	console.log(session);
 	if (!session?.user.id) throw Errors.InvalidSession();
 
 	const userId = session.user.id;

@@ -9,5 +9,20 @@ export default {
 		GitHubProvider,
 	],
 	secret: process.env.SECRET,
+	callbacks: {
+		session: async ({ session, token }) => {
+			if (session?.user) {
+				//@ts-expect-error
+				session.user.id = typeof token.sub === "string" ? Number(token.sub) : token.sub;
+			}
+			return session;
+		},
+		jwt: async ({ user, token }) => {
+			if (user) {
+				token.uid = user.id;
+			}
+			return token;
+		},
+	}
 } satisfies NextAuthConfig;
 

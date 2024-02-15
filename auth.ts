@@ -32,7 +32,7 @@ export const {
           console.log(e);
           return null;
         }
-      }
+      },
     }),
     GitHubProvider({
       clientId: process.env.GITHUB_ID!,
@@ -41,4 +41,5 @@ export const {
   ],
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
+
 });

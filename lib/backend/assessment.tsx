@@ -261,3 +261,26 @@ export async function listActiveRecords() {
 		},
 	})
 }
+
+export async function getDetailedRecord(recordId: number) {
+	zodOrThrow(z.number().int().positive(), recordId)
+	const session = await auth()
+	if (!session?.user.id) throw Errors.InvalidSession();
+
+	const userId = session.user.id;
+
+	return await prisma.assessmentRecord.findUniqueOrThrow({
+		where: {
+			id: recordId,
+			userId,
+		},
+		include: {
+			questions: {
+				orderBy: {
+					index: "asc",
+				},
+			}
+		}
+	})
+}
+
