@@ -6,6 +6,12 @@ generator json {
   provider = "prisma-json-types-generator"
 }
 
+generator markdown {
+  provider = "prisma-markdown"
+  output   = "../DatabaseDiagram.md"
+  title    = "SkillsBridge"
+}
+
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
@@ -13,10 +19,10 @@ datasource db {
 
 model Account {
   id                 Int     @id @default(autoincrement())
-  userId             Int     @map("user_id")
+  userId             Int
   type               String
   provider           String
-  providerAccountId  String  @map("provider_account_id")
+  providerAccountId  String
   refresh_token      String?
   access_token       String?
   expires_at         Int?
@@ -30,7 +36,6 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
-  @@map("accounts")
 }
 
 model VerificationToken {
@@ -39,17 +44,14 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
-  @@map("verificationtokens")
 }
 
 model Session {
   id           Int      @id @default(autoincrement())
-  sessionToken String   @unique @map("session_token")
+  sessionToken String   @unique
   expires      DateTime
-  userId       Int      @map("user_id")
+  userId       Int
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("sessions")
 }
 
 model User {
@@ -57,56 +59,51 @@ model User {
   name          String?   @db.VarChar(64)
   email         String?   @unique
   password      String?
-  emailVerified DateTime? @map("email_verified")
+  emailVerified DateTime?
   image         String?
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime  @updatedAt @map("updated_at")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
-  accounts    Account[]
-  sessions    Session[]
-  profile     UserProfile?       @relation("UserProfile")
-  paths       UserPath[]
-  skills      UserSkill[]
-  assessments AssessmentRecord[]
-
-  @@map("users")
+  accounts              Account[]
+  sessions              Session[]
+  profile               UserProfile?            @relation("UserProfile")
+  paths                 UserPath[]
+  skills                UserSkill[]
+  assessments           AssessmentRecord[]
+  skillAssessmentRecord SkillAssessmentRecord[]
 }
 
 model UserProfile {
-  userId    Int     @id @map("user_id")
+  userId    Int     @id
   firstName String? @db.VarChar(64)
   lastName  String? @db.VarChar(64)
   bio       String? @db.Text
 
   user User @relation("UserProfile", fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("user_profiles")
 }
 
 model UserPath {
-  userId     Int     @map("user_id")
-  pathId     Int     @map("path_id")
+  userId     Int
+  pathId     Int
   active     Boolean
-  selfScore  Int     @map("self_score")
+  selfScore  Int
   completion Float
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   path Path @relation(fields: [pathId], references: [id], onDelete: Cascade)
 
   @@id([userId, pathId])
-  @@map("user_paths")
 }
 
 model UserSkill {
-  userId  Int   @map("user_id")
-  skillId Int   @map("skill_id")
+  userId  Int
+  skillId Int
   score   Float
 
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   skill Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
   @@id([userId, skillId])
-  @@map("user_skills")
 }
 
 enum SkillType {
@@ -117,28 +114,26 @@ enum SkillType {
 model Skill {
   id   Int       @id @default(autoincrement())
   name String    @db.VarChar(64)
-  type SkillType // "hard" or "soft"
+  type SkillType
 
   userSkills                 UserSkill[]
   milestones                 Milestone[]
   milestoneSkillRequirements MilestoneSkillRequirement[]
   paths                      Path[]
   questions                  SkillQuestion[]
-
-  @@map("skills")
+  skillQuestionRecords       SkillQuestionRecord[]
 }
 
 model SkillQuestion {
   id      Int    @id @default(autoincrement())
-  skillId Int    @map("skill_id")
+  skillId Int
   text    String @db.Text
   level   Int
   /// [SkillQuestionData]
   data    Json
 
-  skill Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)
-
-  @@map("skill_questions")
+  skill                Skill                 @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  skillQuestionRecords SkillQuestionRecord[]
 }
 
 model Path {
@@ -149,13 +144,11 @@ model Path {
   milestones Milestone[]
   userPaths  UserPath[]
   skills     Skill[]
-
-  @@map("paths")
 }
 
 model Milestone {
   id          Int     @id @default(autoincrement())
-  pathId      Int     @map("path_id")
+  pathId      Int
   name        String  @db.VarChar(64)
   description String? @db.Text
 
@@ -163,72 +156,84 @@ model Milestone {
   assessments       Assessment[]
   path              Path                        @relation(fields: [pathId], references: [id], onDelete: Cascade)
   skillRequirements MilestoneSkillRequirement[]
-
-  @@map("milestones")
 }
 
 model MilestoneSkillRequirement {
-  milestoneId Int   @map("milestone_id")
-  skillId     Int   @map("skill_id")
+  milestoneId Int
+  skillId     Int
   score       Float
 
   skill     Skill     @relation(fields: [skillId], references: [id], onDelete: Cascade)
   milestone Milestone @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
 
   @@unique([milestoneId, skillId])
-  @@map("milestone_skill_requirements")
 }
 
 model Assessment {
   id          Int  @id @default(autoincrement())
-  milestoneId Int  @map("milestone_id")
-  maxSeconds  Int? @map("max_seconds")
-  minScore    Int? @map("min_score")
+  milestoneId Int
+  maxSeconds  Int?
+  minScore    Int?
 
   questions Question[]
   milestone Milestone  @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
 
   records AssessmentRecord[]
-
-  @@map("assessments")
 }
 
 model Question {
   id           Int     @id @default(autoincrement())
-  assessmentId Int     @map("assessment_id")
+  assessmentId Int
   text         String? @db.Text
   /// [QuestionData]
   data         Json
 
   assessment     Assessment       @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
   questionRecord QuestionRecord[]
-
-  @@map("questions")
 }
 
-model AssessmentRecord {
-  id           Int     @id @default(autoincrement())
-  userId       Int     @map("user_id")
-  assessmentId Int     @map("assessment_id")
-  sealed       Boolean @default(false)
+model SkillAssessmentRecord {
+  id     Int     @id @default(autoincrement())
+  userId Int
+  sealed Boolean @default(false)
 
-  user       User?            @relation(fields: [userId], references: [id])
-  assessment Assessment?      @relation(fields: [assessmentId], references: [id])
-  questions  QuestionRecord[]
-
-  @@map("user_assessments")
+  user      User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questions SkillQuestionRecord[]
 }
 
-model QuestionRecord {
+model SkillQuestionRecord {
   id         Int     @id @default(autoincrement())
-  recordId   Int     @map("record_id")
-  questionId Int     @map("question_id")
+  recordId   Int
+  questionId Int
+  skillId    Int
   sealed     Boolean @default(false)
   /// [QuestionRecordData]
   data       Json
 
-  record   AssessmentRecord? @relation(fields: [recordId], references: [id])
-  question Question?         @relation(fields: [questionId], references: [id])
+  record   SkillAssessmentRecord @relation(fields: [recordId], references: [id], onDelete: Cascade)
+  question SkillQuestion?        @relation(fields: [questionId], references: [id])
+  skill    Skill?                @relation(fields: [skillId], references: [id])
+}
 
-  @@map("user_assessment_questions")
+model AssessmentRecord {
+  id           Int     @id @default(autoincrement())
+  userId       Int
+  assessmentId Int
+  sealed       Boolean @default(false)
+
+  user       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assessment Assessment?      @relation(fields: [assessmentId], references: [id])
+  questions  QuestionRecord[]
+}
+
+model QuestionRecord {
+  id         Int     @id @default(autoincrement())
+  recordId   Int
+  questionId Int
+  sealed     Boolean @default(false)
+  /// [QuestionRecordData]
+  data       Json
+
+  record   AssessmentRecord @relation(fields: [recordId], references: [id], onDelete: Cascade)
+  question Question?        @relation(fields: [questionId], references: [id])
 }
