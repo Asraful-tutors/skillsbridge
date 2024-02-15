@@ -24,7 +24,7 @@ export const {
         try {
           const user = await validateCredentials(credentials as any)
           return {
-            id: user.id.toString(),
+            id: user.id as any,
             name: user.name,
             email: user.email,
           }

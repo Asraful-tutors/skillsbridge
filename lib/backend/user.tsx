@@ -6,6 +6,8 @@ import { SignUpSchema } from "@/schemas";
 import { signIn, signOut } from "../../auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
+
+
 /**
  * Validates the credentials
  * @param credentials 

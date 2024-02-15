@@ -6,14 +6,8 @@ generator json {
   provider = "prisma-json-types-generator"
 }
 
-generator markdown {
-  provider = "prisma-markdown"
-  output   = "../DatabaseDiagram.md"
-  title    = "SkillsBridge"
-}
-
 datasource db {
-  provider = "mysql"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
@@ -64,13 +58,13 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  accounts              Account[]
-  sessions              Session[]
-  profile               UserProfile?            @relation("UserProfile")
-  paths                 UserPath[]
-  skills                UserSkill[]
-  assessments           AssessmentRecord[]
-  skillAssessmentRecord SkillAssessmentRecord[]
+  accounts         Account[]
+  sessions         Session[]
+  profile          UserProfile?            @relation("User.Profile")
+  paths            UserPath[]
+  skills           UserSkill[]
+  assessments      AssessmentRecord[]
+  skillAssessments SkillAssessmentRecord[]
 }
 
 model UserProfile {
@@ -79,7 +73,7 @@ model UserProfile {
   lastName  String? @db.VarChar(64)
   bio       String? @db.Text
 
-  user User @relation("UserProfile", fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation("User.Profile", fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model UserPath {
@@ -193,12 +187,15 @@ model Question {
 }
 
 model SkillAssessmentRecord {
-  id     Int     @id @default(autoincrement())
-  userId Int
-  sealed Boolean @default(false)
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  createdAt DateTime @default(now())
+  sealed    Boolean  @default(false)
 
   user      User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
   questions SkillQuestionRecord[]
+
+  @@index([userId, sealed])
 }
 
 model SkillQuestionRecord {
@@ -206,34 +203,43 @@ model SkillQuestionRecord {
   recordId   Int
   questionId Int
   skillId    Int
+  index      Int
   sealed     Boolean @default(false)
   /// [QuestionRecordData]
-  data       Json
+  data       Json?
 
   record   SkillAssessmentRecord @relation(fields: [recordId], references: [id], onDelete: Cascade)
   question SkillQuestion?        @relation(fields: [questionId], references: [id])
   skill    Skill?                @relation(fields: [skillId], references: [id])
+
+  @@unique([recordId, index])
 }
 
 model AssessmentRecord {
-  id           Int     @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   userId       Int
   assessmentId Int
-  sealed       Boolean @default(false)
+  createdAt    DateTime @default(now())
+  sealed       Boolean  @default(false)
 
   user       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   assessment Assessment?      @relation(fields: [assessmentId], references: [id])
   questions  QuestionRecord[]
+
+  @@index([userId, sealed])
 }
 
 model QuestionRecord {
   id         Int     @id @default(autoincrement())
   recordId   Int
   questionId Int
+  index      Int
   sealed     Boolean @default(false)
   /// [QuestionRecordData]
-  data       Json
+  data       Json?
 
   record   AssessmentRecord @relation(fields: [recordId], references: [id], onDelete: Cascade)
   question Question?        @relation(fields: [questionId], references: [id])
+
+  @@unique([recordId, index])
 }
