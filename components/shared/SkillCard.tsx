@@ -17,7 +17,7 @@ interface CardProps {
 
 export function SkillCard({ skill }: CardProps) {
   return (
-    <div className="bg-[#F0F1F5] overflow-hidden w-fit rounded-[20px] px-[30px] py-5 mb-[46px]">
+    <div className="bg-[#F0F1F5] overflow-hidden w-fit rounded-[20px] px-[30px] py-5 mb-[46px] justify-self-center">
       <h3 className="text-xl font-semibold text-[#4D4D9B] mb-[60px]">
         {skill.title}
       </h3>
