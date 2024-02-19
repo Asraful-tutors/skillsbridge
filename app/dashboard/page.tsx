@@ -1,19 +1,30 @@
 'use client'
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Header from "@/components/app/dashboard/Header";
 import SkillsBoard from "@/components/app/dashboard/SkillsBoard";
 import Image from "next/image";
 import CompletionBox from "@/components/app/dashboard/CompletionBox";
-import SizingOverlay from "@/components/app/dashboard/SizingOverlay";
 import { motion } from "framer-motion";
 import useOutsideClick from "@/components/hooks/useOutsideClick";
 import MilestoneModal from "@/components/app/dashboard/MilestoneModal";
 
 export default function DashboardPage() {
   const [hovered, setHovered] = useState<{ [key: number]: boolean }>({})
-  const [divStyle, setDivStyle] = useState<{ [property: string]: string }>({})
+  const [divStyle, setDivStyle] = useState({
+    scale: 1,
+    top: 0,
+    left: 0,
+    isDragging: false,
+    dragStartX: 0,
+    dragStartY: 0,
+  })
   const [visible, setVisible] = useState(false)
+  const prevClientX = useRef(0)
+  const prevClientY = useRef(0)
+
+  const minZoom = 0.7
+  const maxZoom = 2
 
   /* Supposed to take information about milestone to check if the milestone is available.
   If milestone is not yet availabe, throws modal with required skills */
@@ -30,19 +41,84 @@ export default function DashboardPage() {
     }))
   }
 
-  const handleDivStyle = (props: any) => {
-    return setDivStyle({
-      scale: props.scale,
-      top: props.position.top,
-      left: props.position.left,
+  const handleZoom = (event: WheelEvent) => {
+    const newScale = divStyle.scale + (event.deltaY > 0 ? -0.2 : 0.2)
+    const restrictedScale = Math.max(minZoom, Math.min(newScale, maxZoom))
+
+    setDivStyle((prevDivStyle) => ({
+      ...prevDivStyle,
+      scale: restrictedScale,
+    }))
+  }
+
+  const handleMouseDown = (event: React.MouseEvent | React.TouchEvent) => {
+    event.preventDefault();
+    const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX
+    const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY
+
+    setDivStyle((prevDivStyle) => ({
+      ...prevDivStyle,
+      isDragging: true,
+    }))
+
+    prevClientX.current = clientX
+    prevClientY.current = clientY
+  }
+
+  const handleMouseMove = (event: React.MouseEvent | React.TouchEvent) => {
+    requestAnimationFrame(() => {
+      const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX
+      const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY
+
+      if (divStyle.isDragging) {
+        const deltaX = clientX - prevClientX.current
+        const deltaY = clientY - prevClientY.current
+
+        setDivStyle((prevDivStyle) => ({
+          ...prevDivStyle,
+          left: prevDivStyle.left + deltaX,
+          top: prevDivStyle.top + deltaY,
+        }))
+
+        prevClientX.current = clientX
+        prevClientY.current = clientY
+      }
     })
   }
 
+  const handleMouseUp = () => {
+    setDivStyle((prevDivStyle) => ({
+      ...prevDivStyle,
+      isDragging: false,
+    }))
+  }
+
+  useEffect(() => {
+    document.addEventListener('wheel', handleZoom)
+    document.addEventListener('mousemove', handleMouseMove as any)
+    document.addEventListener('mouseup', handleMouseUp)
+
+    document.addEventListener('touchmove', handleMouseMove as any)
+    document.addEventListener('touchend', handleMouseUp)
+
+    return () => {
+      document.removeEventListener('wheel', handleZoom)
+      document.removeEventListener('mousemove', handleMouseMove as any)
+      document.removeEventListener('mouseup', handleMouseUp)
+
+      document.removeEventListener('touchmove', handleMouseMove as any)
+      document.removeEventListener('touchend', handleMouseUp)
+    }
+  }, [divStyle.scale, divStyle.isDragging])
+
   return (
-    <section className="bg-[url('/images/dashboard.svg')] bg-cover bg-center bg-repeat w-screen h-screen relative overflow-hidden">
+    <section
+    className="bg-[url('/images/dashboard.svg')] bg-cover bg-center bg-repeat w-screen h-screen relative overflow-hidden"
+    onMouseDown={handleMouseDown}
+    onTouchStart={handleMouseDown}
+    >
       <Header />
       <SkillsBoard />
-      <SizingOverlay props={handleDivStyle} />
       {visible && <MilestoneModal />}
       <motion.div
       className="relative min-w-[1401.75px]"
@@ -53,10 +129,8 @@ export default function DashboardPage() {
       }}
       animate={{
         scale: divStyle.scale || 1,
-        top: divStyle.top || 0,
-        left: divStyle.left || 0,
       }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
+      transition={{ duration: 0.1, ease: 'linear' }}
       >
         {/* Milestone 1 */}
         <div className="absolute top-64 left-4">

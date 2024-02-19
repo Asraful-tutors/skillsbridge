@@ -31,19 +31,15 @@ export default function MileStonePage() {
 
   if (userSkillsError || userPathsError) return <>Something went wrong</>;
 
-  const canTakeCourses = userSkills.skills.every(
+  /* const canTakeCourses = userSkills.skills.every(
     (skill) =>
       skill.score >= parseInt(params?.id as any, 10) &&
       parseInt(params?.id as any, 10) !== 1
-  );
+  ); */
 
   return (
     <>
-      {canTakeCourses || parseInt(params?.id as any, 10) === 1 ? (
-        <IsEligable userSkills={userSkills} userPaths={userPaths} />
-      ) : (
-        <LockedMileStonePage userSkills={userSkills} userPaths={userPaths} />
-      )}
+      <IsEligable userSkills={userSkills} userPaths={userPaths} />
     </>
   );
 }
