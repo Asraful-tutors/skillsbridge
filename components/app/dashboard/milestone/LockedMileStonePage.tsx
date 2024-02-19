@@ -94,7 +94,15 @@ export default function LockedMileStonePage({
               <Badge
                 key={key}
                 variant={"nonHoverable"}
-                className="rounded-full w-fit px-4 py-2 flex justify-center text-badge_text bg-apricot/[.56] text-sm shadow-none tracking-tighter-[-0.154px]"
+                className={`rounded-full w-fit px-4 py-2 flex justify-center text-badge_text bg-apricot/[.56] text-sm shadow-none tracking-tighter-[-0.154px] ${
+                  key % 4 === 0
+                  ? 'bg[#A8DAFF8F]'
+                  : key % 4 === 1
+                  ? 'bg-[#94C6EB8F]'
+                  : key % 4 === 2
+                  ? 'bg-[#FFA8D28F]'
+                  : 'bg-[#FF84005E]'
+                }`}
               >
                 {item.skill.name}
               </Badge>

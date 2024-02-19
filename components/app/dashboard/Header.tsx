@@ -1,7 +1,8 @@
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, RefObject } from "react";
 import { Button } from "@/components/ui/button";
 import UserBoard from "@/components/app/dashboard/UserBoard";
+import useOutsideClick from "@/components/hooks/useOutsideClick";
 
 export default function Header() {
   const [visible, setVisible] = useState(false)
@@ -10,20 +11,7 @@ export default function Header() {
     setVisible(!visible)
   }
 
-  const handleOutsideClick = (e: any) => {
-    // Check if the click is outside the popup window
-    if (visible && e.target.closest('.popup-container') === null) {
-      setVisible(false)
-    }
-  }
-
-  React.useEffect(() => {
-    document.addEventListener('click', handleOutsideClick)
-
-    return () => {
-      document.removeEventListener('click', handleOutsideClick)
-    }
-  }, [visible])
+  useOutsideClick(visible, setVisible)
 
   return (
     <nav className="fixed top-0 right-0 flex items-center justify-between w-full z-[70]">

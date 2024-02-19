@@ -6,11 +6,22 @@ import SkillsBoard from "@/components/app/dashboard/SkillsBoard";
 import Image from "next/image";
 import CompletionBox from "@/components/app/dashboard/CompletionBox";
 import SizingOverlay from "@/components/app/dashboard/SizingOverlay";
-import { easeInOut, motion } from "framer-motion";
+import { motion } from "framer-motion";
+import useOutsideClick from "@/components/hooks/useOutsideClick";
+import MilestoneModal from "@/components/app/dashboard/MilestoneModal";
 
 export default function DashboardPage() {
   const [hovered, setHovered] = useState<{ [key: number]: boolean }>({})
   const [divStyle, setDivStyle] = useState<{ [property: string]: string }>({})
+  const [visible, setVisible] = useState(false)
+
+  /* Supposed to take information about milestone to check if the milestone is available.
+  If milestone is not yet availabe, throws modal with required skills */
+  const handleModal = () => {
+    setVisible(!visible)
+  }
+
+  useOutsideClick(visible, setVisible)
 
   const handleMouseAction = (imageNumber: number, value: boolean) => {
     setHovered((prevHovered) => ({
@@ -32,6 +43,7 @@ export default function DashboardPage() {
       <Header />
       <SkillsBoard />
       <SizingOverlay props={handleDivStyle} />
+      {visible && <MilestoneModal />}
       <motion.div
       className="relative min-w-[1401.75px]"
       style={{
@@ -41,8 +53,8 @@ export default function DashboardPage() {
       }}
       animate={{
         scale: divStyle.scale || 1,
-        top: parseFloat(divStyle.top) || 0,
-        left: parseFloat(divStyle.left) || 0,
+        top: divStyle.top || 0,
+        left: divStyle.left || 0,
       }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
       >
@@ -56,6 +68,7 @@ export default function DashboardPage() {
             <div
             onMouseEnter={() => handleMouseAction(1, true)}
             onMouseLeave={() => handleMouseAction(1, false)}
+            onClick={handleModal}
             className="group relative"
             >
               <Image
@@ -86,6 +99,7 @@ export default function DashboardPage() {
             <div
             onMouseEnter={() => handleMouseAction(2, true)}
             onMouseLeave={() => handleMouseAction(2, false)}
+            onClick={handleModal}
             className="group relative"
             >
               <Image
@@ -116,6 +130,7 @@ export default function DashboardPage() {
             <div
             onMouseEnter={() => handleMouseAction(3, true)}
             onMouseLeave={() => handleMouseAction(3, false)}
+            onClick={handleModal}
             className="group relative"
             >
               <Image
@@ -145,6 +160,7 @@ export default function DashboardPage() {
             <div
             onMouseEnter={() => handleMouseAction(4, true)}
             onMouseLeave={() => handleMouseAction(4, false)}
+            onClick={handleModal}
             className="group"
             >
               <Image
@@ -166,6 +182,7 @@ export default function DashboardPage() {
             <div
             onMouseEnter={() => handleMouseAction(5, true)}
             onMouseLeave={() => handleMouseAction(5, false)}
+            onClick={handleModal}
             className="group relative"
             >
               <Image
@@ -195,6 +212,7 @@ export default function DashboardPage() {
             <div
             onMouseEnter={() => handleMouseAction(6, true)}
             onMouseLeave={() => handleMouseAction(6, false)}
+            onClick={handleModal}
             className="group relative"
             >
               <Image
@@ -224,6 +242,7 @@ export default function DashboardPage() {
             <div
             onMouseEnter={() => handleMouseAction(7, true)}
             onMouseLeave={() => handleMouseAction(7, false)}
+            onClick={handleModal}
             className="group relative"
             >
               <Image
