@@ -5,18 +5,15 @@ declare namespace PrismaJson {
 		type: "select",
 		options: Array<{
 			text: string,
-			correct: boolean,
-		}>
-	} | {
-		type: "text",
-	}
-
-	type SkillQuestionData = {
-		type: "select",
-		options: Array<{
-			text: string,
-			correct: boolean,
-		}>
+		} & ({
+			correct: boolean
+		} | {
+			points: {
+				/** Skill id is not part of data integrity. It can point to a deleted skill. */
+				skillId: number,
+				points: number
+			}[]
+		})>
 	} | {
 		type: "text",
 	}

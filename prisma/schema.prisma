@@ -58,13 +58,12 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  accounts         Account[]
-  sessions         Session[]
-  profile          UserProfile?            @relation("User.Profile")
-  paths            UserPath[]
-  skills           UserSkill[]
-  assessments      AssessmentRecord[]
-  skillAssessments SkillAssessmentRecord[]
+  accounts    Account[]
+  sessions    Session[]
+  profile     UserProfile?       @relation("User-Profile")
+  paths       UserPath[]
+  skills      UserSkill[]
+  assessments AssessmentRecord[]
 }
 
 model UserProfile {
@@ -73,7 +72,7 @@ model UserProfile {
   lastName  String? @db.VarChar(64)
   bio       String? @db.Text
 
-  user User @relation("User.Profile", fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation("User-Profile", fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model UserPath {
@@ -103,9 +102,15 @@ model UserSkill {
   @@index([userId])
 }
 
+enum Difficulty {
+  Beginner
+  Advanced
+  Expert
+}
+
 enum SkillType {
-  HARD
-  SOFT
+  Hard
+  Soft
 }
 
 model Skill {
@@ -117,20 +122,6 @@ model Skill {
   milestones                 Milestone[]
   milestoneSkillRequirements MilestoneSkillRequirement[]
   paths                      Path[]
-  questions                  SkillQuestion[]
-  skillQuestionRecords       SkillQuestionRecord[]
-}
-
-model SkillQuestion {
-  id      Int    @id @default(autoincrement())
-  skillId Int
-  text    String @db.Text
-  level   Int
-  /// [SkillQuestionData]
-  data    Json
-
-  skill                Skill                 @relation(fields: [skillId], references: [id], onDelete: Cascade)
-  skillQuestionRecords SkillQuestionRecord[]
 }
 
 model Path {
@@ -139,20 +130,20 @@ model Path {
   icon         String?
   alwaysActive Boolean @default(false)
 
-  milestones Milestone[]
+  milestones Milestone[] @relation("Path-Milestones")
   userPaths  UserPath[]
   skills     Skill[]
 }
 
 model Milestone {
-  id          Int     @id @default(autoincrement())
-  pathId      Int
-  name        String  @db.VarChar(64)
-  description String? @db.Text
+  id          Int        @id @default(autoincrement())
+  name        String     @db.VarChar(64)
+  description String?    @db.Text
+  difficulty  Difficulty
 
   skills            Skill[]
-  assessments       Assessment[]
-  path              Path                        @relation(fields: [pathId], references: [id], onDelete: Cascade)
+  assessments       Assessment[]                @relation("Milestone-Assessment")
+  paths             Path[]                      @relation("Path-Milestones")
   skillRequirements MilestoneSkillRequirement[]
 }
 
@@ -168,62 +159,31 @@ model MilestoneSkillRequirement {
 }
 
 model Assessment {
-  id          Int  @id @default(autoincrement())
-  milestoneId Int
-  maxSeconds  Int?
-  minScore    Int?
+  id         Int    @id @default(autoincrement())
+  name       String
+  maxSeconds Int?
+  minScore   Int?
 
-  questions Question[]
-  milestone Milestone  @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
-
-  records AssessmentRecord[]
+  questions  Question[]
+  milestones Milestone[]        @relation("Milestone-Assessment")
+  records    AssessmentRecord[]
 }
 
 model Question {
   id           Int     @id @default(autoincrement())
-  assessmentId Int
+  assessmentId Int?
   text         String? @db.Text
   /// [QuestionData]
   data         Json
 
-  assessment     Assessment       @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  assessment     Assessment?      @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
   questionRecord QuestionRecord[]
-}
-
-model SkillAssessmentRecord {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  createdAt DateTime @default(now())
-  sealed    Boolean  @default(false)
-
-  user      User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  questions SkillQuestionRecord[]
-
-  @@index([userId, sealed])
-}
-
-model SkillQuestionRecord {
-  id         Int       @id @default(autoincrement())
-  recordId   Int
-  questionId Int
-  skillId    Int
-  index      Int
-  sealed     Boolean   @default(false)
-  skillType  SkillType
-  /// [QuestionRecordData]
-  data       Json?
-
-  record   SkillAssessmentRecord @relation(fields: [recordId], references: [id], onDelete: Cascade)
-  question SkillQuestion?        @relation(fields: [questionId], references: [id])
-  skill    Skill?                @relation(fields: [skillId], references: [id])
-
-  @@unique([recordId, index])
 }
 
 model AssessmentRecord {
   id           Int      @id @default(autoincrement())
   userId       Int
-  assessmentId Int
+  assessmentId Int?
   createdAt    DateTime @default(now())
   sealed       Boolean  @default(false)
 

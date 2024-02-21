@@ -1,53 +1,27 @@
-import { Prisma, PrismaClient } from '@prisma/client'
-import { SelectQuestions, TextQuestions, Skills } from './skills'
-import { Paths } from './paths'
-import { ezUpsert } from './seed-util'
 
-const prisma = new PrismaClient()
-
-
-type Models = Prisma.TypeMap<any>['meta']['modelProps']
-
-type ObjectType<T extends Models> = Omit<Parameters<PrismaClient[T]['upsert']>[0]['create'], 'id'> & { id: number }
-
-async function apply<T extends Models>(name: T, objects: ObjectType<T>[]) {
-  const singular = name;
-  const plural = name + 's';
-  console.log(`Creating ${plural}`);
-
-  for (const object of objects) {
-    console.log(`Creating ${singular} ${object.id}`);
-    var res = await prisma[name as 'user'].upsert(ezUpsert(object))
-    if (res.id !== object.id)
-      console.warn(`Created ${singular} id mismatched! (db) ${res.id} !== ${object.id} (input)`)
-  }
-}
-
-/**
- * Count the number of Paths.
- * Note, that providing `undefined` is treated as the value not being there.
- * Read more here: https://pris.ly/d/null-undefined
- * @param {PathCountArgs} args - Arguments to filter Paths to count.
- * @example
- * // Count the number of Paths
- * const count = await prisma.path.count({
- *   where: {
- *     // ... the filter for the Paths we want to count
- *   }
- * })
-**/
+import prisma from './seed-util'
+import SeedDB from './seed-db'
+import { check, endSpinner, replaceLine, spinner, withSpinner, writeErr, writeLine } from './std-utils';
 
 async function main() {
 
-  console.log(`Start seeding ...`)
+  const clear = withSpinner()
 
-  await apply("path", Object.values(Paths))
-  await apply("skill", Object.values(Skills))
 
-  await apply("skillQuestion", SelectQuestions)
-  await apply("skillQuestion", TextQuestions)
+  writeLine(`\n`)
+  replaceLine(`${spinner()} Starting seeding.`)
 
-  console.log(`Seeding finished.`)
+  try {
+    await SeedDB.init();
+    replaceLine(`${check} Seeding finished.\n`)
+  } catch (error) {
+    writeErr(`${check} Seeding failed.\n`)
+    throw error;
+  } finally {
+    clear();
+    endSpinner()
+  }
+
 }
 
 main()
