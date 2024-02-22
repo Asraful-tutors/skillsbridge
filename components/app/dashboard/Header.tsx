@@ -61,9 +61,9 @@ export default function Header() {
             alt="logo"
             decoding="async"
             loading="lazy"
-            className="w-10 h-10 object-center object-cover rounded-full aspect-auto mr-[13px]"
+            className="w-10 h-10 object-center object-cover rounded-full aspect-auto sm:mr-[13px]"
           />
-          <div className="flex flex-col items-start">
+          <div className="flex flex-col items-start hidden sm:block">
             <h3 className="text-xl font-medium">{"Sam Thomas"}</h3> {/* replace with user name */}
             <div className="flex flex-row text-[#FFFFFF]/[.81] text-base">
               <h3 className="hidden lg:block">Learning path&nbsp;&nbsp;-&nbsp;&nbsp;</h3>

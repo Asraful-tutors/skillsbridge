@@ -19,7 +19,7 @@ export default function UserBoard({
       initial={{ height: 0 }}
       animate={{ height: 619.8 }}
       exit={{ height: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.5, ease: 'easeInOut' }}
       className="absolute bg-white rounded-[20px] w-[400px] z-[60] top-[116px] right-2 overflow-hidden"
       >
         <div className="bg-[#F0FAFB] h-[141px] rounded-t-[20px] p-[21px] relative">
