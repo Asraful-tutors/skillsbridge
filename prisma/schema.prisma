@@ -140,6 +140,7 @@ model Milestone {
   name        String     @db.VarChar(64)
   description String?    @db.Text
   difficulty  Difficulty
+  link        String?
 
   skills            Skill[]
   assessments       Assessment[]                @relation("Milestone-Assessment")

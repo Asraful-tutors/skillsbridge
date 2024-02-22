@@ -1,14 +1,16 @@
 
-import { Factory, NamedFactory, ezConnect, ezPushConnect } from "./seed-util";
+import { Factory, NamedFactory, connect } from "./seed-util";
 import assessmentData from "./data/assessments.json";
 import mainSkillsData from "./data/main-skills.json";
 import milestonesData from "./data/milestones.json";
+import { Difficulty } from "@prisma/client";
 
 namespace SeedDB {
 
 	export async function init() {
 		await parseAssessmentsData();
 		await parseMainSkillsData();
+		await parseMilestoneData();
 	}
 
 	export const Milestones = NamedFactory.create("milestone", name => ({ name, difficulty: "Beginner" }))
@@ -17,6 +19,7 @@ namespace SeedDB {
 	export const Skills = NamedFactory.create("skill", name => ({ name, type: 'Hard' }))
 
 	export const Questions = Factory.create("question")
+	export const MilestoneSkillRequirements = Factory.create("milestoneSkillRequirement")
 }
 
 async function parseAssessmentsData() {
@@ -51,7 +54,7 @@ async function parseAssessmentsData() {
 						options = [];
 						question = await SeedDB.Questions.create({
 							text: value,
-							assessment: ezConnect(assessment),
+							assessment: connect(assessment),
 							data: {
 								type: "select",
 								options,
@@ -128,5 +131,69 @@ async function parseMainSkillsData() {
 	}
 
 }
+
+
+async function parseMilestoneData() {
+	// Career name | Title | Description | Difficulty Level | Link | Assessments | Skill requirements...
+
+	const data = milestonesData;
+
+	const headers = data[0]
+
+	// First line is skipped
+	for (let i = 1; i < data.length; i++) {
+		const line = data[i];
+
+		const [
+			careerName,
+			title,
+			description,
+			difficulty,
+			link,
+			assessmentCsv,
+			...skillRequirements
+		] = line;
+
+		const career = await SeedDB.Paths.getCreate(careerName);
+
+		const assessmentNames = assessmentCsv.split(/,\ ?/)
+		const assessments = await SeedDB.Assessments.getCreateMulti(...assessmentNames.map(v => ({
+			name: v,
+		})))
+
+		const milestone = await SeedDB.Milestones.getCreate(title, {
+			name: title,
+			description,
+			link,
+			paths: connect(career),
+			difficulty: difficulty as Difficulty,
+			assessments: connect(assessments),
+		});
+
+		const filteredReqs = await Promise.all(skillRequirements
+			.map((v, i) => ({
+				score: Number(v) || 0,
+				skillName: headers[6 + i]
+			}))
+			.filter(v => v.score)
+			.map(async (v) => ({
+				score: v.score,
+				skill: await SeedDB.Skills.getCreate(v.skillName)
+			})))
+
+
+		const requirements = await SeedDB.MilestoneSkillRequirements.createMulti(
+			...filteredReqs
+				.map(v => ({
+					milestone: connect(milestone),
+					skill: connect(v.skill),
+					score: v.score,
+				}))
+		)
+
+	}
+
+}
+
 
 export default SeedDB;

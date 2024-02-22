@@ -43,6 +43,14 @@ export abstract class Factory<T extends ModelName> implements IFactory<T>  {
 		this.name = name;
 	}
 
+	async createMulti(...datas: CreateModel<T>[]): Promise<CreatedModel<T>[]> {
+		const res: CreatedModel<T>[] = [];
+		for (const data of datas) {
+			res.push(await this.create(data))
+		}
+		return res;
+	}
+
 	async create(data: CreateModel<T>): Promise<CreatedModel<T>> {
 		this.increment++;
 		replaceLine(`${spinner()} Creating ${this.name} ${this.increment}`);
@@ -80,6 +88,14 @@ export abstract class NamedFactory<T extends ModelName> implements IFactory<T>  
 
 	async getCreate(name: string, data?: CreateModel<T>): Promise<CreatedModel<T>> {
 		return this.items.get(name) ?? await this.create(name, data);
+	}
+
+	async getCreateMulti(...items: { name: string, data?: CreateModel<T> }[]): Promise<CreatedModel<T>[]> {
+		const res: CreatedModel<T>[] = [];
+		for (const { name, data } of items) {
+			res.push(await this.getCreate(name, data))
+		}
+		return res;
 	}
 
 	async create(name: string, data?: CreateModel<T>): Promise<CreatedModel<T>> {
@@ -125,63 +141,22 @@ type ConnectableKeys<T> = {
 	[P in keyof Required<T>]: Required<T>[P] extends Connectable ? P : never;
 }[keyof T];
 
-export function ezPushConnect<T, K extends ConnectableKeys<T>>(target: T, key: K, ...create: InferType<T[K]>[]): T[K]
-export function ezPushConnect<T, K extends ConnectableKeys<T>>(target: any, key: K, ...create: any[]) {
-	target[key] ??= {}
-	target[key].connectOrCreate ??= []
-	target[key].connectOrCreate.push(...create.map(v => ({
-		create: v,
-		where: {
-			id: v.id
-		}
-	})))
-	return target[key];
-}
 
-export function ezUpsert<T extends { id: number }>(create: T) {
-	const noId = { ...create, id: undefined };
-	return {
-		update: noId,
-		create: noId,
-		where: { id: create.id }
-	}
+export function connect<T>(connect: T): {
+	connect: T
 }
+export function connect<T>(connect: T[]): {
+	connect: T[]
+}
+export function connect<T>(connect: T | T[]) {
 
-export function ezConnect<T extends { id: number }>(create: T): {
-	connectOrCreate: {
-		create: T;
-		where: {
-			id: number;
-		};
-	}
-}
-export function ezConnect<T extends { id: number }>(create: T[]): {
-	connectOrCreate: {
-		create: T;
-		where: {
-			id: number;
-		};
-	}[]
-}
-export function ezConnect<T extends { id: number }>(create: T | T[]) {
-
-	if (Array.isArray(create)) {
+	if (Array.isArray(connect)) {
 		return {
-			connectOrCreate: create.map(v => ({
-				create: v,
-				where: {
-					id: v.id
-				}
-			}))
+			connect: connect.map(v => v)
 		}
 	} else {
 		return {
-			connectOrCreate: {
-				create: create,
-				where: {
-					id: create.id
-				}
-			}
+			connect
 		}
 	}
 
