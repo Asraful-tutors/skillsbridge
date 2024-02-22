@@ -18,9 +18,11 @@ interface UserSkill {
 export default function MilestoneModal({
  /*  userSkills,
   userPaths, */
+  setVisible,
 }: {
   /* userSkills: UserSkill;
   userPaths: any; */
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>,
 }) {
   /* const { skills } = userSkills;
   const { path } = userPaths; */
@@ -63,9 +65,15 @@ export default function MilestoneModal({
   return (
     <div className="z-[100] bg-black/[.70] w-screen h-screen absolute top-0 left-0 flex items-center">
       <motion.div
-      className={`popup w-full text-black max-w-screen-2xl h-fit my-8 rounded-2xl mx-auto grid grid-cols-1 lg:grid-cols-10 gap-12 xl:pr-0 bg-white_background`}
+      className={`popup w-max relative text-black max-w-screen-2xl h-fit max-h-screen my-8 rounded-2xl mx-auto grid grid-cols-1 xl:grid-cols-10 gap-12 p-0 bg-white_background overflow-y-scroll`}
       >
-        <div className="col-span-5 2xl:col-span-6 my-[77px] mx-12">
+        <Button
+          onClick={() => setVisible(false)}
+          className="absolute right-4 top-4 font-semibold h-10 w-10 text-xl text-white bg-[#9E54FF] hover:bg-[#9E54FF] hover:opacity-70 shadow-none rounded-full"
+        >
+          x
+        </Button>
+        <div className="col-span-5 2xl:col-span-6 my-[77px] mx-12 relative">
           <h1 className="text-[40px] font-bold mb-[18px]">
             JavaScript Algorithms and Data Structures {/* milestone title */}
           </h1>
@@ -131,7 +139,7 @@ export default function MilestoneModal({
           </Button>
         </div>
 
-        <div className="col-span-5 2xl:col-span-4 bg-[#E2E2FE] flex flex-col items-center rounded-b-2xl xl:rounded-r-2xl py-[32px]">
+        <div className="col-span-5 2xl:col-span-4 bg-[#E2E2FE] flex flex-col items-center rounded-b-2xl xl:rounded-r-2xl xl:rounded-b-none py-[32px]">
           <div>
             <h2 className="mb-5 text-2xl font-bold">To unlock, you require</h2>
             <div className="flex flex-col items-center xl:items-start">

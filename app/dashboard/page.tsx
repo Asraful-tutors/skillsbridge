@@ -114,12 +114,10 @@ export default function DashboardPage() {
   return (
     <section
     className="bg-[url('/images/dashboard.svg')] bg-cover bg-center bg-repeat w-screen h-screen relative overflow-hidden"
-    onMouseDown={handleMouseDown}
-    onTouchStart={handleMouseDown}
     >
       <Header />
       <SkillsBoard />
-      {visible && <MilestoneModal />}
+      {visible && <MilestoneModal setVisible={setVisible} />}
       <motion.div
       className="relative min-w-[1401.75px]"
       style={{
@@ -131,6 +129,8 @@ export default function DashboardPage() {
         scale: divStyle.scale || 1,
       }}
       transition={{ duration: 0.1, ease: 'linear' }}
+      onMouseDown={handleMouseDown}
+      onTouchStart={handleMouseDown}
       >
         {/* Milestone 1 */}
         <div className="absolute top-64 left-4">
