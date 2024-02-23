@@ -25,7 +25,7 @@ export function SkillsAccordion({
             <div /* key={index} */ className="flex flex-row justify-between items-center">
               <h3 className="text-sm font-semibold text-[#000000]/[.50]">Unreal engine</h3> {/* replace with skill.title variable */}
               <div className="flex flex-row items-center">
-                <Progress value={33} indicatorColor="bg-gradient-to-b from-[#B278FF] to-[#9D53FF]" className="h-[10px] w-[207px] bg-[#B59292]/[.51] mr-[21px]" />
+                <Progress value={33} indicatorColor="bg-gradient-to-b from-[#B278FF] to-[#9D53FF]" className="h-[10px] w-[100px] sm:w-[207px] bg-[#B59292]/[.51] mr-[21px]" />
                 <h3 className="text-sm font-bold text-[#1C5FA1]">{50}%</h3> {/* replace with skill.value variables */}
               </div>
             </div>

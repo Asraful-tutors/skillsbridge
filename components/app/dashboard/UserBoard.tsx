@@ -16,11 +16,11 @@ export default function UserBoard({
   return (
     <AnimatePresence>
       {visible && <motion.div
-      initial={{ height: 0 }}
+      initial={{ height: 0, transformOrigin: 'center 290px' }}
       animate={{ height: 619.8 }}
       exit={{ height: 0 }}
       transition={{ duration: 0.5, ease: 'easeInOut' }}
-      className="absolute bg-white rounded-[20px] w-[400px] z-[60] top-[116px] right-2 overflow-hidden"
+      className="absolute bg-white rounded-[20px] w-[400px] z-[60] top-[20px] sm:top-[116px] -right-12 sm:right-2 overflow-hidden scale-75 sm:scale-100"
       >
         <div className="bg-[#F0FAFB] h-[141px] rounded-t-[20px] p-[21px] relative">
           <Button className="border-[1px] border-[#6CB1B8] px-[6px] py-[4px] text-[#3A3333] text-sm font-medium bg-transparent shadow-none absolute right-[21px] top-[21px] hover:bg-transparent hover:opacity-70">

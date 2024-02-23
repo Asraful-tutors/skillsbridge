@@ -65,7 +65,7 @@ export default function MilestoneModal({
   return (
     <div className="z-[100] bg-black/[.70] w-screen h-screen absolute top-0 left-0 flex items-center">
       <motion.div
-      className={`popup w-max relative text-black max-w-screen-2xl h-fit max-h-screen my-8 rounded-2xl mx-auto grid grid-cols-1 xl:grid-cols-10 gap-12 p-0 bg-white_background overflow-y-scroll`}
+      className={`popup w-max relative text-black max-w-screen-2xl h-fit max-h-screen my-8 rounded-2xl sm:mx-10 xl:mx-auto grid grid-cols-1 xl:grid-cols-10 gap-12 p-0 bg-white_background overflow-y-scroll xl:overflow-y-auto`}
       >
         <Button
           onClick={() => setVisible(false)}

@@ -17,7 +17,7 @@ interface CardProps {
 
 export function SkillCard({ skill }: CardProps) {
   return (
-    <div className="bg-[#F0F1F5] overflow-hidden w-fit rounded-[20px] px-[30px] py-5 mb-[46px] justify-self-center">
+    <div className="bg-[#F0F1F5] overflow-hidden w-fit rounded-[20px] px-[30px] py-5 justify-self-center">
       <h3 className="text-xl font-semibold text-[#4D4D9B] mb-[60px]">
         {skill.title}
       </h3>
@@ -33,7 +33,7 @@ export function SkillCard({ skill }: CardProps) {
             <span className="text-xs text-gray-500 absolute -bottom-5 left-0">{i}</span>
             <motion.div
             key={i}
-            className={`w-[94px] h-[8px] cursor-pointer border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
+            className={`w-[54px] sm:w-[94px] h-[8px] cursor-pointer border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
               i === 0 ? 'rounded-l-full' : ''
             } ${
               i === skill.scale.values.length - 1 ? 'rounded-r-full' : ''
