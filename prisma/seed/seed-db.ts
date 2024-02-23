@@ -121,7 +121,7 @@ async function parseMainSkillsData() {
 					break;
 				default: // Skill names
 					if (value) {
-						let skill = await SeedDB.Skills.getCreate(value, {
+						let skill = await SeedDB.Skills.upsert(value, {
 							name: value,
 							type: type.toLowerCase() === "soft" ? "Soft" : "Hard",
 						})
