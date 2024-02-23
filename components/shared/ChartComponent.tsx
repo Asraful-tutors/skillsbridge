@@ -21,7 +21,7 @@ const ChartComponent = ({ data, disableAnimation }: ChartData) => {
     <div className="my-4 flex flex-col gap-3.5 ">
       {data?.map((entry, index) => (
         <div key={index} className="flex items-center gap-5">
-          <h3 className="text-lg font-semibold text-[#4D4D9B] min-w-[286px]">
+          <h3 className="text-lg font-semibold text-[#4D4D9B] w-[286px] whitespace-pre-wrap">
             {entry.skill.name}
           </h3>
           <div className="flex rounded-md py-4">
@@ -29,10 +29,8 @@ const ChartComponent = ({ data, disableAnimation }: ChartData) => {
               <div
                 key={innerIndex}
                 className={`flex flex-col items-center gap-0.5 relative bg-[#DDDDDD] shadow-inner shadow-[#320864]/[.25] py-[3px] px-[2px] ${
-                  innerIndex === 0 ? 'rounded-l-full' : ''
-                } ${
-                  innerIndex === 4 ? 'rounded-r-full' : ''
-                }`}
+                  innerIndex === 0 ? "rounded-l-full" : ""
+                } ${innerIndex === 4 ? "rounded-r-full" : ""}`}
               >
                 <span className="text-xs text-gray-500 absolute -bottom-5 left-0">
                   {innerIndex}
@@ -49,10 +47,8 @@ const ChartComponent = ({ data, disableAnimation }: ChartData) => {
                       : {}
                   }
                   className={`w-[94px] h-[8px] cursor-pointer border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
-                    innerIndex === 0 ? 'rounded-l-full' : ''
-                  } ${
-                    innerIndex === 4 ? 'rounded-r-full' : ''
-                  }`}
+                    innerIndex === 0 ? "rounded-l-full" : ""
+                  } ${innerIndex === 4 ? "rounded-r-full" : ""}`}
                 ></motion.div>
                 {entry.selfScore === innerIndex + 1 && (
                   <svg

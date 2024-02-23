@@ -16,7 +16,7 @@ type SignUpProps = {
   // onRequestAccess: () => void;
 };
 
-export default function SignUp({ }: SignUpProps) {
+export default function SignUp({}: SignUpProps) {
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof SignUpSchema>>({
     defaultValues: {
@@ -29,9 +29,12 @@ export default function SignUp({ }: SignUpProps) {
   });
 
   const onSubmit = (values: z.infer<typeof SignUpSchema>) => {
-    console.log(values);
     startTransition(() => {
-      register(values);
+      register(values)
+        .then((res) => {
+          localStorage.setItem("userData", JSON.stringify(values));
+        })
+        .catch((err) => console.log(err));
     });
   };
 

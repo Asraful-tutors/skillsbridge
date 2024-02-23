@@ -28,8 +28,9 @@ export default function StartAssessment({
           </h1>
           <p className="desc max-w-[404px] mx-auto text-sm">
             This quick evaluation will reveal the gap between your perceived
-            skills and actual abilities. This isn’t just an assessment: it's the
-            first step towards a learning journey uniquely tailored for you.
+            skills and actual abilities. This isn&apos;t just an assessment:
+            it&apos;s the first step towards a learning journey uniquely
+            tailored for you.
           </p>
         </div>
         <Button

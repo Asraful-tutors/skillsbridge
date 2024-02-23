@@ -13,6 +13,7 @@ import { paths } from "@/lib/data/path";
 import { useQuery } from "@tanstack/react-query";
 import { getHardQuestions, getSoftQuestions } from "@/actions/assessment";
 import useUserPaths from "@/components/hooks/useUserPaths";
+import { startAssessment } from "@/lib/backend/assessment";
 
 export default function StartMultiStepAssessments() {
   const user = useAppSelector((state) => state.user.userData);
@@ -27,7 +28,7 @@ export default function StartMultiStepAssessments() {
       if (!user || !userPaths) {
         throw new Error("User ID is undefined");
       }
-      return getHardQuestions(userPaths?.path.id);
+      return startAssessment(19);
     },
 
     enabled: !!userPaths,
@@ -50,6 +51,7 @@ export default function StartMultiStepAssessments() {
     enabled: !!userPaths,
   });
 
+  console.log(hardSkillQuestions);
   if (isLoading) return "Loading...";
 
   if (isError) return <>Something went wrong!</>;
@@ -65,7 +67,7 @@ export default function StartMultiStepAssessments() {
           </WhiteWrapper>
         </motion.div>
         {/* questions and answers with progressbar */}
-        <motion.div className="w-full lg:col-span-5 xl:col-span-4">
+        {/* <motion.div className="w-full lg:col-span-5 xl:col-span-4">
           <WhiteWrapper>
             <QuestionsPanel
               // @ts-ignore
@@ -74,7 +76,7 @@ export default function StartMultiStepAssessments() {
               softSkillQuestions={softSkillQuestions || []}
             />
           </WhiteWrapper>
-        </motion.div>
+        </motion.div> */}
       </motion.div>
     </motion.div>
   );

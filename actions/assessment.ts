@@ -25,32 +25,22 @@ interface UserSkillUpdateInput {
 }
 // get hard type questions related to selected paths
 export const getHardQuestions = async (id: number) => {
-  const questions = await prisma.skillQuestion.findMany({
+  const assessment = await prisma.assessment.findFirst({
     where: {
-      options: {
-        some: {
-          NOT: {
-            id,
-          },
-        },
-      },
-      skill: {
-        type: "HARD",
-        paths: {
-          some: {
-            id: id,
-          },
-        },
-      },
+      name: "Artist 0",
     },
     include: {
-      skill: {
-        include: {
-          paths: true,
-        },
-      },
+      questions: true,
+    },
+  });
 
-      options: true,
+  const questions = await prisma.question.findMany({
+    where: {
+      assessmentId: assessment?.id,
+    },
+    include: {
+      assessment: true,
+      questionRecord: true,
     },
   });
 
@@ -59,26 +49,13 @@ export const getHardQuestions = async (id: number) => {
 
 // get hard type questions related to selected paths
 export const getSoftQuestions = async (id: number) => {
-  const questions = await prisma.skillQuestion.findMany({
+  const questions = await prisma.assessment.findFirst({
     where: {
-      skill: {
-        type: "SOFT",
-        paths: {
-          some: {
-            id: 5,
-          },
-        },
-      },
+      name: "Soft 0",
     },
     include: {
-      skill: {
-        include: {
-          paths: true,
-        },
-      },
-      options: true,
+      questions: true,
     },
-    distinct: ["skillId"],
   });
 
   return questions;

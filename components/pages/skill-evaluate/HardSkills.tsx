@@ -25,6 +25,7 @@ export default function HardSkillsPage({
 }) {
   const user = useAppSelector((state) => state.user.userData);
   const { userPaths, userPathsLoading, userPathsError } = useUserPaths(user);
+
   const [scaledSkills, setScaledSkills] = useState<
     { skillId: number; selfScore: number }[]
   >([]);
@@ -55,7 +56,7 @@ export default function HardSkillsPage({
       { skillId, selfScore },
     ]);
   };
-
+  console.log(scaledSkills);
   const handleNextClick = async () => {
     if (!user) {
       console.error("User is not defined");
@@ -85,7 +86,6 @@ export default function HardSkillsPage({
   return (
     <motion.div
       layout
-      variants={staggerVariants}
       className="flex flex-col items-center justify-center h-full w-full gap-10"
     >
       <section className="space-y-1">
@@ -95,10 +95,7 @@ export default function HardSkillsPage({
           bridge gaps and enhance strengths.
         </p>
       </section>
-      <motion.section
-        className="grid grid-cols-1 gap-5 px-4"
-        variants={staggerVariants}
-      >
+      <motion.section className="grid grid-cols-1 gap-5 px-4">
         {hardSkills?.map((data, key) => (
           // @ts-ignore
           <HardSkillsCard

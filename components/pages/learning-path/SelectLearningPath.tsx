@@ -143,7 +143,7 @@ export default function SelectLearningPath({
         className="flex items-center justify-center flex-wrap gap-6"
         variants={staggerVariants}
       >
-        {paths?.slice(0, -1).map((path, key) => (
+        {paths?.map((path, key) => (
           <PathsCard
             key={key}
             id={path.id}

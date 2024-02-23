@@ -17,44 +17,32 @@ export const getFilteredPaths = async (pathId: number) => {
 // get hard skills based on selected path
 
 export const getHardSkillsForPath = async (pathId: number) => {
-  const hardSkills = await prisma.path.findFirst({
+  const hardSkills = await prisma.skill.findMany({
     where: {
-      id: pathId,
-    },
-    include: {
-      skills: {
-        where: {
-          type: "HARD",
-        },
-        include: {
-          milestones: true,
-          skillQuestions: true,
+      paths: {
+        every: {
+          id: pathId,
         },
       },
     },
   });
-
-  return hardSkills?.skills || [];
+  return hardSkills || [];
 };
 
 // get soft skills based on selected path
 
 export const getSoftSkillsForPath = async () => {
-  const softSkills = await prisma.path.findFirst({
-    include: {
-      skills: {
-        where: {
-          type: "SOFT",
-        },
-        include: {
-          milestones: true,
-          skillQuestions: true,
+  const softSkills = await prisma.skill.findMany({
+    where: {
+      paths: {
+        some: {
+          id: 4,
         },
       },
     },
   });
-
-  return softSkills?.skills || [];
+  console.log("soft", softSkills);
+  return softSkills || [];
 };
 
 // get users selected paths
@@ -81,7 +69,7 @@ export const getUserSelectedPathSkills = async (userId: number) => {
       skills: {
         where: {
           skill: {
-            type: "HARD",
+            type: "Hard",
           },
         },
         include: {

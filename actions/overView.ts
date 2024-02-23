@@ -8,7 +8,7 @@ export const getHardSkills = async (userId: number) => {
     where: {
       userId,
       skill: {
-        type: "HARD",
+        type: "Hard",
       },
     },
     include: {
@@ -23,7 +23,7 @@ export const getSoftSkills = async (userId: number) => {
     where: {
       userId,
       skill: {
-        type: "SOFT",
+        type: "Soft",
       },
     },
     include: {
