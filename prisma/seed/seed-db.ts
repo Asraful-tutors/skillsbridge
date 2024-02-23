@@ -70,6 +70,12 @@ async function parseAssessmentsData() {
 								text: value,
 								points: scores,
 							})
+							SeedDB.Questions.update(question.id, {
+								data: {
+									type: "select",
+									options,
+								}
+							})
 							break;
 					}
 					break;

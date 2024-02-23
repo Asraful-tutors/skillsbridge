@@ -63,6 +63,18 @@ export abstract class Factory<T extends ModelName> implements IFactory<T>  {
 		return result;
 	}
 
+	async update(id: number, data: UpdateModel<T>): Promise<CreatedModel<T>> {
+		// @ts-ignore
+		let item = await prisma[this.name].update({
+			where: {
+				// @ts-ignore
+				id,
+			},
+			data,
+		})
+		this.values[id - 1] = item;
+		return item;
+	}
 }
 
 export abstract class NamedFactory<T extends ModelName> implements IFactory<T>  {
