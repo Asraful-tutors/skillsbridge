@@ -41,7 +41,7 @@ export default function DashboardPage() {
     }))
   }
 
-  const handleZoom = (event: WheelEvent) => {
+  const handleZoom: React.WheelEventHandler<HTMLDivElement> = (event) => {
     const newScale = divStyle.scale + (event.deltaY > 0 ? -0.2 : 0.2)
     const restrictedScale = Math.max(minZoom, Math.min(newScale, maxZoom))
 
@@ -94,7 +94,6 @@ export default function DashboardPage() {
   }
 
   useEffect(() => {
-    document.addEventListener('wheel', handleZoom)
     document.addEventListener('mousemove', handleMouseMove as any)
     document.addEventListener('mouseup', handleMouseUp)
 
@@ -102,7 +101,6 @@ export default function DashboardPage() {
     document.addEventListener('touchend', handleMouseUp)
 
     return () => {
-      document.removeEventListener('wheel', handleZoom)
       document.removeEventListener('mousemove', handleMouseMove as any)
       document.removeEventListener('mouseup', handleMouseUp)
 
@@ -131,6 +129,7 @@ export default function DashboardPage() {
       transition={{ duration: 0.1, ease: 'linear' }}
       onMouseDown={handleMouseDown}
       onTouchStart={handleMouseDown}
+      onWheel={handleZoom}
       >
         {/* Milestone 1 */}
         <div className="absolute top-64 left-4">
