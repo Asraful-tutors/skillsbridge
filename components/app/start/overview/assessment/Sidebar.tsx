@@ -26,19 +26,12 @@ const stepVariant = {
   },
 };
 
-export default function Sidebar() {
+export default function Sidebar({
+  currentSkillType,
+}: {
+  currentSkillType: string;
+}) {
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
-  const currentSkillType = useAppSelector(
-    (state) => state.skillAssessmentSession.currentSkillType
-  );
-
-  //   const handleStepClick = (index: number) => {
-  //     if (completedSteps.includes(index)) {
-  //       setCompletedSteps(completedSteps.filter((step) => step !== index));
-  //     } else {
-  //       setCompletedSteps([...completedSteps, index]);
-  //     }
-  //   };
 
   useEffect(() => {
     const determineCompletedSteps = () => {

@@ -29,23 +29,7 @@ function StartPage() {
   };
 
   return (
-    <motion.div
-      layout
-      initial={{
-        opacity: 0,
-      }}
-      animate={{
-        opacity: 1,
-      }}
-      exit={{
-        opacity: 0,
-      }}
-      transition={{
-        duration: 0.5,
-        ease: "easeInOut",
-      }}
-      className="grid place-content-center h-full md:min-h-[75dvh] w-full py-8"
-    >
+    <motion.div className="grid place-content-center h-full md:min-h-[75dvh] w-full py-8">
       {renderCurrentStep()}
     </motion.div>
   );

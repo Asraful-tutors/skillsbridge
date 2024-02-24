@@ -1,7 +1,7 @@
 "use server";
 
 import { SkillScore } from "@/components/app/start/overview/assessment/QuestionsPanel";
-import prisma from "@/lib/prisma";
+import prisma from "@/lib/backend/prisma";
 import { PrismaClientValidationError } from "@prisma/client/runtime/library";
 
 interface SelectedAnswer {
@@ -25,26 +25,23 @@ interface UserSkillUpdateInput {
 }
 // get hard type questions related to selected paths
 export const getHardQuestions = async (id: number) => {
-  const questions = await prisma.skillQuestion.findMany({
+  const assessment = await prisma.assessment.findFirst({
     where: {
-      skill: {
-        type: "hard",
-        paths: {
-          some: {
-            id: id,
-          },
-        },
-      },
+      name: "Artist 0",
     },
     include: {
-      skill: {
-        include: {
-          paths: true,
-        },
-      },
-      options: true,
+      questions: true,
     },
-    distinct: ["skillId"],
+  });
+
+  const questions = await prisma.question.findMany({
+    where: {
+      assessmentId: assessment?.id,
+    },
+    include: {
+      assessment: true,
+      questionRecord: true,
+    },
   });
 
   return questions;
@@ -52,26 +49,13 @@ export const getHardQuestions = async (id: number) => {
 
 // get hard type questions related to selected paths
 export const getSoftQuestions = async (id: number) => {
-  const questions = await prisma.skillQuestion.findMany({
+  const questions = await prisma.assessment.findFirst({
     where: {
-      skill: {
-        type: "soft",
-        paths: {
-          some: {
-            id: 5,
-          },
-        },
-      },
+      name: "Soft 0",
     },
     include: {
-      skill: {
-        include: {
-          paths: true,
-        },
-      },
-      options: true,
+      questions: true,
     },
-    distinct: ["skillId"],
   });
 
   return questions;

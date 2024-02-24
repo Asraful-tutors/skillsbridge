@@ -37,7 +37,7 @@ export default function SelectLearningPath({
   const [selectedPath, setSelectedPath] = useState<LearningPath | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  console.log("selectedPath", selectedPath);
+
   const isNextDisabled = !selectedPath;
 
   const nextStep = () => {
@@ -105,7 +105,7 @@ export default function SelectLearningPath({
     // Check if the user has a selected path in the database
     if (user && userPaths && userPaths.pathId) {
       const userSelectedPath = paths?.find(
-        (path) => path.id === userPaths.pathId
+        (path: any) => path.id === userPaths.pathId
       );
 
       if (userSelectedPath) {
@@ -134,16 +134,16 @@ export default function SelectLearningPath({
       <section className="space-y-1">
         <h1 className="header">Select your learning Path</h1>
         <p className="desc max-w-[633px] max-auto text-[#828282]">
-          Lorem ipsum dolor sit amet consectetur. Dictumst tortor metus ut
-          bibendum ut consectetur. Eu cras consectetur vestibulum ornare diam
-          magna ac.
+          Get guided through tailored study materials and skill assessments. And
+          if your goals evolve, switching paths is simple. Your journey, your
+          choice.
         </p>
       </section>
       <motion.section
         className="flex items-center justify-center flex-wrap gap-6"
         variants={staggerVariants}
       >
-        {paths?.slice(0, -1).map((path, key) => (
+        {paths?.map((path: any, key: number) => (
           <PathsCard
             key={key}
             id={path.id}

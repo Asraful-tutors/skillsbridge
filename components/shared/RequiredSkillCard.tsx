@@ -1,10 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useAppSelector } from "@/lib/store/hooks";
+import { useParams } from "next/navigation";
 
 interface CardProps {
   skill: {
-    img: string
+    img: string;
     title: string;
     language: string[];
     scale: {
@@ -17,6 +18,7 @@ interface CardProps {
 }
 
 export function RequiredSkillCard({ skill }: CardProps) {
+  const params = useParams();
   return (
     <div className="bg-[#F0F1F5] overflow-hidden w-fit rounded-[20px] px-[30px] py-5 mb-[10px]">
       <h3 className="text-xl font-semibold text-[#4D4D9B] mb-[40px]">
@@ -25,32 +27,36 @@ export function RequiredSkillCard({ skill }: CardProps) {
       <div className="flex flex-row mb-10">
         {skill.scale.values.map((value, i) => (
           <div
-          key={i}
-          className={`flex flex-col items-center gap-0.5 relative bg-[#DDDDDD] shadow-inner shadow-[#320864]/[.25] py-[3px] px-[2px] ${
-            i === 0 ? 'rounded-l-full' : ''
-          } ${
-            i === skill.scale.values.length - 1 ? 'rounded-r-full' : ''
-          }`}>
-            <span className="text-xs text-gray-500 absolute -bottom-5 left-0">{i}</span>
-            <motion.div
             key={i}
-            className={`w-[94px] h-[8px] cursor-pointer border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
-              i === 0 ? 'rounded-l-full' : ''
-            } ${
-              i === skill.scale.values.length - 1 ? 'rounded-r-full' : ''
-            }`}
-            animate={{ 
-              backgroundColor: skill.scale.selected >= value ? "#9E54FF" : ((skill.scale.required >= value) ? "#0F7EB8" : "#D9D9D9")
-             }}
+            className={`flex flex-col items-center gap-0.5 relative bg-[#DDDDDD] shadow-inner shadow-[#320864]/[.25] py-[3px] px-[2px] ${
+              i === 0 ? "rounded-l-full" : ""
+            } ${i === skill.scale.values.length - 1 ? "rounded-r-full" : ""}`}
+          >
+            <span className="text-xs text-gray-500 absolute -bottom-5 left-0">
+              {i}
+            </span>
+            <motion.div
+              key={i}
+              className={`w-[54px] sm:w-[94px] h-[8px] cursor-pointer border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
+                i === 0 ? "rounded-l-full" : ""
+              } ${i === skill.scale.values.length - 1 ? "rounded-r-full" : ""}`}
+              animate={{
+                backgroundColor:
+                  skill.scale.selected >= value
+                    ? "#9E54FF"
+                    : parseInt(params.id as any) >= value
+                    ? "#0F7EB8"
+                    : "#D9D9D9",
+              }}
             ></motion.div>
             {i + 1 === skill.scale.selected && (
               <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="44"
-              viewBox="0 0 18 44"
-              fill="none"
-              className="absolute -top-6 -right-3 z-50"
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="44"
+                viewBox="0 0 18 44"
+                fill="none"
+                className="absolute -top-6 -right-3 z-50"
               >
                 <path
                   fill-rule="evenodd"
@@ -78,13 +84,16 @@ export function RequiredSkillCard({ skill }: CardProps) {
           </span>
         </div>
       </div>
-      <h2 className="text-sm mb-[6px]">Current level: {skill.scale.selected}&nbsp;&nbsp;•&nbsp;&nbsp;Required level: {skill.scale.required}</h2>
+      <h2 className="text-sm mb-[6px]">
+        Current level: {skill.scale.selected}&nbsp;&nbsp;•&nbsp;&nbsp;Required
+        level: {params.id}
+      </h2>
       <a
-      href={`/milestone/0${skill.milestone}`}
-      className="font-bold text-[#4E00B2] underline"
+        href={`/milestone/0${skill.milestone}`}
+        className="font-bold text-[#4E00B2] underline"
       >
         Go to Milestone {skill.milestone}
       </a>
     </div>
-  )
+  );
 }

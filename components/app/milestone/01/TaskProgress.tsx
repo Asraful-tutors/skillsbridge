@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 
 export default function TaskProgress({ progress }: { progress: number }) {
-  progress = 1;
+  progress = 0;
   return (
     <motion.div className="flex flex-col">
       <div className="flex flex-row mb-[11px]">

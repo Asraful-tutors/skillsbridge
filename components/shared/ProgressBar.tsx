@@ -20,13 +20,13 @@ export const ProgressBar = ({
     } else if (segmentIndex === currentStep + 1) {
       return "bg-[#e3cfff]"; // Slightly lighter color for the next step
     } else {
-      return "bg-gray-300"; // Other segments color
+      return "bg-[#EEE]"; // Other segments color
     }
   };
 
   return (
     <motion.div className="w-full mb-4">
-      <motion.div className="h-5 rounded-full overflow-hidden flex flex-row">
+      <motion.div className="h-5 rounded-full overflow-hidden flex flex-row ">
         {[...Array(stepSegments)].map((_, index) => (
           <motion.div
             key={index}
@@ -41,8 +41,7 @@ export const ProgressBar = ({
               duration: 0.5,
               ease: "easeInOut",
             }}
-          >
-          </motion.div>
+          ></motion.div>
         ))}
       </motion.div>
     </motion.div>

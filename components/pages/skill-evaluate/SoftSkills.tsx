@@ -61,25 +61,19 @@ export default function SoftSkillsPage() {
 
   if (isError) return <>Something went wrong</>;
   return (
-    <motion.div
-      initial="hidden"
-      animate="visible"
-      layout
-      variants={staggerVariants}
-      className="flex flex-col items-center justify-center h-full w-full gap-10"
-    >
+    <div className="flex flex-col items-center justify-center h-full w-full gap-10">
       <section className="space-y-1">
         <h1 className="header">Evaluate your level of Soft Skills</h1>
         <p className="desc text-[#616060]">
-          Skillsbridge will tailor feedback to your role&apos;s communication
-          needs
+          This self-reflection is crucial for personal growth and aligning you
+          with the right journey.
         </p>
       </section>
       <motion.section
         className="grid grid-cols-1 gap-5"
         variants={staggerVariants}
       >
-        {softSkills?.map((data, key) => (
+        {softSkills?.map((data: any, key: number) => (
           <SoftSkillsCard
             key={key}
             name={data.name}
@@ -106,6 +100,6 @@ export default function SoftSkillsPage() {
           <Link href={"/start/overview"}>Next</Link>
         </Button>
       )}
-    </motion.div>
+    </div>
   );
 }

@@ -1,4 +1,4 @@
-import { logout } from "@/actions/logOut";
+import { logOut } from "@/lib/backend/user";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -41,7 +41,7 @@ export default function UserAvatar() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator /> */}
-        <DropdownMenuItem onClick={() => logout()}>
+        <DropdownMenuItem onClick={() => logOut()}>
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
