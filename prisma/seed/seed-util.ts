@@ -14,14 +14,16 @@ export const prisma = globalForPrisma.prisma || new PrismaClient();
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
 export default prisma;
-
+// @ts-ignore
 type ModelName = Prisma.TypeMap<any>["meta"]["modelProps"];
 
 type UpdateModel<T extends ModelName> = Parameters<
   (typeof prisma)[T]["update"]
+  // @ts-ignore
 >[0]["data"];
 type CreateModel<T extends ModelName> = Parameters<
   (typeof prisma)[T]["create"]
+  // @ts-ignore
 >[0]["data"];
 type CreatedModel<T extends ModelName> = Awaited<
   ReturnType<(typeof prisma)[T]["create"]>

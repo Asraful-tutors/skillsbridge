@@ -96,7 +96,7 @@ export default function HardSkillsPage({
         </p>
       </section>
       <motion.section className="grid grid-cols-1 gap-5 px-4">
-        {hardSkills?.map((data, key) => (
+        {hardSkills?.map((data: any, key: number) => (
           // @ts-ignore
           <HardSkillsCard
             key={key}

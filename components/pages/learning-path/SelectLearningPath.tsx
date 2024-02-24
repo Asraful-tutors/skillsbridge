@@ -105,7 +105,7 @@ export default function SelectLearningPath({
     // Check if the user has a selected path in the database
     if (user && userPaths && userPaths.pathId) {
       const userSelectedPath = paths?.find(
-        (path) => path.id === userPaths.pathId
+        (path: any) => path.id === userPaths.pathId
       );
 
       if (userSelectedPath) {
@@ -143,7 +143,7 @@ export default function SelectLearningPath({
         className="flex items-center justify-center flex-wrap gap-6"
         variants={staggerVariants}
       >
-        {paths?.map((path, key) => (
+        {paths?.map((path: any, key: number) => (
           <PathsCard
             key={key}
             id={path.id}

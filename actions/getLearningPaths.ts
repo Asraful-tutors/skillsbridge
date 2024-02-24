@@ -34,11 +34,7 @@ export const getHardSkillsForPath = async (pathId: number) => {
 export const getSoftSkillsForPath = async () => {
   const softSkills = await prisma.skill.findMany({
     where: {
-      paths: {
-        some: {
-          id: 4,
-        },
-      },
+      type: "Soft",
     },
   });
   console.log("soft", softSkills);

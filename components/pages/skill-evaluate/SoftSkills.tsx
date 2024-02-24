@@ -73,7 +73,7 @@ export default function SoftSkillsPage() {
         className="grid grid-cols-1 gap-5"
         variants={staggerVariants}
       >
-        {softSkills?.map((data, key) => (
+        {softSkills?.map((data: any, key: number) => (
           <SoftSkillsCard
             key={key}
             name={data.name}

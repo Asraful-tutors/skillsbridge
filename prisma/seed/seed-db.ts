@@ -2,6 +2,7 @@ import { Factory, NamedFactory, connect } from "./seed-util";
 import assessmentData from "./data/assessments.json";
 import mainSkillsData from "./data/main-skills.json";
 import milestonesData from "./data/milestones.json";
+// @ts-ignore
 import { Difficulty } from "@prisma/client";
 
 namespace SeedDB {

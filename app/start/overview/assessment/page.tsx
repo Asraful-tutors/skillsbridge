@@ -7,6 +7,7 @@ import { useState } from "react";
 
 export default function SkillAssessmentPage() {
   const [showStartAssessment, setShowStartAssessment] = useState(true);
+  const [currentSkillType, setCurrentSkillType] = useState("hard");
 
   const handleNextButtonClick = () => {
     setShowStartAssessment(!showStartAssessment);
@@ -31,7 +32,10 @@ export default function SkillAssessmentPage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <StartMultiStepAssessments />
+            <StartMultiStepAssessments
+              setCurrentSkillType={setCurrentSkillType}
+              currentSkillType={currentSkillType}
+            />
           </motion.div>
         )}
       </div>

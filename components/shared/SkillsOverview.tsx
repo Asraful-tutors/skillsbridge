@@ -23,7 +23,7 @@ const SkillsOverview = ({ data, disableAnimation }: ChartData) => {
     <div className="my-4 flex flex-col gap-3.5 ">
       {data?.map((entry, index) => (
         <div key={index} className="flex items-center gap-5">
-          <h3 className="text-lg font-semibold text-[#4D4D9B] min-w-[286px]">
+          <h3 className="text-lg font-semibold text-[#4D4D9B] w-[286px] whitespace-pre-wrap">
             {
               // @ts-ignore
               entry.skill.name

@@ -64,9 +64,9 @@ export default function SignUp({}: SignUpProps) {
           />
           <h1 className="header">Welcome to Skillbridge</h1>
           <p className="desc max-w-[449px] mx-auto -mt-1">
-            Elevate your potential in the games industry! Here, you'll find the
-            right resources and advice to make your journey rewarding and
-            laser-focused. Let's turn your passion into a career, together.
+            Elevate your potential in the games industry! Here, you&apos;ll find
+            the right resources and advice to make your journey rewarding and
+            laser-focused. Let&apos;s turn your passion into a career, together.
           </p>
           <Image
             src={"/images/step1.svg"}
@@ -82,8 +82,8 @@ export default function SignUp({}: SignUpProps) {
           <div>
             <h2 className="header">Sign up for an account</h2>
             <p className="desc">
-              Ready to level up? Let's navigate the journey to your dream job
-              together.
+              Ready to level up? Let&apos;s navigate the journey to your dream
+              job together.
             </p>
           </div>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

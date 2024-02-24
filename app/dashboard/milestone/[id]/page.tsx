@@ -1,7 +1,7 @@
 "use client";
 import Loading from "@/app/loading";
 import IsEligable from "@/components/app/dashboard/milestone/IsEligable";
-import LockedMileStonePage from "@/components/app/dashboard/milestone/LockedMileStonePage";
+// import LockedMileStonePage from "@/components/app/dashboard/milestone/LockedMileStonePage";
 import useUserPathSkills from "@/components/hooks/useUserPathSkills";
 import useUserPaths from "@/components/hooks/useUserPaths";
 import Breadcrumb from "@/components/shared/Breadcrumb";

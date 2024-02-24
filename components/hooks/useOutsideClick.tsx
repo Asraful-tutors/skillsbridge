@@ -16,7 +16,7 @@ const useOutsideClick = (
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
-  }, [visible, setVisible]);
+  }, []);
 };
 
 export default useOutsideClick;

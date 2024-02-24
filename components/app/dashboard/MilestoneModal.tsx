@@ -16,13 +16,13 @@ interface UserSkill {
 }
 
 export default function MilestoneModal({
- /*  userSkills,
+  /*  userSkills,
   userPaths, */
   setVisible,
 }: {
   /* userSkills: UserSkill;
   userPaths: any; */
-  setVisible: React.Dispatch<React.SetStateAction<boolean>>,
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   /* const { skills } = userSkills;
   const { path } = userPaths; */
@@ -65,7 +65,7 @@ export default function MilestoneModal({
   return (
     <div className="z-[100] bg-black/[.70] w-screen h-screen absolute top-0 left-0 flex items-center">
       <motion.div
-      className={`popup w-max relative text-black max-w-screen-2xl h-fit max-h-screen my-8 rounded-2xl sm:mx-10 xl:mx-auto grid grid-cols-1 xl:grid-cols-10 gap-12 p-0 bg-white_background overflow-y-scroll xl:overflow-y-auto`}
+        className={`popup w-max relative text-black max-w-screen-2xl h-fit max-h-screen my-8 rounded-2xl sm:mx-10 xl:mx-auto grid grid-cols-1 xl:grid-cols-10 gap-12 p-0 bg-white_background overflow-y-scroll xl:overflow-y-auto`}
       >
         <Button
           onClick={() => setVisible(false)}
@@ -83,14 +83,14 @@ export default function MilestoneModal({
             </h2>
             <p className="text-base opacity-50">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-              ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-              aliquip ex ea commodo consequat.{" "}
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.{" "}
             </p>
           </div>
           <div className="flex flex-col mb-[42px]">
             <h3 className="text-base font-medium mb-[9px]">
-              Skills you'll learn
+              Skills you&apos;ll learn
             </h3>
             <div className="flex flex-row gap-3 flex-wrap">
               {skillsData.map((item, key: number) => (
@@ -99,12 +99,12 @@ export default function MilestoneModal({
                   variant={"nonHoverable"}
                   className={`rounded-full w-fit px-4 py-2 flex justify-center text-badge_text bg-apricot/[.56] text-sm shadow-none tracking-tighter-[-0.154px] ${
                     key % 4 === 0
-                    ? 'bg[#A8DAFF8F]'
-                    : key % 4 === 1
-                    ? 'bg-[#94C6EB8F]'
-                    : key % 4 === 2
-                    ? 'bg-[#FFA8D28F]'
-                    : 'bg-[#FF84005E]'
+                      ? "bg[#A8DAFF8F]"
+                      : key % 4 === 1
+                      ? "bg-[#94C6EB8F]"
+                      : key % 4 === 2
+                      ? "bg-[#FFA8D28F]"
+                      : "bg-[#FF84005E]"
                   }`}
                 >
                   {item.title}

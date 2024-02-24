@@ -8,10 +8,8 @@ import CompletionBox from "@/components/app/dashboard/CompletionBox";
 import { motion } from "framer-motion";
 import useOutsideClick from "@/components/hooks/useOutsideClick";
 import MilestoneModal from "@/components/app/dashboard/MilestoneModal";
+import { useAppDispatch } from "@/lib/store/hooks";
 import { useQuery } from "@tanstack/react-query";
-import { auth } from "@/auth";
-import prisma from "@/lib/backend/prisma";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { getCurrentUser } from "@/lib/backend/user";
 import { setUserData } from "@/lib/store/user/userSlice";
 
@@ -31,13 +29,13 @@ export default function DashboardPage() {
           ...data,
           name: data.name || "",
         };
+        // @ts-ignore
         dispatch(setUserData(userData));
       }
 
       return data || {};
     },
   });
-
   const [hovered, setHovered] = useState<{ [key: number]: boolean }>({});
   const [divStyle, setDivStyle] = useState({
     scale: 1,
@@ -69,15 +67,9 @@ export default function DashboardPage() {
     }));
   };
 
-<<<<<<< HEAD
-  const handleZoom = (event: WheelEvent) => {
+  const handleZoom: React.WheelEventHandler<HTMLDivElement> = (event) => {
     const newScale = divStyle.scale + (event.deltaY > 0 ? -0.2 : 0.2);
     const restrictedScale = Math.max(minZoom, Math.min(newScale, maxZoom));
-=======
-  const handleZoom: React.WheelEventHandler<HTMLDivElement> = (event) => {
-    const newScale = divStyle.scale + (event.deltaY > 0 ? -0.2 : 0.2)
-    const restrictedScale = Math.max(minZoom, Math.min(newScale, maxZoom))
->>>>>>> 5da6066aa067880763820c696a8226c9fd754c72
 
     setDivStyle((prevDivStyle) => ({
       ...prevDivStyle,
@@ -132,40 +124,31 @@ export default function DashboardPage() {
   };
 
   useEffect(() => {
-<<<<<<< HEAD
-    document.addEventListener("wheel", handleZoom);
     document.addEventListener("mousemove", handleMouseMove as any);
     document.addEventListener("mouseup", handleMouseUp);
-=======
-    document.addEventListener('mousemove', handleMouseMove as any)
-    document.addEventListener('mouseup', handleMouseUp)
->>>>>>> 5da6066aa067880763820c696a8226c9fd754c72
 
     document.addEventListener("touchmove", handleMouseMove as any);
     document.addEventListener("touchend", handleMouseUp);
 
     return () => {
-<<<<<<< HEAD
-      document.removeEventListener("wheel", handleZoom);
       document.removeEventListener("mousemove", handleMouseMove as any);
       document.removeEventListener("mouseup", handleMouseUp);
-=======
-      document.removeEventListener('mousemove', handleMouseMove as any)
-      document.removeEventListener('mouseup', handleMouseUp)
->>>>>>> 5da6066aa067880763820c696a8226c9fd754c72
 
       document.removeEventListener("touchmove", handleMouseMove as any);
       document.removeEventListener("touchend", handleMouseUp);
     };
-  }, [divStyle.scale, divStyle.isDragging]);
+  }, [handleMouseMove, handleMouseUp, divStyle.scale, divStyle.isDragging]);
 
   return (
     <section className="bg-[url('/images/dashboard.svg')] bg-cover bg-center bg-repeat w-screen h-screen relative overflow-hidden">
       <Header />
-      <SkillsBoard user={user} />
+
+      <SkillsBoard
+        //@ts-ignore
+        user={user}
+      />
       {visible && <MilestoneModal setVisible={setVisible} />}
       <motion.div
-<<<<<<< HEAD
         className="relative min-w-[1401.75px]"
         style={{
           transform: `scale(${divStyle.scale})`,
@@ -178,21 +161,7 @@ export default function DashboardPage() {
         transition={{ duration: 0.1, ease: "linear" }}
         onMouseDown={handleMouseDown}
         onTouchStart={handleMouseDown}
-=======
-      className="relative min-w-[1401.75px]"
-      style={{
-        transform: `scale(${divStyle.scale})`,
-        top: `${divStyle.top}px`,
-        left: `${divStyle.left}px`,
-      }}
-      animate={{
-        scale: divStyle.scale || 1,
-      }}
-      transition={{ duration: 0.1, ease: 'linear' }}
-      onMouseDown={handleMouseDown}
-      onTouchStart={handleMouseDown}
-      onWheel={handleZoom}
->>>>>>> 5da6066aa067880763820c696a8226c9fd754c72
+        onWheel={handleZoom}
       >
         {/* Milestone 1 */}
         <div className="absolute top-64 left-4">
@@ -204,7 +173,7 @@ export default function DashboardPage() {
             <div
               onMouseEnter={() => handleMouseAction(1, true)}
               onMouseLeave={() => handleMouseAction(1, false)}
-              // onClick={handleModal}
+              onClick={handleModal}
               className="group relative"
             >
               <Image
@@ -221,6 +190,7 @@ export default function DashboardPage() {
                 src={"/images/milestone1_title.svg"}
                 className="w-[134px] h-[32px] h-full absolute -bottom-[120px] left-[80px] z-50"
               />
+              {hovered[1] && <CompletionBox />}
             </div>
           </div>
         </div>
@@ -251,6 +221,7 @@ export default function DashboardPage() {
                 src={"/images/milestone2_title.svg"}
                 className="w-[134px] h-[32px] h-full absolute top-[10px] left-[130px] z-50"
               />
+              {hovered[2] && <CompletionBox />}
             </div>
           </div>
         </div>
@@ -281,6 +252,7 @@ export default function DashboardPage() {
                 src={"/images/milestone3_title.svg"}
                 className="w-[134px] h-[32px] h-full absolute -top-[20px] left-[70px] z-50"
               />
+              {hovered[3] && <CompletionBox />}
             </div>
           </div>
         </div>
@@ -303,6 +275,7 @@ export default function DashboardPage() {
                 src={"/images/milestone4.svg"}
                 className="w-full h-full group-hover:opacity-50 z-40"
               />
+              {hovered[4] && <CompletionBox />}
             </div>
           </div>
         </div>
@@ -329,6 +302,7 @@ export default function DashboardPage() {
                 src={"/images/milestone5_title.svg"}
                 className="w-[134px] h-[32px] h-full absolute -bottom-[10px] left-[30px] z-50"
               />
+              {hovered[5] && <CompletionBox />}
             </div>
           </div>
         </div>
@@ -358,6 +332,7 @@ export default function DashboardPage() {
                 src={"/images/milestone6_title.svg"}
                 className="w-[134px] h-[32px] h-full absolute -bottom-[10px] left-[30px] z-50"
               />
+              {hovered[6] && <CompletionBox />}
             </div>
           </div>
         </div>
@@ -387,6 +362,7 @@ export default function DashboardPage() {
                 src={"/images/milestone7_title.svg"}
                 className="w-[134px] h-[32px] h-full absolute top-[50px] left-[50px] z-50"
               />
+              {hovered[7] && <CompletionBox />}
             </div>
           </div>
         </div>

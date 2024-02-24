@@ -113,7 +113,7 @@ export async function register(options: RegisterOptions) {
 
   if (alwaysActivePaths.length) {
     await prisma.userPath.createMany({
-      data: alwaysActivePaths.map((v) => ({
+      data: alwaysActivePaths.map((v: any) => ({
         active: true,
         completion: 0,
         pathId: v.id,
