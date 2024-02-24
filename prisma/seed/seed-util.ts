@@ -112,6 +112,15 @@ export abstract class NamedFactory<T extends ModelName> implements IFactory<T> {
     return this.items.get(name) ?? (await this.create(name, data));
   }
 
+  async upsert(name: string, data: CreateModel<T>): Promise<CreatedModel<T>> {
+    var exists = !!this.items.get(name);
+    if (exists) {
+      return await this.update(name, data);
+    } else {
+      return await this.create(name, data);
+    }
+  }
+
   async getCreateMulti(
     ...items: { name: string; data?: CreateModel<T> }[]
   ): Promise<CreatedModel<T>[]> {
