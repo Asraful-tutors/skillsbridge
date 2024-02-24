@@ -69,9 +69,15 @@ export default function DashboardPage() {
     }));
   };
 
+<<<<<<< HEAD
   const handleZoom = (event: WheelEvent) => {
     const newScale = divStyle.scale + (event.deltaY > 0 ? -0.2 : 0.2);
     const restrictedScale = Math.max(minZoom, Math.min(newScale, maxZoom));
+=======
+  const handleZoom: React.WheelEventHandler<HTMLDivElement> = (event) => {
+    const newScale = divStyle.scale + (event.deltaY > 0 ? -0.2 : 0.2)
+    const restrictedScale = Math.max(minZoom, Math.min(newScale, maxZoom))
+>>>>>>> 5da6066aa067880763820c696a8226c9fd754c72
 
     setDivStyle((prevDivStyle) => ({
       ...prevDivStyle,
@@ -126,17 +132,27 @@ export default function DashboardPage() {
   };
 
   useEffect(() => {
+<<<<<<< HEAD
     document.addEventListener("wheel", handleZoom);
     document.addEventListener("mousemove", handleMouseMove as any);
     document.addEventListener("mouseup", handleMouseUp);
+=======
+    document.addEventListener('mousemove', handleMouseMove as any)
+    document.addEventListener('mouseup', handleMouseUp)
+>>>>>>> 5da6066aa067880763820c696a8226c9fd754c72
 
     document.addEventListener("touchmove", handleMouseMove as any);
     document.addEventListener("touchend", handleMouseUp);
 
     return () => {
+<<<<<<< HEAD
       document.removeEventListener("wheel", handleZoom);
       document.removeEventListener("mousemove", handleMouseMove as any);
       document.removeEventListener("mouseup", handleMouseUp);
+=======
+      document.removeEventListener('mousemove', handleMouseMove as any)
+      document.removeEventListener('mouseup', handleMouseUp)
+>>>>>>> 5da6066aa067880763820c696a8226c9fd754c72
 
       document.removeEventListener("touchmove", handleMouseMove as any);
       document.removeEventListener("touchend", handleMouseUp);
@@ -149,6 +165,7 @@ export default function DashboardPage() {
       <SkillsBoard user={user} />
       {visible && <MilestoneModal setVisible={setVisible} />}
       <motion.div
+<<<<<<< HEAD
         className="relative min-w-[1401.75px]"
         style={{
           transform: `scale(${divStyle.scale})`,
@@ -161,6 +178,21 @@ export default function DashboardPage() {
         transition={{ duration: 0.1, ease: "linear" }}
         onMouseDown={handleMouseDown}
         onTouchStart={handleMouseDown}
+=======
+      className="relative min-w-[1401.75px]"
+      style={{
+        transform: `scale(${divStyle.scale})`,
+        top: `${divStyle.top}px`,
+        left: `${divStyle.left}px`,
+      }}
+      animate={{
+        scale: divStyle.scale || 1,
+      }}
+      transition={{ duration: 0.1, ease: 'linear' }}
+      onMouseDown={handleMouseDown}
+      onTouchStart={handleMouseDown}
+      onWheel={handleZoom}
+>>>>>>> 5da6066aa067880763820c696a8226c9fd754c72
       >
         {/* Milestone 1 */}
         <div className="absolute top-64 left-4">

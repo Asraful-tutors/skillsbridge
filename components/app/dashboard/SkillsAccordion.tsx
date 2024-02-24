@@ -29,6 +29,7 @@ export function SkillsAccordion({ title, data }: SkillsAccordionProps) {
               </h3>{" "}
               {/* replace with skill.title variable */}
               <div className="flex flex-row items-center">
+<<<<<<< HEAD
                 <Progress
                   value={33}
                   indicatorColor="bg-gradient-to-b from-[#B278FF] to-[#9D53FF]"
@@ -36,6 +37,10 @@ export function SkillsAccordion({ title, data }: SkillsAccordionProps) {
                 />
                 <h3 className="text-sm font-bold text-[#1C5FA1]">{50}%</h3>{" "}
                 {/* replace with skill.value variables */}
+=======
+                <Progress value={33} indicatorColor="bg-gradient-to-b from-[#B278FF] to-[#9D53FF]" className="h-[10px] w-[100px] sm:w-[207px] bg-[#B59292]/[.51] mr-[21px]" />
+                <h3 className="text-sm font-bold text-[#1C5FA1]">{50}%</h3> {/* replace with skill.value variables */}
+>>>>>>> 5da6066aa067880763820c696a8226c9fd754c72
               </div>
             </div>
           ))}

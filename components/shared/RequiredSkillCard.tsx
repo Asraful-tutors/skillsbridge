@@ -37,7 +37,7 @@ export function RequiredSkillCard({ skill }: CardProps) {
             </span>
             <motion.div
               key={i}
-              className={`w-[94px] h-[8px] cursor-pointer border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
+              className={`w-[54px] sm:w-[94px] h-[8px] cursor-pointer border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
                 i === 0 ? "rounded-l-full" : ""
               } ${i === skill.scale.values.length - 1 ? "rounded-r-full" : ""}`}
               animate={{

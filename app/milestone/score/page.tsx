@@ -47,7 +47,7 @@ export default function Milestone_01() {
       <div className="border-b-[1px] border-[#B1ABAB] w-full">
         <h1 className="text-2xl font-bold m-6">Scorecard</h1>
       </div>
-      <div className="grid grid-cols-1 xl:grid-cols-2">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-10 xl:mx-[50px]">
         {skillsData.map((skill, i) => (
           <SkillCard key={i} skill={skill} />
         ))}
