@@ -82,6 +82,7 @@ CREATE TABLE "UserSkill" (
     "skillId" INTEGER NOT NULL,
     "score" DOUBLE PRECISION,
     "selfScore" DOUBLE PRECISION,
+    "assessedScore" DOUBLE PRECISION,
 
     CONSTRAINT "UserSkill_pkey" PRIMARY KEY ("userId","skillId")
 );

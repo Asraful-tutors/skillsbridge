@@ -12,9 +12,21 @@ import { useAppDispatch } from "@/lib/store/hooks";
 import { useQuery } from "@tanstack/react-query";
 import { getCurrentUser } from "@/lib/backend/user";
 import { setUserData } from "@/lib/store/user/userSlice";
+import Link from "next/link";
+import useUserPaths from "@/components/hooks/useUserPaths";
+import Loading from "../loading";
+import { useParams } from "next/navigation";
+import useUserPathSkills from "@/components/hooks/useUserPathSkills";
+import {
+  getDashboardSoftSkills,
+  getDashboardhardSkills,
+  getSoftSkills,
+} from "@/actions/overView";
 
 export default function DashboardPage() {
   const dispatch = useAppDispatch();
+  const [selectedData, setSelectedData] = useState([]);
+  const [formattedPathName, setFormattedPathName] = useState(``);
   const userEmail =
     typeof window !== "undefined" ? localStorage.getItem("userData") : null;
   const parsedEmail = userEmail ? JSON.parse(userEmail) : null;
@@ -36,6 +48,55 @@ export default function DashboardPage() {
       return data || {};
     },
   });
+
+  const { userPaths, userPathsLoading, userPathsError } = useUserPaths(
+    user as any
+  );
+
+  const params = useParams();
+
+  const { userSkills, userSkillsLoading, userSkillsError } = useUserPathSkills(
+    //@ts-ignore
+    user?.id,
+    formattedPathName
+  );
+
+  const {
+    data: userSoftSkills,
+    isLoading: userSoftSkillsLoading,
+    isError: userSoftSkillsError,
+  } = useQuery({
+    queryKey: ["user-softSkills"],
+    queryFn: () => {
+      // @ts-ignore
+      if (!user || !user.id) {
+        throw new Error("User ID is undefined");
+      }
+      // @ts-ignore
+
+      return getDashboardSoftSkills(user?.id);
+    },
+    enabled: !!user,
+  });
+  const {
+    data: userHardSkills,
+    isLoading: userHardSkillsLoading,
+    isError: userHardSkillsError,
+  } = useQuery({
+    queryKey: ["user-hardSkills"],
+    queryFn: () => {
+      // @ts-ignore
+
+      if (!user || !user.id) {
+        throw new Error("User ID is undefined");
+      }
+      // @ts-ignore
+
+      return getDashboardhardSkills(user?.id);
+    },
+    enabled: !!user,
+  });
+
   const [hovered, setHovered] = useState<{ [key: number]: boolean }>({});
   const [divStyle, setDivStyle] = useState({
     scale: 1,
@@ -45,6 +106,7 @@ export default function DashboardPage() {
     dragStartX: 0,
     dragStartY: 0,
   });
+
   const [visible, setVisible] = useState(false);
   const prevClientX = useRef(0);
   const prevClientY = useRef(0);
@@ -139,15 +201,31 @@ export default function DashboardPage() {
     };
   }, [handleMouseMove, handleMouseUp, divStyle.scale, divStyle.isDragging]);
 
+  if (userPathsLoading || userSoftSkillsLoading || userHardSkillsLoading)
+    return (
+      <>
+        <Loading />
+      </>
+    );
+  if (userPathsError) return <>Something went wrong</>;
+
   return (
     <section className="bg-[url('/images/dashboard.svg')] bg-cover bg-center bg-repeat w-screen h-screen relative overflow-hidden">
       <Header />
 
-      <SkillsBoard
-        //@ts-ignore
-        user={user}
-      />
-      {visible && <MilestoneModal setVisible={setVisible} />}
+      {!userHardSkillsLoading && !userSoftSkillsLoading ? (
+        <SkillsBoard
+          //@ts-ignore
+          user={user}
+          userSoftSkills={userSoftSkills}
+          userHardSkills={userHardSkills}
+        />
+      ) : null}
+
+      {visible && (
+        // @ts-ignore
+        <MilestoneModal setVisible={setVisible} userSkills={userSkills} />
+      )}
       <motion.div
         className="relative min-w-[1401.75px]"
         style={{
@@ -170,18 +248,16 @@ export default function DashboardPage() {
           after:absolute after:content-[url('/images/milestone1_after.svg')] after:-bottom-[235px] after:-right-[125px] after:w-full after:h-full after:object-cover after:object-center
           "
           >
-            <div
-              onMouseEnter={() => handleMouseAction(1, true)}
-              onMouseLeave={() => handleMouseAction(1, false)}
-              onClick={handleModal}
-              className="group relative"
+            <Link
+              href={`/dashboard/milestone/${userPaths?.path.name}/1`}
+              className="group relative cursor-pointer"
             >
               <Image
                 alt="milestone 1"
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone1_light.svg"}
-                className="w-[300px] h-[245.156px] group-hover:opacity-50 z-40"
+                className="w-[300px] h-[245.156px] z-40 "
               />
               <Image
                 alt="milestone 1"
@@ -190,8 +266,7 @@ export default function DashboardPage() {
                 src={"/images/milestone1_title.svg"}
                 className="w-[134px] h-[32px] h-full absolute -bottom-[120px] left-[80px] z-50"
               />
-              {hovered[1] && <CompletionBox />}
-            </div>
+            </Link>
           </div>
         </div>
         {/* Milestone 2 */}
@@ -204,7 +279,11 @@ export default function DashboardPage() {
             <div
               onMouseEnter={() => handleMouseAction(2, true)}
               onMouseLeave={() => handleMouseAction(2, false)}
-              onClick={handleModal}
+              onClick={() => {
+                setFormattedPathName(`${userPaths?.path.name} 2`);
+                // setSelectedData();
+                handleModal();
+              }}
               className="group relative"
             >
               <Image
@@ -235,7 +314,11 @@ export default function DashboardPage() {
             <div
               onMouseEnter={() => handleMouseAction(3, true)}
               onMouseLeave={() => handleMouseAction(3, false)}
-              onClick={handleModal}
+              onClick={() => {
+                setFormattedPathName(`${userPaths?.path.name} 3`);
+                // setSelectedData();
+                handleModal();
+              }}
               className="group relative"
             >
               <Image
@@ -265,7 +348,11 @@ export default function DashboardPage() {
             <div
               onMouseEnter={() => handleMouseAction(4, true)}
               onMouseLeave={() => handleMouseAction(4, false)}
-              onClick={handleModal}
+              onClick={() => {
+                setFormattedPathName(`${userPaths?.path.name} 4`);
+                // setSelectedData();
+                handleModal();
+              }}
               className="group"
             >
               <Image

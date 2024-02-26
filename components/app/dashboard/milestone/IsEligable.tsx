@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
@@ -5,6 +6,8 @@ import Image from "next/image";
 import TaskProgress from "../../milestone/01/TaskProgress";
 import { Button } from "@/components/ui/button";
 import Breadcrumb from "@/components/shared/Breadcrumb";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
 
 interface Skill {
   skill: {
@@ -23,7 +26,7 @@ export default function IsEligable({
   userSkills: UserSkill;
   userPaths: any;
 }) {
-  const { skills } = userSkills;
+  const params = useParams();
   const { path } = userPaths;
 
   return (
@@ -56,13 +59,13 @@ export default function IsEligable({
             Skills you&apos;ll learn
           </h3>
           <div className="flex flex-row gap-3 flex-wrap">
-            {skills?.map((item: Skill, key: number) => (
+            {userSkills?.map((item: Skill, key: number) => (
               <Badge
                 key={key}
                 variant={"nonHoverable"}
                 className="rounded-full w-fit px-4 py-2 flex justify-center text-badge_text bg-apricot/[.56] text-sm shadow-none tracking-tighter-[-0.154px]"
               >
-                {item.skill.name}
+                {item.name}
               </Badge>
             ))}
           </div>
@@ -74,12 +77,12 @@ export default function IsEligable({
 
           <TaskProgress progress={0} />
         </div>
-        <Button
-          /* onClick={} */
-          variant={"violate"}
-          className="max-w-[284px] mx-auto"
-        >
-          Go to course
+        <Button asChild variant={"violate"} className="max-w-[284px] mx-auto">
+          <Link
+            href={`/dashboard/milestone/${userPaths?.path.name}/${params?.pathId}/course`}
+          >
+            Go to course
+          </Link>
         </Button>
       </div>
       <Image

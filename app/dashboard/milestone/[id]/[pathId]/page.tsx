@@ -6,11 +6,24 @@ import useUserPathSkills from "@/components/hooks/useUserPathSkills";
 import useUserPaths from "@/components/hooks/useUserPaths";
 import Breadcrumb from "@/components/shared/Breadcrumb";
 import { useAppSelector } from "@/lib/store/hooks";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+
+// formate the params like Artist 1 from Artist?p=1
+const formatPathName = (pathName: string): string => {
+  // Replace underscores with spaces and convert to title case
+  return pathName
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+};
 
 export default function MileStonePage() {
   const params = useParams();
+  const searchParams = useSearchParams();
+  const getmilestoneId = searchParams.get("p");
   const user = useAppSelector((state) => state.user.userData);
+
+  // Concatenate params.id and getmilestoneId and then format the path name
+  const formattedPathName = `${params?.id} ${params?.pathId}`;
 
   const { userPaths, userPathsError, userPathsLoading } = useUserPaths(
     //@ts-ignore
@@ -18,9 +31,9 @@ export default function MileStonePage() {
   );
   const { userSkills, userSkillsLoading, userSkillsError } = useUserPathSkills(
     //@ts-ignore
-    user?.id
+    user?.id,
+    formattedPathName
   );
-  console.log("userSkills", userSkills);
 
   if (userSkillsLoading || !userSkills || userPathsLoading)
     return (
@@ -39,7 +52,11 @@ export default function MileStonePage() {
 
   return (
     <>
-      <IsEligable userSkills={userSkills} userPaths={userPaths} />
+      <IsEligable
+        //@ts-ignore
+        userSkills={userSkills}
+        userPaths={userPaths}
+      />
     </>
   );
 }
