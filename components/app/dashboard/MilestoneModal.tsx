@@ -16,12 +16,12 @@ interface UserSkill {
 }
 
 export default function MilestoneModal({
-  /*  userSkills,
-  userPaths, */
+  userSkills,
+
   setVisible,
 }: {
-  /* userSkills: UserSkill;
-  userPaths: any; */
+  userSkills: any;
+  userPaths: any;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   /* const { skills } = userSkills;
@@ -93,7 +93,7 @@ export default function MilestoneModal({
               Skills you&apos;ll learn
             </h3>
             <div className="flex flex-row gap-3 flex-wrap">
-              {skillsData.map((item, key: number) => (
+              {userSkills?.map((item: any, key: number) => (
                 <Badge
                   key={key}
                   variant={"nonHoverable"}
@@ -107,7 +107,7 @@ export default function MilestoneModal({
                       : "bg-[#FF84005E]"
                   }`}
                 >
-                  {item.title}
+                  {item.name}
                 </Badge>
               ))}
             </div>

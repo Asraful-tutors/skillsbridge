@@ -5,15 +5,20 @@ interface UserType {
   id: number;
 }
 
-const useUserPathSkills = (user: UserType | null) => {
+const useUserPathSkills = (
+  user: UserType | null,
+  formattedPathName: string
+) => {
   const {
     data: userSkills,
     isLoading: userSkillsLoading,
     isError: userSkillsError,
   } = useQuery({
-    queryKey: ["userPathSkills", user?.id],
+    queryKey: ["userPathSkills", user?.id, formattedPathName],
     queryFn: () =>
-      user ? getUserSelectedPathSkills(user.id) : Promise.resolve(null),
+      user
+        ? getUserSelectedPathSkills(user.id, formattedPathName)
+        : Promise.resolve(null),
     enabled: !!user,
   });
 

@@ -26,7 +26,6 @@ export default function ProfileOverview() {
     },
     enabled: !!user,
   });
-  console.log("userSoftSkills", userSoftSkills);
   const {
     data: userHardSkills,
     isLoading: userHardSkillsLoading,
