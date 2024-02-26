@@ -17,11 +17,11 @@ function StartPage() {
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 1:
-        return <SelectLearningPath onNext={handleNext} />;
+        return <SelectLearningPath setCurrentStep={setCurrentStep} />;
       case 2:
-        return <HardSkillsPage onNext={handleNext} />;
+        return <HardSkillsPage setCurrentStep={setCurrentStep} />;
       case 3:
-        return <SoftSkills onNext={handleNext} />;
+        return <SoftSkills />;
 
       default:
         return null;
@@ -29,23 +29,7 @@ function StartPage() {
   };
 
   return (
-    <motion.div
-      layout
-      initial={{
-        opacity: 0,
-      }}
-      animate={{
-        opacity: 1,
-      }}
-      exit={{
-        opacity: 0,
-      }}
-      transition={{
-        duration: 0.5,
-        ease: "easeInOut",
-      }}
-      className="grid place-content-center h-full md:min-h-[75dvh] w-full py-8"
-    >
+    <motion.div className="grid place-content-center h-full md:min-h-[75dvh] w-full py-8">
       {renderCurrentStep()}
     </motion.div>
   );

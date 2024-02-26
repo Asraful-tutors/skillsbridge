@@ -1,78 +1,108 @@
 import { motion } from "framer-motion";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { useAppSelector } from "@/lib/store/hooks";
 
 import { Button } from "@/components/ui/button";
-import { HardSkill, hardSkills } from "@/lib/data/hardSkills";
 import HardSkillsCard from "@/components/app/start/HardSkillsCard";
-import { addSelectedSkill } from "@/lib/store/hardSkill/hardSkill";
-import { paths } from "@/lib/data/path";
+import { useQuery } from "@tanstack/react-query";
+import useUserPaths from "@/components/hooks/useUserPaths";
+import {
+  getFilteredPaths,
+  getHardSkillsForPath,
+} from "@/actions/getLearningPaths";
+import Loading from "@/app/loading";
+import { useMemo, useState } from "react";
+import { upsertHardSkills } from "@/actions/usersSkillsAssessment";
 
 const staggerVariants = {
   visible: { opacity: 1, transition: { staggerChildren: 0.5, delay: 0.1 } },
   hidden: { opacity: 0 },
 };
 
-export default function HardSkillsPage({ onNext }: { onNext: () => void }) {
-  const dispatch = useAppDispatch();
-  const selectedSkill = useAppSelector(
-    (state) => state.hardSkill.selectedSkills
-  );
+export default function HardSkillsPage({
+  setCurrentStep,
+}: {
+  setCurrentStep: any;
+}) {
+  const user = useAppSelector((state) => state.user.userData);
+  const { userPaths, userPathsLoading, userPathsError } = useUserPaths(user);
 
-  console.log("selectedSkill", selectedSkill);
-  const { career } = useAppSelector((state) => state.path.selectedPath);
+  const [scaledSkills, setScaledSkills] = useState<
+    { skillId: number; selfScore: number }[]
+  >([]);
 
-  // Finding the selected career in the paths array
-  const selectedCareer = paths.find((path) => path.career === career);
-  // Extracting the skills for the selected career
-  const filteredHardSkills = selectedCareer
-    ? selectedCareer.skills.map((skill) => ({
-        img: "", // Set the appropriate image source
-        title: skill.skill,
-        scale: skill.scale,
-      }))
-    : [];
-
-  const handleScaleClick = (skill: HardSkill, selectedScale: number) => {
-    // Update the selected scale for the corresponding skill
-    dispatch(addSelectedSkill({ skill, selectedScale }));
+  const nextStep = () => {
+    setCurrentStep((prev: number) => prev + 1);
   };
 
-  console.log("filteredHardSkills", filteredHardSkills);
-
-  const isNextDisabled = !filteredHardSkills.every((skill) => {
-    const isSelected = selectedSkill.find((s) => s.skill.title === skill.title);
-    return isSelected && isSelected.selectedScale > 0;
+  const {
+    data: hardSkills,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["hardSkills"],
+    queryFn: () => {
+      if (!userPaths || !userPaths.path) {
+        throw new Error("User paths or path ID is undefined");
+      }
+      return getHardSkillsForPath(userPaths.path.id);
+    },
+    enabled: !!userPaths,
   });
+  console.log("hardSkills", hardSkills);
+
+  const handleScaleClick = (skillId: number, selfScore: number) => {
+    setScaledSkills((prevSkills) => [
+      ...prevSkills.filter((skill) => skill.skillId !== skillId),
+      { skillId, selfScore },
+    ]);
+  };
+  console.log(scaledSkills);
+  const handleNextClick = async () => {
+    if (!user) {
+      console.error("User is not defined");
+      return;
+    }
+    // Upsert scaled skills
+    await upsertHardSkills(user.id, scaledSkills).then(() => nextStep());
+    // Continue with onNext logic
+    // onNext()
+  };
+
+  const isNextDisabled = useMemo(() => {
+    const scaledSkillsCount = scaledSkills.length;
+    const totalSkillsCount = hardSkills?.length || 0;
+    return scaledSkillsCount !== totalSkillsCount;
+  }, [scaledSkills, hardSkills]);
+
+  if (isLoading)
+    return (
+      <>
+        <Loading />
+      </>
+    );
+
+  if (isError) return <>Something went wrong</>;
+
   return (
     <motion.div
       layout
-      variants={staggerVariants}
       className="flex flex-col items-center justify-center h-full w-full gap-10"
     >
       <section className="space-y-1">
         <h1 className="header">Evaluate your level of Hard Skills</h1>
         <p className="desc text-[#616060]">
-          Skillsbridge will tailor feedback to your role&apos;s communication
-          needs
+          Your self-evaluation helps us tailor your learning experience to
+          bridge gaps and enhance strengths.
         </p>
       </section>
-      <motion.section
-        className="grid grid-cols-1 gap-5 px-4"
-        variants={staggerVariants}
-      >
-        {filteredHardSkills.map((skill, key) => (
+      <motion.section className="grid grid-cols-1 gap-5 px-4">
+        {hardSkills?.map((data: any, key: number) => (
+          // @ts-ignore
           <HardSkillsCard
             key={key}
-            img={skill.img}
-            title={skill.title}
-            language={skill.language}
-            scale={{
-              values: skill.scale.values,
-              selected: skill.scale.selected,
-            }}
-            onScaleClick={(selectedScale) =>
-              handleScaleClick(skill, selectedScale)
-            }
+            id={data.id}
+            name={data.name}
+            onScaleClick={(selfScore) => handleScaleClick(data.id, selfScore)}
           />
         ))}
       </motion.section>
@@ -80,7 +110,7 @@ export default function HardSkillsPage({ onNext }: { onNext: () => void }) {
       <Button
         disabled={isNextDisabled}
         variant={"violate"}
-        onClick={onNext}
+        onClick={handleNextClick}
         className="w-[284px] mx-auto"
       >
         Next

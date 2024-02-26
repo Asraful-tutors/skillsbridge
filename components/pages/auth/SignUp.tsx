@@ -1,16 +1,43 @@
 "use client";
 
+import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { SignUpSchema } from "@/schemas";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useTransition } from "react";
+import { register } from "@/lib/backend/user";
 
 type SignUpProps = {
   // onRequestAccess: () => void;
 };
 
 export default function SignUp({}: SignUpProps) {
+  const [isPending, startTransition] = useTransition();
+  const form = useForm<z.infer<typeof SignUpSchema>>({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+    },
+    resolver: zodResolver(SignUpSchema),
+  });
+
+  const onSubmit = (values: z.infer<typeof SignUpSchema>) => {
+    startTransition(() => {
+      register(values)
+        .then((res) => {
+          localStorage.setItem("userData", JSON.stringify(values));
+        })
+        .catch((err) => console.log(err));
+    });
+  };
+
   return (
     <motion.div
       initial={{
@@ -37,9 +64,9 @@ export default function SignUp({}: SignUpProps) {
           />
           <h1 className="header">Welcome to Skillbridge</h1>
           <p className="desc max-w-[449px] mx-auto -mt-1">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry&apos;s standard dummy
-            text ever.
+            Elevate your potential in the games industry! Here, you&apos;ll find
+            the right resources and advice to make your journey rewarding and
+            laser-focused. Let&apos;s turn your passion into a career, together.
           </p>
           <Image
             src={"/images/step1.svg"}
@@ -54,14 +81,40 @@ export default function SignUp({}: SignUpProps) {
         <div className="p-4 lg:p-10 max-lg:bg-white_background xl:p-20 flex flex-col items-center justify-center gap-10">
           <div>
             <h2 className="header">Sign up for an account</h2>
-            <p className="desc">Lorem Ipsum is simply dummy text</p>
+            <p className="desc">
+              Ready to level up? Let&apos;s navigate the journey to your dream
+              job together.
+            </p>
           </div>
-          <div className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="flex items-center gap-8">
-              <Input type="text" placeholder="First Name" className="input " />
-              <Input type="text" placeholder="Last Name" className="input" />
+              <Input
+                type="text"
+                placeholder="First Name"
+                className="input "
+                {...form.register("firstName")}
+                disabled={isPending}
+              />
+              <Input
+                type="text"
+                placeholder="Last Name"
+                className="input"
+                {...form.register("lastName")}
+                disabled={isPending}
+              />
             </div>
-            <Input type="email" placeholder="Email Address" />
+            <Input
+              type="email"
+              placeholder="Email Address"
+              {...form.register("email")}
+              disabled={isPending}
+            />
+            <Input
+              type="password"
+              placeholder="******"
+              {...form.register("password")}
+              disabled={isPending}
+            />
             <p className="desc text-left">
               By creating an account, you agreeing to our{" "}
               <span className="font-semibold">Privacy Policy</span>, and{" "}
@@ -69,10 +122,11 @@ export default function SignUp({}: SignUpProps) {
                 Electronic Communication Policy
               </span>
             </p>
-            <Button asChild variant={"violate"}>
-              <Link href="/start">Request Access</Link>
+            <Button type="submit" variant={"violate"} disabled={isPending}>
+              {/* <Link href="/start">Request Access</Link> */}
+              Request Access
             </Button>
-          </div>
+          </form>
         </div>
       </section>
     </motion.div>
