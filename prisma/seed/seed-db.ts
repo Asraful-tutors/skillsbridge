@@ -159,7 +159,7 @@ async function parseMilestoneData() {
     const line = data[i];
 
     const [
-      careerName,
+      careerNamesRaw,
       title,
       description,
       difficulty,
@@ -168,7 +168,9 @@ async function parseMilestoneData() {
       ...skillRequirements
     ] = line;
 
-    const career = await SeedDB.Paths.getCreate(careerName);
+    const careerNames = careerNamesRaw.split(/,\ ?/)
+
+    const careers = await SeedDB.Paths.getCreateMulti(...careerNames);
 
     const assessmentNames = assessmentCsv.split(/,\ ?/);
     const assessments = await SeedDB.Assessments.getCreateMulti(
@@ -181,7 +183,7 @@ async function parseMilestoneData() {
       name: title,
       description,
       link,
-      paths: connect(career),
+      paths: connect(careers),
       difficulty: difficulty as Difficulty,
       assessments: connect(assessments),
     });

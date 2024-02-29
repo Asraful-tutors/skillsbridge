@@ -90,10 +90,10 @@ model UserPath {
 }
 
 model UserSkill {
-  userId    Int
-  skillId   Int
-  score     Float?
-  selfScore Float?
+  userId        Int
+  skillId       Int
+  score         Float?
+  selfScore     Float?
   assessedScore Float?
 
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -105,6 +105,7 @@ model UserSkill {
 
 enum Difficulty {
   Beginner
+  Intermediate
   Advanced
   Expert
 }

@@ -54,7 +54,7 @@ export default function IsEligable({
             aliquip ex ea commodo consequat.{" "}
           </p>
         </div>
-        <div className="flex flex-col mb-[42px]">
+        <div className="flex flex-col mb-[84px]">
           <h3 className="text-base font-medium mb-[9px]">
             Skills you&apos;ll learn
           </h3>
@@ -63,27 +63,37 @@ export default function IsEligable({
               <Badge
                 key={key}
                 variant={"nonHoverable"}
-                className="rounded-full w-fit px-4 py-2 flex justify-center text-badge_text bg-apricot/[.56] text-sm shadow-none tracking-tighter-[-0.154px]"
+                className={`rounded-full w-fit px-4 py-2 flex justify-center text-badge_text bg-apricot/[.56] text-sm shadow-none tracking-tighter-[-0.154px] ${
+                  key % 4 === 0
+                    ? "bg[#A8DAFF8F]"
+                    : key % 4 === 1
+                    ? "bg-[#94C6EB8F]"
+                    : key % 4 === 2
+                    ? "bg-[#FFA8D28F]"
+                    : "bg-[#FF84005E]"
+                }`}
               >
                 {item.name}
               </Badge>
             ))}
           </div>
         </div>
-        <div className="py-[15px] mb-8">
-          <h2 className="text-xl font-semibold mb-[27px] text-subheading">
-            Tasks to complete
-          </h2>
-
-          <TaskProgress progress={0} />
+        <div className="flex flex-row gap-[42px] mx-auto flex-wrap">
+          <Button asChild variant={"violate"} className="w-full md:max-w-[284px]">
+            <Link
+              href={`/dashboard/milestone/${userPaths?.path.name}/${params?.pathId}/course`}
+            >
+              Go to course
+            </Link>
+          </Button>
+          <Button asChild variant={"violate"} className="w-full md:max-w-[284px]">
+            <Link
+              href={`/dashboard/milestone/${userPaths?.path.name}/${params?.pathId}/course`}
+            >
+              Take Assessments
+            </Link>
+          </Button>
         </div>
-        <Button asChild variant={"violate"} className="max-w-[284px] mx-auto">
-          <Link
-            href={`/dashboard/milestone/${userPaths?.path.name}/${params?.pathId}/course`}
-          >
-            Go to course
-          </Link>
-        </Button>
       </div>
       <Image
         src={"/images/gamer.svg"}

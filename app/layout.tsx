@@ -4,7 +4,6 @@ import MotionLayout from "@/components/layout/MotionLayout";
 
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
-import { auth } from "@/auth";
 
 export const metadata: Metadata = {
   title: "Create Next App",
