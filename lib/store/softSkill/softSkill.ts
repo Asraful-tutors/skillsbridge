@@ -18,10 +18,18 @@ const softSkillsSlice = createSlice({
       action: PayloadAction<{ skill: SoftSkills; selectedScale: number }>
     ) => {
       const { skill, selectedScale } = action.payload;
-      state.selectedSkills.push({
-        skill,
-        selectedScale,
-      });
+      const existingIndex = state.selectedSkills.findIndex(
+        //@ts-ignore
+        (entry) => entry.skill.title === skill.title
+      );
+
+      if (existingIndex !== -1) {
+        // Skill already exists, update the selectedScale
+        state.selectedSkills[existingIndex].selectedScale = selectedScale;
+      } else {
+        // Skill doesn't exist, add a new entry
+        state.selectedSkills.push({ skill, selectedScale });
+      }
     },
   },
 });
