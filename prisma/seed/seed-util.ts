@@ -19,11 +19,11 @@ type ModelName = Prisma.TypeMap<any>["meta"]["modelProps"];
 
 type UpdateModel<T extends ModelName> = Parameters<
   (typeof prisma)[T]["update"]
-  // @ts-ignore
+// @ts-ignore
 >[0]["data"];
 type CreateModel<T extends ModelName> = Parameters<
   (typeof prisma)[T]["create"]
-  // @ts-ignore
+// @ts-ignore
 >[0]["data"];
 type CreatedModel<T extends ModelName> = Awaited<
   ReturnType<(typeof prisma)[T]["create"]>
@@ -38,7 +38,7 @@ export abstract class Factory<T extends ModelName> implements IFactory<T> {
   static create<T extends ModelName>(
     ...params: ConstructorParameters<typeof Factory<T>>
   ) {
-    return new (class extends Factory<T> {})(...params);
+    return new (class extends Factory<T> { })(...params);
   }
 
   values: CreatedModel<T>[] = [];
@@ -87,7 +87,7 @@ export abstract class NamedFactory<T extends ModelName> implements IFactory<T> {
   static create<T extends ModelName>(
     ...params: ConstructorParameters<typeof NamedFactory<T>>
   ) {
-    return new (class extends NamedFactory<T> {})(...params);
+    return new (class extends NamedFactory<T> { })(...params);
   }
 
   private factory: (name: string) => CreateModel<T>;
@@ -124,10 +124,12 @@ export abstract class NamedFactory<T extends ModelName> implements IFactory<T> {
   }
 
   async getCreateMulti(
-    ...items: { name: string; data?: CreateModel<T> }[]
+    ...items: (string | { name: string; data?: CreateModel<T> })[]
   ): Promise<CreatedModel<T>[]> {
     const res: CreatedModel<T>[] = [];
-    for (const { name, data } of items) {
+    for (const item of items) {
+      const name = typeof (item) === 'string' ? item : item.name
+      const data = typeof (item) === 'string' ? undefined : item.data
       res.push(await this.getCreate(name, data));
     }
     return res;
@@ -166,8 +168,8 @@ export abstract class NamedFactory<T extends ModelName> implements IFactory<T> {
 
 type InferType<T> = T extends { connectOrCreate?: infer R1 | Array<infer R1> }
   ? R1 extends { create: infer R2 }
-    ? R2
-    : never
+  ? R2
+  : never
   : never;
 
 type Connectable = {

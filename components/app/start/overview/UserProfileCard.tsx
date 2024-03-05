@@ -1,10 +1,40 @@
 "use client";
+import TunetPasswordPrompt from "@/components/shared/TunetPasswordPrompt";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function UserProfileCard({ link }: { link?: string }) {
+  const [open, setOpen] = useState(false);
+  const [canAccess, setCanAccess] = useState(false);
+  const pathName = usePathname();
+  useEffect(() => {
+    // Check if the password is stored in localStorage
+    const storedPassword = localStorage.getItem("code");
+    if (
+      storedPassword &&
+      storedPassword === process.env.NEXT_PUBLIC_ACCESS_PASSWORD
+    ) {
+      // Password is present and matches, redirect to the specified link
+      setCanAccess(true);
+    } else {
+      // Password not present or doesn't match, open the modal
+      setCanAccess(false);
+    }
+  }, [pathName, open]);
+
+  // const handlePasswordAccept = () => {
+  //   // Store the password in localStorage
+  //   localStorage.setItem(process.env.PASSWORD_KEY, process.env.NEXT_PUBLIC_ACCESS_PASSWORD);
+  //   setOpen(false);
+
+  //   // Redirect to the specified link
+  //   window.location.href = link ? link : "/start/overview/assessment";
+  // };
+
   return (
     <motion.div className="flex flex-col items-center justify-center gap-[50px]">
       <div className="flex flex-col items-center justify-center gap-[50px] bg-[#F2F7F7] p-10 rounded-2xl">
@@ -60,9 +90,34 @@ export default function UserProfileCard({ link }: { link?: string }) {
           </p>
         </div>
       </div>
-      <Button asChild variant={"violate"} className="max-w-[284px] mx-auto">
-        <Link href={link ? link : "/start/overview/assessment"}>Next</Link>
-      </Button>
+
+      {link ? (
+        <>
+          {canAccess ? (
+            <Button
+              asChild
+              variant={"violate"}
+              className="max-w-[284px] mx-auto"
+            >
+              <Link href={link}>Next</Link>
+            </Button>
+          ) : (
+            <Button
+              onClick={() => setOpen(true)}
+              variant={"violate"}
+              className="max-w-[284px] mx-auto"
+            >
+              Next
+            </Button>
+          )}
+        </>
+      ) : (
+        <Button asChild variant={"violate"} className="max-w-[284px] mx-auto">
+          <Link href={"/start/overview/assessment"}>Next</Link>
+        </Button>
+      )}
+
+      {link && <TunetPasswordPrompt setOpen={setOpen} open={open} />}
     </motion.div>
   );
 }

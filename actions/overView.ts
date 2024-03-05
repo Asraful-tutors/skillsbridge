@@ -60,6 +60,7 @@ export const getDashboardhardSkills = async (userId: number) => {
 
 // get users assessed soft skillspoints
 export const getDashboardSoftSkills = async (userId: number) => {
+  console.log("userid", userId);
   const softSkills = await prisma.userSkill.findMany({
     where: {
       userId,

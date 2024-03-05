@@ -42,7 +42,7 @@ export default function HardSkillsCard({
       </section>
       <section className="flex flex-1 items-center gap-1.5">
         {/* scale */}
-        {Array.from({ length: 5 }, (_, index) => index).map((value) => (
+        {Array.from({ length: 10 }, (_, index) => index).map((value) => (
           <motion.div
             key={value}
             animate={{

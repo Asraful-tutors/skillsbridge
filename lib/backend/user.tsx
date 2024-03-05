@@ -1,9 +1,11 @@
+//@ts-nocheck
+
 "use server";
 import { compare, hash } from "bcryptjs";
 import { BackendError, PublicError, zodOrThrow } from "./errors";
 import prisma from "./prisma";
 import { SignUpSchema } from "@/schemas";
-import { signIn, signOut } from "../../auth";
+import { auth, signIn, signOut } from "../../auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 /**
@@ -137,12 +139,27 @@ export async function logOut() {
 
 // get current user
 
-export const getCurrentUser = async (email: any) => {
-  console.log("userdata", email);
-  const user = await prisma.user.findUnique({
-    // @ts-ignore
-    where: { email },
+export const getCurrentUser = async () => {
+  const session = auth();
+  return session;
+};
+
+// get completed milestones
+
+export const getCompletedMilestones = async (id: any) => {
+  const session = auth();
+  if (!session) {
+    return null;
+  }
+
+  const milestones = await prisma.userProfile.findFirst({
+    where: {
+      userId: id,
+    },
+    include: {
+      completed: true,
+    },
   });
-  console.log("userdata", user);
-  return user;
+
+  return milestones;
 };

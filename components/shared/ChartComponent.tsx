@@ -25,12 +25,12 @@ const ChartComponent = ({ data, disableAnimation }: ChartData) => {
             {entry.skill.name}
           </h3>
           <div className="flex rounded-md py-4">
-            {Array.from({ length: 5 }, (_, innerIndex) => (
+            {Array.from({ length: 10 }, (_, innerIndex) => (
               <div
                 key={innerIndex}
                 className={`flex flex-col items-center gap-0.5 relative bg-[#DDDDDD] shadow-inner shadow-[#320864]/[.25] py-[3px] px-[2px] ${
                   innerIndex === 0 ? "rounded-l-full" : ""
-                } ${innerIndex === 4 ? "rounded-r-full" : ""}`}
+                } ${innerIndex === 9 ? "rounded-r-full" : ""}`}
               >
                 <span className="text-xs text-gray-500 absolute -bottom-5 left-0">
                   {innerIndex}
@@ -46,9 +46,9 @@ const ChartComponent = ({ data, disableAnimation }: ChartData) => {
                         }
                       : {}
                   }
-                  className={`w-[94px] h-[8px] cursor-pointer border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
+                  className={`w-[50px] h-[8px] cursor-pointer border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
                     innerIndex === 0 ? "rounded-l-full" : ""
-                  } ${innerIndex === 4 ? "rounded-r-full" : ""}`}
+                  } ${innerIndex === 9 ? "rounded-r-full" : ""}`}
                 ></motion.div>
                 {entry.selfScore === innerIndex + 1 && (
                   <svg
@@ -81,7 +81,7 @@ const ChartComponent = ({ data, disableAnimation }: ChartData) => {
             {/* Display the last index */}
             <div className="flex flex-col items-center gap-0.5 relative mr-0.5">
               <span className="text-xs text-gray-500 absolute -bottom-5 left-0">
-                5
+                10
               </span>
             </div>
           </div>

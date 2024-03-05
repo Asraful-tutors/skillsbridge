@@ -71,8 +71,17 @@ model UserProfile {
   firstName String? @db.VarChar(64)
   lastName  String? @db.VarChar(64)
   bio       String? @db.Text
-
+  
+  completed CompletedMilestone[]
   user User @relation("User-Profile", fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model CompletedMilestone {
+  id         Int      @id @default(autoincrement())
+  name       String
+  completed  Boolean
+  userProfile UserProfile @relation(fields: [userProfileId], references: [userId])
+  userProfileId Int
 }
 
 model UserPath {
@@ -90,10 +99,10 @@ model UserPath {
 }
 
 model UserSkill {
-  userId    Int
-  skillId   Int
-  score     Float?
-  selfScore Float?
+  userId        Int
+  skillId       Int
+  score         Float?
+  selfScore     Float?
   assessedScore Float?
 
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -105,6 +114,7 @@ model UserSkill {
 
 enum Difficulty {
   Beginner
+  Intermediate
   Advanced
   Expert
 }
