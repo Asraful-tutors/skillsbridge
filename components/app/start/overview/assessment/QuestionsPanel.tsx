@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ProgressBar } from "@/components/shared/ProgressBar";
@@ -53,6 +54,7 @@ export default function QuestionsPanel({
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [isOptionSelected, setIsOptionSelected] = useState(false);
+  const [percentage, setPercentage] = useState([]);
 
   // get the total number of questions
   const totalQuestions = questions?.questions?.length || 0;
@@ -67,6 +69,81 @@ export default function QuestionsPanel({
     const updatedAnswers = answers.filter(
       (answer) => answer.questionIndex !== questionIndex
     );
+
+    const groupedPoints =
+      currentSkillType !== "hard"
+        ? currentQuestionData?.data?.options?.map((question) => question.points)
+        : currentQuestionData?.question?.data?.options?.map(
+            (question: any) => question.points
+          );
+
+    const options = currentQuestionData?.question?.data?.options || [];
+
+    const softOptions = currentQuestionData?.data?.options || [];
+
+    const selectedSkillPoints = options[selectedOptionIndex]?.points || [];
+
+    const softSelectedSkillPoints =
+      softOptions[selectedOptionIndex]?.points || [];
+
+    const skillPoints = {};
+
+    // Group points by skillId
+    groupedPoints.forEach((pointArray) => {
+      pointArray.forEach((point) => {
+        const { skillId, points } = point;
+        if (!skillPoints[skillId]) {
+          skillPoints[skillId] = [];
+        }
+        skillPoints[skillId].push(points);
+      });
+    });
+
+    // Find the maximum points for each skillId
+    const skillMaxPoints = {};
+    Object.keys(skillPoints).forEach((skillId) => {
+      skillMaxPoints[skillId] = Math.max(...skillPoints[skillId]);
+    });
+    // Convert selectedSkillPoints to an object
+    const selectedSkillPointsObject = selectedSkillPoints.reduce(
+      (acc, point) => {
+        acc[point.skillId] = point.points;
+        return acc;
+      },
+      {}
+    );
+
+    // soft type
+    const selectedSoftSkillPointsObject = softSelectedSkillPoints.reduce(
+      (acc, point) => {
+        acc[point.skillId] = point.points;
+        return acc;
+      },
+      {}
+    );
+
+    // Calculate the percentage for each skill
+    const skillPercentages = Object.keys(skillMaxPoints).map((skillId) => {
+      const maxPoints = skillMaxPoints[skillId];
+      const selectedPoints = selectedSkillPointsObject[skillId] || 0;
+      const selectedSoftPoints = selectedSoftSkillPointsObject[skillId] || 0;
+      let percentage;
+      if (currentSkillType === "hard") {
+        percentage = (selectedPoints / maxPoints) * 100;
+      } else {
+        percentage = (selectedSoftPoints / maxPoints) * 100;
+      }
+
+      return { questionIndex, skillId, percentage };
+    });
+
+    const updatedPercentage = percentage.filter(
+      (item) => item.questionIndex !== questionIndex
+    );
+
+    // Add the new skillPercentages
+    setPercentage([...updatedPercentage, ...skillPercentages]);
+
     // Add the new answer
     updatedAnswers.push({ questionIndex, selectedOptionIndex, points });
     setAnswers(updatedAnswers);
@@ -74,19 +151,19 @@ export default function QuestionsPanel({
     setIsOptionSelected(true);
   };
 
-  console.log("answers", answers);
   const handleNext = () => {
     if (isOptionSelected) {
       if (currentQuestion === questions?.questions?.length - 1) {
         // It's the last question, set another state for step 2
         if (user) {
           startTransition(() => {
-            initialAssessment(user?.id, answers);
+            initialAssessment(percentage);
           });
         }
 
         setCurrentSkillType("soft");
         setAnswers([]);
+        setPercentage([]);
         setCurrentQuestion(0);
       } else {
         setCurrentQuestion(currentQuestion + 1);
@@ -113,6 +190,7 @@ export default function QuestionsPanel({
   }
 
   const currentQuestionData = questions?.questions[currentQuestion];
+
   return (
     <motion.div className="flex flex-col gap-16">
       <ProgressBar
@@ -152,7 +230,7 @@ export default function QuestionsPanel({
                       />
                       <Label
                         htmlFor={answer.text}
-                        className="tracking-wide leading-3"
+                        className="tracking-wide leading-4"
                       >
                         {answer.text}
                       </Label>
@@ -180,7 +258,7 @@ export default function QuestionsPanel({
                         id={answer.text}
                       />
                       <Label
-                        className="tracking-wide leading-3"
+                        className="tracking-wide leading-4"
                         htmlFor={answer.text}
                       >
                         {answer.text}
@@ -208,10 +286,10 @@ export default function QuestionsPanel({
             onClick={() => {
               if (user) {
                 startTransition(() => {
-                  initialAssessment(user?.id, answers);
+                  initialAssessment(percentage);
                 });
               }
-              setAnswers([]);
+              setPercentage([]);
               router.push("/start/overview/assessment/profile");
             }}
             disabled={!isOptionSelected}

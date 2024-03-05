@@ -41,10 +41,28 @@ export default function TunetPasswordPrompt({
     <>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Access</DialogTitle>
+          <DialogHeader className="flex flex-col gap-2">
+            <DialogTitle>Let&apos;s Get Started! </DialogTitle>
+            <DialogDescription className="flex flex-col gap-1.5">
+              Follow these simple steps to access our learning resources:
+              <ol className="list-decimal space-y-1">
+                <li className="ml-4">
+                  Register on TuNet by clicking the link below. It&apos;s where
+                  all our content is hosted.
+                </li>
+                <li className="ml-4">
+                  Find your passcode in the first section of the course
+                  materials on TuNet.
+                </li>
+                <li className="ml-4">
+                  Come back here and enter your passcode below to unlock your
+                  resources.
+                </li>
+              </ol>
+              Easy, right? If you need help, we&apos;re here for you. Happy
+              learning!
+            </DialogDescription>
             <DialogDescription>
-              Tuner Registration link:{" "}
               <a
                 href="https://net.tutors.fi/reg/3j6k335y"
                 target="_blank"
@@ -52,9 +70,6 @@ export default function TunetPasswordPrompt({
               >
                 https://net.tutors.fi/reg/3j6k335y
               </a>
-            </DialogDescription>
-            <DialogDescription>
-              Please enter your tunet course code.
             </DialogDescription>
           </DialogHeader>
           <form

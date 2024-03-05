@@ -1,88 +1,156 @@
+// @ts-nocheck
+
 "use server";
 
+import { auth } from "@/auth";
 import prisma from "./prisma";
 
-export async function initialAssessment(userId: number, points: any[]) {
-  // Step 1: Organize points by skill
-  const pointsBySkill = points.reduce((acc, answer) => {
-    answer.points.forEach((point: any) => {
-      const skillId = parseInt(point.skillId, 10); // Convert skillId to integer
-      if (!acc[skillId]) {
-        acc[skillId] = 0;
-      }
-      acc[skillId] += point.points;
-    });
-    return acc;
+export async function initialAssessment(points: any[]) {
+  const session = await auth();
+
+  if (!session) {
+    return { message: "UserId not founds" };
+  }
+  // const user = await prisma.user.findUnique({
+  //   // @ts-ignore
+  //   where: { email: session.user.email },
+  // });
+
+  // Use reduce to group percentages by skillId
+  const groupedPercentages = points.reduce((result, point) => {
+    const { skillId, percentage } = point;
+
+    if (!result[skillId]) {
+      result[skillId] = [];
+    }
+
+    result[skillId].push(percentage);
+
+    return result;
   }, {});
 
-  // Step 2: Update UserSkill records with calculated scores
-  for (const skillId in pointsBySkill) {
-    const totalPoints = pointsBySkill[skillId];
+  // Calculate average percentage for each skillId
+  const averagePercentages = {};
+  for (const skillId in groupedPercentages) {
+    const percentages = groupedPercentages[skillId];
+    const average =
+      percentages.reduce((sum, percentage) => sum + percentage, 0) /
+      percentages.length;
 
-    // Step 3: Check if the record exists
+    // Cap the average at a maximum of 10 (equivalent to 100%)
+    averagePercentages[skillId] = Math.round(average * 10) / 10; // Apply scaling factor after rounding
+
+    // Update or create the UserSkill record
+    const totalPoints = averagePercentages[skillId];
+    // Check if the record exists
     const existingRecord = await prisma.userSkill.findUnique({
-      where: { userId_skillId: { userId, skillId: parseInt(skillId, 10) } }, // Convert skillId to integer
+      where: {
+        userId_skillId: {
+          userId: session.user.id,
+          skillId: parseInt(skillId, 10),
+        },
+      },
     });
 
-    // Step 4: Update or create the UserSkill record
+    // Update or create the UserSkill record
     if (existingRecord) {
       await prisma.userSkill.update({
-        where: { userId_skillId: { userId, skillId: parseInt(skillId, 10) } },
+        where: {
+          userId_skillId: {
+            userId: session.user.id,
+            skillId: parseInt(skillId, 10),
+          },
+        },
         data: { score: totalPoints },
       });
     } else {
       await prisma.userSkill.create({
         data: {
-          userId,
+          userId: session.user.id,
           skillId: parseInt(skillId, 10),
           score: totalPoints,
         },
       });
     }
   }
+
+  console.log(
+    "Updated UserSkill records with average percentages:",
+    averagePercentages
+  );
 }
 
-export async function mileStoneAssessment(userId: number, points: any[]) {
-  // Step 1: Organize points by skill
-  const pointsBySkill = points.reduce((acc, answer) => {
-    answer.points.forEach((point: any) => {
-      const skillId = parseInt(point.skillId, 10); // Convert skillId to integer
-      if (!acc[skillId]) {
-        acc[skillId] = 0;
-      }
-      acc[skillId] += point.points;
-    });
-    return acc;
+export async function mileStoneAssessment(points: any[]) {
+  const session = await auth();
+
+  if (!session) {
+    return { message: "UserId not founds" };
+  }
+  // const user = await prisma.user.findUnique({
+  //   // @ts-ignore
+  //   where: { email: session.user.email },
+  // });
+
+  // Use reduce to group percentages by skillId
+  const groupedPercentages = points.reduce((result, point) => {
+    const { skillId, percentage } = point;
+
+    if (!result[skillId]) {
+      result[skillId] = [];
+    }
+
+    result[skillId].push(percentage);
+
+    return result;
   }, {});
 
-  // Step 2: Update UserSkill records with calculated scores
-  for (const skillId in pointsBySkill) {
-    const totalPoints = pointsBySkill[skillId];
+  // Calculate average percentage for each skillId
+  const averagePercentages = {};
+  for (const skillId in groupedPercentages) {
+    const percentages = groupedPercentages[skillId];
+    const average =
+      percentages.reduce((sum, percentage) => sum + percentage, 0) /
+      percentages.length;
 
-    // Step 3: Check if the record exists
+    // Cap the average at a maximum of 10 (equivalent to 100%)
+    averagePercentages[skillId] = Math.round(average * 10) / 10; // Apply scaling factor after rounding
+
+    // Update or create the UserSkill record
+    const totalPoints = averagePercentages[skillId];
+    // Check if the record exists
     const existingRecord = await prisma.userSkill.findUnique({
-      where: { userId_skillId: { userId, skillId: parseInt(skillId, 10) } }, // Convert skillId to integer
+      where: {
+        userId_skillId: {
+          userId: session.user.id,
+          skillId: parseInt(skillId, 10),
+        },
+      },
     });
-    console.log("existingRecord", existingRecord);
-    // Step 4: Update or create the UserSkill record
+
+    // Update or create the UserSkill record
     if (existingRecord) {
-      // If the record exists, add the new points to the existing score
-      const newScore = existingRecord.score + totalPoints;
       await prisma.userSkill.update({
-        where: { userId_skillId: { userId, skillId: parseInt(skillId, 10) } },
-        data: { assessedScore: newScore },
+        where: {
+          userId_skillId: {
+            userId: session.user.id,
+            skillId: parseInt(skillId, 10),
+          },
+        },
+        data: { assessedScore: totalPoints },
       });
-      console.log("updated", newScore);
     } else {
-      // If the record doesn't exist, create a new record
       await prisma.userSkill.create({
         data: {
-          userId,
+          userId: session.user.id,
           skillId: parseInt(skillId, 10),
           assessedScore: totalPoints,
         },
       });
-      console.log("updated");
     }
   }
+
+  console.log(
+    "Updated UserSkill records with average percentages:",
+    averagePercentages
+  );
 }

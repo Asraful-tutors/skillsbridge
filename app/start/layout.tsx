@@ -1,4 +1,3 @@
-
 import Header from "@/components/shared/Header";
 import { auth } from "@/auth";
 import prisma from "@/lib/backend/prisma";
@@ -10,7 +9,7 @@ export default async function StartLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
-  log(session)
+
   const user = await prisma.user.findUnique({
     // @ts-ignore
     where: { email: session.user.email },

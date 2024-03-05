@@ -5,7 +5,9 @@ import IsEligable from "@/components/app/dashboard/milestone/IsEligable";
 import useUserPathSkills from "@/components/hooks/useUserPathSkills";
 import useUserPaths from "@/components/hooks/useUserPaths";
 import Breadcrumb from "@/components/shared/Breadcrumb";
+import { getMilestoneQuestions } from "@/lib/backend/mileStoneCourses";
 import { useAppSelector } from "@/lib/store/hooks";
+import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 // formate the params like Artist 1 from Artist?p=1
@@ -19,7 +21,6 @@ const formatPathName = (pathName: string): string => {
 export default function MileStonePage() {
   const params = useParams();
   const searchParams = useSearchParams();
-  const getmilestoneId = searchParams.get("p");
   const user = useAppSelector((state) => state.user.userData);
 
   // Concatenate params.id and getmilestoneId and then format the path name
@@ -35,14 +36,27 @@ export default function MileStonePage() {
     formattedPathName
   );
 
-  if (userSkillsLoading || !userSkills || userPathsLoading)
+  console.log("", userSkills);
+
+  const {
+    data: milestone,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["milestone", params],
+    queryFn: () => getMilestoneQuestions(formattedPathName, params?.pathId),
+    enabled: !!formattedPathName,
+  });
+
+  if (isLoading || userPathsLoading)
     return (
       <>
         <Loading />
       </>
     );
 
-  if (userSkillsError || userPathsError) return <>Something went wrong</>;
+  if (userSkillsError || userPathsError || isError)
+    return <>Something went wrong</>;
 
   /* const canTakeCourses = userSkills.skills.every(
     (skill) =>
@@ -54,7 +68,7 @@ export default function MileStonePage() {
     <>
       <IsEligable
         //@ts-ignore
-        userSkills={userSkills}
+        milestone={milestone}
         userPaths={userPaths}
       />
     </>
