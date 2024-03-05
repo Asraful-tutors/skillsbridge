@@ -1,17 +1,45 @@
+// @ts-nocheck
+
 import Image from "next/image";
 import React, { useState, useRef, RefObject } from "react";
 import { Button } from "@/components/ui/button";
 import UserBoard from "@/components/app/dashboard/UserBoard";
 import useOutsideClick from "@/components/hooks/useOutsideClick";
+import { useQuery } from "@tanstack/react-query";
+import { getCurrentUser } from "@/lib/backend/user";
+import useUserPaths from "@/components/hooks/useUserPaths";
 
 export default function Header() {
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
+
+  const { data: user } = useQuery({
+    queryKey: ["/dashboard/hard"],
+    queryFn: async () => {
+      const data = await getCurrentUser();
+
+      if (data) {
+        const userData = {
+          ...data.user,
+          name: data.user?.name || "",
+        };
+        // @ts-ignore
+        dispatch(setUserData(userData));
+      }
+
+      return data || {};
+    },
+  });
+  const { userPaths, userPathsLoading, userPathsError } = useUserPaths(
+    user as any
+  );
+
+  console.log("userPaths", userPaths);
 
   const handleVisibility = () => {
-    setVisible(!visible)
-  }
+    setVisible(!visible);
+  };
 
-  useOutsideClick(visible, setVisible)
+  useOutsideClick(visible, setVisible);
 
   return (
     <nav className="fixed top-0 right-0 flex items-center justify-between w-full z-[70]">
@@ -30,7 +58,7 @@ export default function Header() {
           <h2 className="header text-2xl text-start font-semibold">
             Milestone Journey
           </h2>
-          <p className="desc text-start">Milestone 01</p>
+          {/* <p className="desc text-start">Milestone 01</p> */}
         </div>
       </section>
 
@@ -51,8 +79,8 @@ export default function Header() {
           </svg>
         </Button>
         <Button
-        className="flex items-center h-[64px] bg-[#13A098] rounded-full"
-        onClick={handleVisibility}
+          className="flex items-center h-[64px] bg-[#13A098] rounded-full"
+          onClick={handleVisibility}
         >
           <Image
             src={"/images/user.png"}
@@ -64,10 +92,16 @@ export default function Header() {
             className="w-10 h-10 object-center object-cover rounded-full aspect-auto sm:mr-[13px]"
           />
           <div className="flex flex-col items-start hidden sm:block">
-            <h3 className="text-xl font-medium">{"Sam Thomas"}</h3> {/* replace with user name */}
+            <h3 className="text-xl font-medium line-clamp-1 whitespace-pre-wrap">
+              {user?.user?.name}
+            </h3>{" "}
+            {/* replace with user name */}
             <div className="flex flex-row text-[#FFFFFF]/[.81] text-base">
-              <h3 className="hidden lg:block">Learning path&nbsp;&nbsp;-&nbsp;&nbsp;</h3>
-              <h3 className="font-bold">{"Game Design"}</h3> {/* replace with user path */}
+              <h3 className="hidden lg:block">
+                Learning path&nbsp;&nbsp;-&nbsp;&nbsp;
+              </h3>
+              <h3 className="font-bold">{userPaths?.path?.name}</h3>{" "}
+              {/* replace with user path */}
             </div>
           </div>
         </Button>

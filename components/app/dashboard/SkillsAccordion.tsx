@@ -13,6 +13,7 @@ interface SkillsAccordionProps {
 }
 
 export function SkillsAccordion({ data, title, open }: SkillsAccordionProps) {
+  console.log("data", data);
   return (
     data && (
       <Accordion
@@ -37,7 +38,7 @@ export function SkillsAccordion({ data, title, open }: SkillsAccordionProps) {
                 {/* replace with skill.title variable */}
                 <div className="flex flex-row items-center">
                   <Progress
-                    value={skill?.assessedScore}
+                    value={Math.round(skill?.assessedScore)}
                     indicatorColor="bg-gradient-to-b from-[#B278FF] to-[#9D53FF]"
                     className="h-[10px] w-[100px] sm:w-[207px] bg-[#B59292]/[.51] mr-[21px]"
                   />

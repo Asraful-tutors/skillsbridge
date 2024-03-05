@@ -9,11 +9,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { register } from "@/lib/backend/user";
 import { FaGoogle } from "react-icons/fa";
 import { signIn } from "next-auth/react";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import PrivacyPolicy from "@/components/shared/PrivacyPolicy";
+import ElectronicPolicyModal from "@/components/shared/ElectronicPolicyModal";
 
 type SignUpProps = {
   // onRequestAccess: () => void;
@@ -21,6 +23,11 @@ type SignUpProps = {
 
 export default function SignUp({}: SignUpProps) {
   const [isPending, startTransition] = useTransition();
+
+  const [openPrivacyModal, setOpenPrivacyModal] = useState(false);
+  const [openElectronicPolicyModal, setOpenElectronicPolicyModal] =
+    useState(false);
+
   const form = useForm<z.infer<typeof SignUpSchema>>({
     defaultValues: {
       firstName: "",
@@ -136,12 +143,21 @@ export default function SignUp({}: SignUpProps) {
               {...form.register("password")}
               disabled={isPending}
             />
-            <p className="desc text-left">
+            <p className="desc text-center">
               By creating an account, you agreeing to our{" "}
-              <span className="font-semibold">Privacy Policy</span>, and{" "}
-              <span className="font-semibold">
-                Electronic Communication Policy
+              <span
+                onClick={() => setOpenPrivacyModal(true)}
+                className="font-semibold cursor-pointer "
+              >
+                Privacy Policy
               </span>
+              {/* , and{" "} */}
+              {/* <span
+                className="font-semibold cursor-pointer sr-only"
+                onClick={() => setOpenElectronicPolicyModal(true)}
+              >
+                Electronic Communication Policy
+              </span> */}
             </p>
             <Button type="submit" variant={"violate"} disabled={isPending}>
               {/* <Link href="/start">Request Access</Link> */}
@@ -207,6 +223,11 @@ export default function SignUp({}: SignUpProps) {
           </div>
         </div>
       </section>
+      <PrivacyPolicy open={openPrivacyModal} setOpen={setOpenPrivacyModal} />
+      <ElectronicPolicyModal
+        open={openElectronicPolicyModal}
+        setOpen={setOpenElectronicPolicyModal}
+      />
     </motion.div>
   );
 }

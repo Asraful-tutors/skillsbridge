@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Difficulty" AS ENUM ('Beginner', 'Advanced', 'Expert');
+CREATE TYPE "Difficulty" AS ENUM ('Beginner', 'Intermediate', 'Advanced', 'Expert');
 
 -- CreateEnum
 CREATE TYPE "SkillType" AS ENUM ('Hard', 'Soft');
@@ -63,6 +63,16 @@ CREATE TABLE "UserProfile" (
     "bio" TEXT,
 
     CONSTRAINT "UserProfile_pkey" PRIMARY KEY ("userId")
+);
+
+-- CreateTable
+CREATE TABLE "CompletedMilestone" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "completed" BOOLEAN NOT NULL,
+    "userProfileId" INTEGER NOT NULL,
+
+    CONSTRAINT "CompletedMilestone_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -253,6 +263,9 @@ ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId"
 
 -- AddForeignKey
 ALTER TABLE "UserProfile" ADD CONSTRAINT "UserProfile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CompletedMilestone" ADD CONSTRAINT "CompletedMilestone_userProfileId_fkey" FOREIGN KEY ("userProfileId") REFERENCES "UserProfile"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UserPath" ADD CONSTRAINT "UserPath_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

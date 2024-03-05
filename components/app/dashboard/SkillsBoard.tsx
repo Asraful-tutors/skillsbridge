@@ -16,7 +16,7 @@ export default function SkillsBoard({
 }) {
   return (
     user && (
-      <div>
+      <div className="max-lg:hidden">
         {/* <Button
         onClick={() => setVisible(!visible)}
         className="fixed z-50 right-2 sm:right-5 top-[100px] sm:top-[116px] p-2 bg-gradient-to-b from-[#B278FF] to-[#9D53FF]"

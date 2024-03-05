@@ -85,7 +85,6 @@ export const upsertSelectedAnswers = async (skillScores: SkillScore[]) => {
 
     // Use Promise.all to wait for all updates to complete
     const results = await Promise.all(updates);
-    console.log("results", results);
   } catch (error) {
     if (error instanceof PrismaClientValidationError) {
       // Handle specific validation errors gracefully

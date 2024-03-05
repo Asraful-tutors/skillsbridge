@@ -12,7 +12,7 @@ export default function CoursePage() {
 
   // Concatenate params.id and getmilestoneId and then format the path name
   const formattedPathName = `${params?.id} ${params?.pathId}`;
-  const formattedSoftPathName = `Soft ${params?.pathId}`;
+  const formattedSoftPathName = `Soft Scenario ${params?.pathId}`;
 
   const [currentSkillType, setCurrentSkillType] = useState("hard");
   const user = useAppSelector((state) => state.user.userData);
