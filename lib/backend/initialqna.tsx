@@ -11,38 +11,31 @@ export async function initialAssessment(points: any[]) {
   if (!session) {
     return { message: "UserId not founds" };
   }
-  // const user = await prisma.user.findUnique({
-  //   // @ts-ignore
-  //   where: { email: session.user.email },
-  // });
 
-  // Use reduce to group percentages by skillId
-  const groupedPercentages = points.reduce((result, point) => {
-    const { skillId, percentage } = point;
+  const skillPointsMap = new Map<number, number>();
 
-    if (!result[skillId]) {
-      result[skillId] = [];
-    }
+  // Iterate through the points array and group the points by skillId
+  points.forEach((point) => {
+    point.points.forEach((skill) => {
+      const { skillId, points } = skill;
 
-    result[skillId].push(percentage);
+      // Using Map to store the sum of points for each skillId
+      skillPointsMap.set(skillId, (skillPointsMap.get(skillId) || 0) + points);
+    });
+  });
 
-    return result;
-  }, {});
+  // Convert the map to an array of objects with skillId and totalPoints
+  const totalSkillPoints = Array.from(skillPointsMap.entries()).map(
+    ([skillId, totalPoints]) => ({
+      skillId,
+      totalPoints: totalPoints.toFixed(2),
+    })
+  );
 
-  // Calculate average percentage for each skillId
-  const averagePercentages = {};
-  for (const skillId in groupedPercentages) {
-    const percentages = groupedPercentages[skillId];
-    const average =
-      percentages.reduce((sum, percentage) => sum + percentage, 0) /
-      percentages.length;
+  // Iterate through totalSkillPoints array and update/create records in the database
+  for (const { skillId, totalPoints } of totalSkillPoints) {
+    console.log("skillId", skillId, "totalPoints", totalPoints);
 
-    // Cap the average at a maximum of 10 (equivalent to 100%)
-    averagePercentages[skillId] = Math.round(average * 10) / 10; // Apply scaling factor after rounding
-
-    // Update or create the UserSkill record
-    const totalPoints = averagePercentages[skillId];
-    // Check if the record exists
     const existingRecord = await prisma.userSkill.findUnique({
       where: {
         userId_skillId: {
@@ -61,23 +54,20 @@ export async function initialAssessment(points: any[]) {
             skillId: parseInt(skillId, 10),
           },
         },
-        data: { score: totalPoints },
+        data: { score: parseFloat(totalPoints) },
       });
     } else {
       await prisma.userSkill.create({
         data: {
           userId: session.user.id,
           skillId: parseInt(skillId, 10),
-          score: totalPoints,
+          score: parseFloat(totalPoints),
         },
       });
     }
   }
 
-  console.log(
-    "Updated UserSkill records with average percentages:",
-    averagePercentages
-  );
+  return { totalSkillPoints };
 }
 
 export async function mileStoneAssessment(points: any[]) {

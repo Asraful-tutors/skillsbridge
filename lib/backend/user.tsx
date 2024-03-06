@@ -16,39 +16,48 @@ export async function validateCredentials(credentials: {
   email: string;
   password: string;
 }) {
-  if (!credentials) throw new PublicError(400, "Missing credentials");
-  const { email, password } = credentials;
+  try {
+    if (!credentials) throw new PublicError(400, "Missing credentials");
+    const { email, password } = credentials;
 
-  if (!email) throw new PublicError(400, "Email required");
-  if (!password) throw new PublicError(400, "Password required");
+    if (!email) throw new PublicError(400, "Email required");
+    if (!password) throw new PublicError(400, "Password required");
 
-  const user = await prisma.user.findFirst({
-    where: {
-      email: credentials.email,
-    },
-  });
+    const user = await prisma.user.findFirst({
+      where: {
+        email: credentials.email,
+      },
+    });
 
-  if (!user) throw new PublicError(404, "User with email not found");
-  if (!user.email) throw new BackendError(403, "User has no email"); // This indeed shouldn't happen
-  if (!user.password)
-    throw new BackendError(403, "Cannot login with a password");
+    console.log("User from database:", user);
 
-  const passwordCorrect = await compare(
-    credentials.password || "",
-    user.password
-  );
+    if (!user) throw new PublicError(404, "User with email not found");
+    if (!user.email) throw new BackendError(403, "User has no email");
 
-  if (!passwordCorrect) throw new PublicError(401, "Incorrect password");
+    if (user.password) {
+      // User has a password, validate it
+      const passwordCorrect = await compare(password, user.password);
 
-  return {
-    createdAt: user.createdAt,
-    email: user.email,
-    emailVerified: user.emailVerified,
-    id: user.id,
-    image: user.image,
-    name: user.name,
-    updatedAt: user.updatedAt,
-  };
+      if (!passwordCorrect) throw new PublicError(401, "Incorrect password");
+    } else {
+      // User doesn't have a password, handle the case to set one
+      // This could involve sending a password reset email or redirecting to a "Set Password" page
+      throw new PublicError(403, "User needs to set a password");
+    }
+
+    return {
+      createdAt: user.createdAt,
+      email: user.email,
+      emailVerified: user.emailVerified,
+      id: user.id,
+      image: user.image,
+      name: user.name,
+      updatedAt: user.updatedAt,
+    };
+  } catch (error) {
+    console.error("Error during login:", error);
+    throw error;
+  }
 }
 
 type RegisterOptions = {

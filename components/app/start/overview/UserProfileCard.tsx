@@ -1,6 +1,10 @@
 "use client";
+import useUserPaths from "@/components/hooks/useUserPaths";
 import TunetPasswordPrompt from "@/components/shared/TunetPasswordPrompt";
 import { Button } from "@/components/ui/button";
+import { getCurrentUser } from "@/lib/backend/user";
+import { useAppSelector } from "@/lib/store/hooks";
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,6 +15,13 @@ export default function UserProfileCard({ link }: { link?: string }) {
   const [open, setOpen] = useState(false);
   const [canAccess, setCanAccess] = useState(false);
   const pathName = usePathname();
+
+  const user = useAppSelector((state) => state.user.userData);
+
+  const { userPaths, userPathsLoading, userPathsError } = useUserPaths(
+    user as any
+  );
+
   useEffect(() => {
     // Check if the password is stored in localStorage
     const storedPassword = localStorage.getItem("code");
@@ -25,15 +36,6 @@ export default function UserProfileCard({ link }: { link?: string }) {
       setCanAccess(false);
     }
   }, [pathName, open]);
-
-  // const handlePasswordAccept = () => {
-  //   // Store the password in localStorage
-  //   localStorage.setItem(process.env.PASSWORD_KEY, process.env.NEXT_PUBLIC_ACCESS_PASSWORD);
-  //   setOpen(false);
-
-  //   // Redirect to the specified link
-  //   window.location.href = link ? link : "/start/overview/assessment";
-  // };
 
   return (
     <motion.div className="flex flex-col items-center justify-center gap-[50px]">
@@ -74,10 +76,11 @@ export default function UserProfileCard({ link }: { link?: string }) {
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-xl font-semibold leading-[150%] text-black text-center">
-              Sam Thomas
+              {user?.name}
             </p>
             <p className="text-lg font-normal leading-[150%] text-center">
-              Learning Path - <span className="font-bold">Game Design</span>
+              Learning Path -{" "}
+              <span className="font-bold">{userPaths?.path?.name}</span>
             </p>
           </div>
         </div>

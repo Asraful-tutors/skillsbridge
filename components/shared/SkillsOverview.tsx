@@ -1,16 +1,22 @@
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface SkillEntry {
   skill: {
-    title: string;
+    name: string;
     scale: {
       values: number[];
     };
   };
   selectedScale: number;
   selfScore: number;
-  score?: number;
+  score?: number | undefined;
 }
 interface ChartData {
   data: SkillEntry[];
@@ -22,41 +28,45 @@ const SkillsOverview = ({ data, disableAnimation }: ChartData) => {
     <div className="my-4 flex flex-col gap-3.5 ">
       {data?.map((entry, index) => (
         <div key={index} className="flex items-center gap-5">
-          <h3 className="text-lg font-semibold text-[#4D4D9B] w-[286px] whitespace-pre-wrap">
-            {
-              // @ts-ignore
-              entry.skill.name
-            }
+          <h3 className="text-lg font-semibold text-[#4D4D9B] w-[386px] whitespace-pre-wrap ">
+            {entry?.skill?.name}
           </h3>
-          <div className="flex rounded-md py-4">
-            {Array.from({ length: 10 }, (_, innerIndex) => (
+          <div className="flex rounded-md py-4 w-full">
+            {Array.from({ length: 100 }, (_, innerIndex) => (
               <div
                 key={innerIndex}
-                className={`flex flex-col items-center gap-0.5 relative bg-[#DDDDDD] shadow-inner shadow-[#320864]/[.25] py-[3px] px-[2px] ${
+                className={`flex flex-col items-center relative bg-[#DDDDDD] shadow-inner shadow-[#320864]/[.25] ${
                   innerIndex === 0 ? "rounded-l-full" : ""
-                } ${innerIndex === 9 ? "rounded-r-full" : ""}`}
+                } ${innerIndex === 99 ? "rounded-r-full" : ""}`}
               >
-                <span className="text-xs text-gray-500 absolute -bottom-5 left-0">
-                  {innerIndex}
-                </span>
+                {innerIndex % 10 === 0 && (
+                  <span className="text-xs text-gray-500 absolute -bottom-5 left-0">
+                    {innerIndex}
+                  </span>
+                )}
                 <motion.div
                   animate={
                     !disableAnimation
                       ? {
+                          // width: `${entry?.score}%`,
                           backgroundColor:
                             entry?.score !== undefined &&
-                            Math.round((entry?.score / 100) * 10) >=
-                              innerIndex + 1
+                            innerIndex + 1 <= entry?.score
                               ? "#9d64d6"
                               : "#D9D9D9",
                         }
                       : {}
                   }
-                  className={`w-[50px] h-[8px] cursor-pointer border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
+                  className={`cursor-pointer w-[5.5px] h-[8px] border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
                     innerIndex === 0 ? "rounded-l-full" : ""
-                  } ${innerIndex === 9 ? "rounded-r-full" : ""}`}
+                  } ${innerIndex === 99 ? "rounded-r-full" : ""}`}
                 ></motion.div>
-                {entry.selfScore === innerIndex + 1 && (
+                {Math.ceil(entry?.score ?? 0) == innerIndex + 1 ? (
+                  <div className="absolute -top-6 -right-6 z-50 bg-Moderate_violet rounded-md text-[8px] !text-white px-1.5 py-1">
+                    {entry.score ?? 0}
+                  </div>
+                ) : null}
+                {entry.selfScore * 10 === innerIndex + 1 && (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="18"
@@ -84,10 +94,9 @@ const SkillsOverview = ({ data, disableAnimation }: ChartData) => {
                 )}
               </div>
             ))}
-
             <div className="flex flex-col items-center gap-0.5 relative mr-0.5">
               <span className="text-xs text-gray-500 absolute -bottom-5 left-0">
-                10
+                100
               </span>
             </div>
           </div>

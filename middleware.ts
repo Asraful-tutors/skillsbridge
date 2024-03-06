@@ -5,7 +5,7 @@ import {
   DEFAULT_LOGIN_REDIRECT,
   authRoutes,
   publicRoutes,
-} from "@/routes";
+} from "./routes";
 
 const { auth } = NextAuth(authConfig);
 
