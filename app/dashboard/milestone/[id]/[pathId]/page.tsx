@@ -36,8 +36,6 @@ export default function MileStonePage() {
     formattedPathName
   );
 
-  console.log("", userSkills);
-
   const {
     data: milestone,
     isLoading,

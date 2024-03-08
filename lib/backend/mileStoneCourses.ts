@@ -64,9 +64,6 @@ export const getMilestoneQuestions = async (name: string, id: any) => {
 
 export const isEligible = async (name: string, id: any) => {
   const session = await auth();
-  console.log("name", name, id);
-  console.log(`${name} ${id}`);
-
   if (!session) {
     return { message: "UserId not found" };
   }
@@ -83,14 +80,66 @@ export const isEligible = async (name: string, id: any) => {
               skill: true,
             },
           },
-          assessments: true,
+          assessments: {
+            include: {
+              questions: {
+                include: {
+                  assessment: true,
+                },
+              },
+            },
+          },
           skills: true,
         },
       },
     },
   });
 
-  return milestone || [];
+  if (!milestone) {
+    return { message: "Milestone not found" };
+  }
+  // Extracting skillId and text from the options array
+  const skillInfo = milestone.milestones[0].assessments[0].questions
+    // @ts-ignore
+    .flatMap((question) => question.data.options)
+    .filter((option) => option.points && option.points.length > 0) // Filtering options with points
+    .map((option) => ({
+      skillId: option.points[0].skillId,
+      text: option.text,
+    }));
+
+  if (skillInfo.length === 0) {
+    return { message: "No skill information found" };
+  }
+
+  // Assuming you have a separate model named 'Question'
+  // You can run another query to find the name based on the extracted skillId
+  const skillIds = skillInfo.map((info) => info.skillId);
+  console.log("skillids", skillIds);
+
+  const skillNames = [];
+
+  for (const skillId of skillIds) {
+    const skill = await prisma.skill.findUnique({
+      where: {
+        id: skillId,
+      },
+    });
+
+    if (skill) {
+      skillNames.push({
+        skillId: skill.id,
+        skillName: skill.name,
+      });
+    } else {
+      skillNames.push({
+        skillId: skillId,
+        skillName: "Unknown",
+      });
+    }
+  }
+
+  return { milestone, skillNames } || [];
 };
 
 // get users skillrequirements to move to next milestone

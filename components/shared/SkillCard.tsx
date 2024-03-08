@@ -26,56 +26,56 @@ export function SkillCard({ skill }: CardProps) {
     enabled: !!skill,
   });
 
+  console.log("data", data?.score);
+
   return (
     <div className="bg-[#F0F1F5] overflow-hidden w-fit rounded-[20px] px-[30px] py-5 justify-self-center">
       <h3 className="text-xl font-semibold text-[#4D4D9B] mb-[60px]">
         {skill.name}
       </h3>
       <div className="flex flex-row mb-5">
-        {Array.from({ length: 10 }).map((value, i) => {
+        {Array.from({ length: 100 }).map((value, innerIndex) => {
           return (
             <div
-              key={i}
-              className={`flex flex-col items-center gap-0.5 relative bg-[#DDDDDD] shadow-inner shadow-[#320864]/[.25] py-[3px] px-[2px] ${
-                i === 0 ? "rounded-l-full" : ""
-              } ${i === 9 ? "rounded-r-full" : ""}`}
+              key={innerIndex}
+              className={`flex flex-col items-center relative bg-[#DDDDDD] shadow-inner shadow-[#320864]/[.25] ${
+                innerIndex === 0 ? "rounded-l-full" : ""
+              } ${innerIndex === 99 ? "rounded-r-full" : ""}`}
             >
-              <span className="text-xs text-gray-500 absolute -bottom-5 left-0">
-                {i}
-              </span>
-              {Math.round((data?.score / 100) * 10) >= i && (
-                <motion.div
-                  key={i}
-                  className={`w-[54px] h-[8px] z-50 cursor-pointer border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
-                    i === 0 ? "rounded-l-full" : ""
-                  } ${i === 9 ? "rounded-r-full" : ""}`}
-                  animate={{
-                    backgroundColor: "#9E54FF",
-                    zIndex: 1,
-                  }}
-                ></motion.div>
+              {innerIndex % 10 === 0 && (
+                <span className="text-xs text-gray-500 absolute -bottom-5 left-0">
+                  {innerIndex}
+                </span>
               )}
-              {Math.round((data?.score / 100) * 10) < i && (
-                <motion.div
-                  key={i}
-                  className={`w-[54px] h-[8px] -z-10 cursor-pointer border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
-                    i === 0 ? "rounded-l-full" : ""
-                  } ${i === 9 ? "rounded-r-full" : ""}`}
-                  animate={{
-                    backgroundColor:
-                      data?.assessedScore >= i ? "#14AE5C" : "#D9D9D9",
-                    zIndex: 0, // Set a lower z-index for other colors
-                  }}
-                ></motion.div>
-              )}
-              {i === data?.selfScore && (
+              <motion.div
+                animate={{
+                  // width: `${entry?.score}%`,
+                  backgroundColor:
+                    data?.score !== undefined && innerIndex + 1 <= data?.score
+                      ? "#9d64d6"
+                      : data?.assessedScore !== undefined &&
+                        innerIndex + 1 <= data?.assessedScore
+                      ? "#14AE5C"
+                      : "#D9D9D9",
+                }}
+                className={`cursor-pointer w-[5.5px] h-[8px] border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
+                  innerIndex === 0 ? "rounded-l-full" : ""
+                } ${innerIndex === 99 ? "rounded-r-full" : ""}`}
+              ></motion.div>
+              {Math.ceil(data?.assessedScore ?? 0) == innerIndex + 1 ? (
+                <div className="absolute -top-6 -right-6 z-50 bg-Moderate_violet rounded-md text-[8px] !text-white px-1.5 py-1">
+                  {data.assessedScore ?? 0}
+                </div>
+              ) : null}
+
+              {innerIndex === data?.selfScore && (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="18"
                   height="44"
                   viewBox="0 0 18 44"
                   fill="none"
-                  className="absolute -top-6 -right-3 z-50"
+                  className="absolute -top-6 -right-3 z-40"
                 >
                   <path
                     fill-rule="evenodd"

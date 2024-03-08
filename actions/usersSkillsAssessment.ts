@@ -15,7 +15,7 @@ export const upsertHardSkills = async (
         },
       },
       update: {
-        selfScore,
+        selfScore: selfScore * 10,
       },
       create: {
         userId,

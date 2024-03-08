@@ -62,7 +62,6 @@ export default function MileStoneAssessment({
   const [isOptionSelected, setIsOptionSelected] = useState(false);
   const [percentage, setPercentage] = useState([]);
 
-  console.log("answers", answers);
   // get the total number of questions
   const totalQuestions = questions?.length || 0;
   const remainingQuestions = totalQuestions - currentQuestion - 1;
@@ -77,81 +76,6 @@ export default function MileStoneAssessment({
       (answer) => answer.questionIndex !== questionIndex
     );
 
-    const groupedPoints =
-      currentSkillType !== "hard"
-        ? currentQuestionData?.data?.options?.map((question) => question.points)
-        : currentQuestionData?.data?.options?.map(
-            (question: any) => question.points
-          );
-
-    const options = currentQuestionData?.data?.options || [];
-
-    const softOptions = currentQuestionData?.data?.options || [];
-
-    const selectedSkillPoints = options[selectedOptionIndex]?.points || [];
-
-    const softSelectedSkillPoints =
-      softOptions[selectedOptionIndex]?.points || [];
-
-    const skillPoints = {};
-
-    // Group points by skillId
-    groupedPoints.forEach((pointArray) => {
-      pointArray.forEach((point) => {
-        const { skillId, points } = point;
-        if (!skillPoints[skillId]) {
-          skillPoints[skillId] = [];
-        }
-        skillPoints[skillId].push(points);
-      });
-    });
-
-    // Find the maximum points for each skillId
-    const skillMaxPoints = {};
-    Object.keys(skillPoints).forEach((skillId) => {
-      skillMaxPoints[skillId] = Math.max(...skillPoints[skillId]);
-    });
-
-    console.log(skillMaxPoints);
-    // Convert selectedSkillPoints to an object
-    const selectedSkillPointsObject = selectedSkillPoints.reduce(
-      (acc, point) => {
-        acc[point.skillId] = point.points;
-        return acc;
-      },
-      {}
-    );
-
-    // soft type
-    const selectedSoftSkillPointsObject = softSelectedSkillPoints.reduce(
-      (acc, point) => {
-        acc[point.skillId] = point.points;
-        return acc;
-      },
-      {}
-    );
-
-    // Calculate the percentage for each skill
-    const skillPercentages = Object.keys(skillMaxPoints).map((skillId) => {
-      const maxPoints = skillMaxPoints[skillId];
-      const selectedPoints = selectedSkillPointsObject[skillId] || 0;
-      const selectedSoftPoints = selectedSoftSkillPointsObject[skillId] || 0;
-      let percentage;
-      if (currentSkillType === "hard") {
-        percentage = (selectedPoints / maxPoints) * 100;
-      } else {
-        percentage = (selectedSoftPoints / maxPoints) * 100;
-      }
-
-      return { questionIndex, skillId, percentage };
-    });
-
-    const updatedPercentage = percentage.filter(
-      (item) => item.questionIndex !== questionIndex
-    );
-
-    // Add the new skillPercentages
-    setPercentage([...updatedPercentage, ...skillPercentages]);
     // Add the new answer
     updatedAnswers.push({ questionIndex, selectedOptionIndex, points });
     setAnswers(updatedAnswers);
@@ -171,7 +95,6 @@ export default function MileStoneAssessment({
 
         setCurrentSkillType("soft");
         setAnswers([]);
-        setPercentage([]);
         setCurrentQuestion(0);
       } else {
         setCurrentQuestion(currentQuestion + 1);
@@ -299,7 +222,7 @@ export default function MileStoneAssessment({
                 onClick={() => {
                   if (user) {
                     startTransition(() => {
-                      mileStoneAssessment(percentage);
+                      mileStoneAssessment(answers);
                     });
                   }
                   setAnswers([]);

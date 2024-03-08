@@ -79,7 +79,6 @@ export async function register(options: RegisterOptions) {
 
   const { email, password, firstName, lastName } = data;
 
-  console.log("data", data);
   const existingUser = await prisma.user.findFirst({
     where: {
       email,

@@ -5,12 +5,17 @@ import { auth } from "@/auth";
 import prisma from "./prisma";
 
 export const getScoreCard = async (id: any) => {
+  const session = await auth();
+  if (!session) {
+    return null;
+  }
   const scores = await prisma.userSkill.findFirst({
     where: {
+      userId: session.user.id,
       skillId: id,
     },
   });
-
+  console.log("scores", scores);
   return scores;
 };
 

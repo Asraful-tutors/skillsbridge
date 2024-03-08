@@ -21,7 +21,7 @@ export default {
   callbacks: {
     async signIn({ user, account, profile }) {
       // Allow OAuth without email verification
-      console.log(account?.provider);
+      console.log("account", account);
       if (account?.provider !== "credentials") return true;
 
       const existingUser = await prisma.user.findFirst({
@@ -42,14 +42,7 @@ export default {
 
         if (!googleAccount) {
           // Create a new Account record for the user
-          await prisma.account.create({
-            data: {
-              userId: existingUser.id,
-              type: "oauth",
-              provider: "google",
-              providerAccountId: account?.id || "",
-            },
-          });
+          return true;
         }
       }
 

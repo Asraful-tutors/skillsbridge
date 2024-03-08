@@ -39,42 +39,32 @@ export function RequiredSkillCard({ skill }: CardProps) {
         {skill?.skill.name}
       </h3>
       <div className="flex flex-row mb-10">
-        {Array.from({ length: 10 }).map((value, i) => {
+        {Array.from({ length: 100 }).map((innerIndex, i) => {
           return (
             <div
-              key={i}
-              className={`flex flex-col items-center gap-0.5 relative bg-[#DDDDDD] shadow-inner shadow-[#320864]/[.25] py-[3px] px-[2px] w-full ${
-                i === 0 ? "rounded-l-full" : ""
-              } ${i === 9 ? "rounded-r-full" : ""}`}
+              key={innerIndex}
+              className={`flex flex-col items-center relative bg-[#DDDDDD] shadow-inner shadow-[#320864]/[.25] ${
+                innerIndex === 0 ? "rounded-l-full" : ""
+              } ${innerIndex === 99 ? "rounded-r-full" : ""}`}
             >
-              <span className="text-xs text-gray-500 absolute -bottom-5 left-0">
-                {i}
-              </span>
-              {Math.round(data?.assessedScore + 1 / 100) * 10 >= i && (
-                <motion.div
-                  key={i}
-                  className={`w-[44px] h-[8px] z-50 cursor-pointer border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
-                    i === 0 ? "rounded-l-full" : ""
-                  } ${i === 9 ? "rounded-r-full" : ""}`}
-                  animate={{
-                    backgroundColor: "#9E54FF",
-                    zIndex: 1,
-                  }}
-                ></motion.div>
+              {innerIndex % 10 === 0 && (
+                <span className="text-xs text-gray-500 absolute -bottom-5 left-0">
+                  {innerIndex}
+                </span>
               )}
-              {/* {Math.round(data?.score / 100) * 10 > i && (
-                <motion.div
-                  key={i}
-                  className={`w-[44px] h-[8px] -z-10 cursor-pointer border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
-                    i === 0 ? "rounded-l-full" : ""
-                  } ${i === 9 ? "rounded-r-full" : ""}`}
-                  animate={{
-                    backgroundColor:
-                      data?.assessedScore >= i ? "#14AE5C" : "#D9D9D9",
-                    zIndex: 0, // Set a lower z-index for other colors
-                  }}
-                ></motion.div>
-              )} */}
+              <motion.div
+                animate={{
+                  // width: `${entry?.score}%`,
+                  backgroundColor:
+                    data?.score !== undefined && innerIndex + 1 <= data?.score
+                      ? "#9d64d6"
+                      : "#D9D9D9",
+                }}
+                className={`cursor-pointer w-[4px] h-[8px] border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
+                  innerIndex === 0 ? "rounded-l-full" : ""
+                } ${innerIndex === 99 ? "rounded-r-full" : ""}`}
+              ></motion.div>
+
               {i === data?.selfScore && (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +97,7 @@ export function RequiredSkillCard({ skill }: CardProps) {
         {/* Display the last index */}
         <div className="flex flex-col items-center relative">
           <span className="text-xs text-gray-500 absolute -bottom-5 left-0">
-            10
+            100
           </span>
         </div>
       </div>

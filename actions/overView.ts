@@ -1,5 +1,6 @@
 "use server";
 
+import { auth } from "@/auth";
 import prisma from "@/lib/backend/prisma";
 
 // get users assessed hard skillspoints
@@ -34,9 +35,14 @@ export const getSoftSkills = async (userId: number) => {
 
 // get users assessed hard skillspoints
 export const getDashboardhardSkills = async (userId: number) => {
+  const session = await auth();
+
+  if (!session) {
+    return { message: "UserId not founds" };
+  }
   const softSkills = await prisma.userSkill.findMany({
     where: {
-      userId,
+      userId: session.user.id,
       skill: {
         type: "Hard",
       },
@@ -60,10 +66,15 @@ export const getDashboardhardSkills = async (userId: number) => {
 
 // get users assessed soft skillspoints
 export const getDashboardSoftSkills = async (userId: number) => {
-  console.log("userid", userId);
+  const session = await auth();
+
+  if (!session) {
+    return { message: "UserId not founds" };
+  }
+
   const softSkills = await prisma.userSkill.findMany({
     where: {
-      userId,
+      userId: session.user.id,
       skill: {
         type: "Soft",
       },

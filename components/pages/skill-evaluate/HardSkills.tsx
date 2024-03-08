@@ -48,7 +48,6 @@ export default function HardSkillsPage({
     },
     enabled: !!userPaths,
   });
-  console.log("hardSkills", hardSkills);
 
   const handleScaleClick = (skillId: number, selfScore: number) => {
     setScaledSkills((prevSkills) => [
@@ -56,7 +55,6 @@ export default function HardSkillsPage({
       { skillId, selfScore },
     ]);
   };
-  console.log(scaledSkills);
   const handleNextClick = async () => {
     if (!user) {
       console.error("User is not defined");

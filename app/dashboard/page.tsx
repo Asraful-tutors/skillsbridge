@@ -38,7 +38,7 @@ export default function DashboardPage() {
 
   const [pathId, setPathId] = useState(0);
 
-  const { data: user } = useQuery({
+  const { data: user, isLoading: userLoading } = useQuery({
     queryKey: ["/dashboard/hard"],
     queryFn: async () => {
       const data = await getCurrentUser();
@@ -226,7 +226,8 @@ export default function DashboardPage() {
     userPathsLoading ||
     userSoftSkillsLoading ||
     userHardSkillsLoading ||
-    isLoading
+    isLoading ||
+    userLoading
   )
     return (
       <>
