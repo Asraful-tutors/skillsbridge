@@ -63,6 +63,7 @@ model User {
   profile     UserProfile?       @relation("User-Profile")
   paths       UserPath[]
   skills      UserSkill[]
+  milestones  UserMilestone[]
   assessments AssessmentRecord[]
 }
 
@@ -71,17 +72,22 @@ model UserProfile {
   firstName String? @db.VarChar(64)
   lastName  String? @db.VarChar(64)
   bio       String? @db.Text
-  
-  completed CompletedMilestone[]
+
   user User @relation("User-Profile", fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model CompletedMilestone {
-  id         Int      @id @default(autoincrement())
-  name       String
-  completed  Boolean
-  userProfile UserProfile @relation(fields: [userProfileId], references: [userId])
-  userProfileId Int
+model UserMilestone {
+  userId      Int
+  milestoneId Int
+  active      Boolean
+  selfScore   Int?
+  completion  Float
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  milestone Milestone @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
+
+  @@id([userId, milestoneId])
+  @@index([userId])
 }
 
 model UserPath {
@@ -157,6 +163,7 @@ model Milestone {
   assessments       Assessment[]                @relation("Milestone-Assessment")
   paths             Path[]                      @relation("Path-Milestones")
   skillRequirements MilestoneSkillRequirement[]
+  userMilestones    UserMilestone[]
 }
 
 model MilestoneSkillRequirement {
