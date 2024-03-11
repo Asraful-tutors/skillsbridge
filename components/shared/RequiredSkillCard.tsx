@@ -39,7 +39,7 @@ export function RequiredSkillCard({ skill }: CardProps) {
         {skill?.skill.name}
       </h3>
       <div className="flex flex-row mb-10">
-        {Array.from({ length: 100 }).map((innerIndex, i) => {
+        {Array.from({ length: 100 }).map((i, innerIndex) => {
           return (
             <div
               key={innerIndex}
@@ -65,7 +65,7 @@ export function RequiredSkillCard({ skill }: CardProps) {
                 } ${innerIndex === 99 ? "rounded-r-full" : ""}`}
               ></motion.div>
 
-              {i === data?.selfScore && (
+              {innerIndex === data?.selfScore && (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="18"
