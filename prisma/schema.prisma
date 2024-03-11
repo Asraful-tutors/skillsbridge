@@ -79,9 +79,7 @@ model UserProfile {
 model UserMilestone {
   userId      Int
   milestoneId Int
-  active      Boolean
-  selfScore   Int?
-  completion  Float
+  completed   Boolean
 
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   milestone Milestone @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
