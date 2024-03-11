@@ -144,7 +144,7 @@ export default function SignUp({}: SignUpProps) {
               disabled={isPending}
             />
             <p className="desc text-center">
-              By creating an account, you agreeing to our{" "}
+              By creating an account, you are agreeing to our{" "}
               <span
                 onClick={() => setOpenPrivacyModal(true)}
                 className="font-semibold cursor-pointer "

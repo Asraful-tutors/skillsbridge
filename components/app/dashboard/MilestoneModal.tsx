@@ -24,19 +24,19 @@ export default function MilestoneModal({
   milestone: any;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  console.log("milestone", milestone);
-
   return milestone?.milestone?.milestones?.length > 0 ? (
     <div className="z-[100] bg-black/[.70] w-screen h-screen absolute top-0 left-0 flex items-center">
       <motion.div
-        className={`popup w-max relative text-black max-w-screen-2xl h-fit max-h-screen my-8 rounded-2xl sm:mx-10 xl:mx-auto grid grid-cols-1 xl:grid-cols-10 gap-12 p-0 bg-white_background overflow-y-scroll xl:overflow-y-auto`}
+        className={`popup w-max relative text-black max-w-screen-2xl max-h-[800px] max-h-screen my-8 rounded-2xl sm:mx-10 xl:mx-auto grid grid-cols-1 xl:grid-cols-10 gap-12 p-0 bg-white_background overflow-y-scroll xl:overflow-hidden`}
       >
-        <Button
-          onClick={() => setVisible(false)}
-          className="absolute right-4 top-4 font-semibold h-10 w-10 text-xl text-white bg-[#9E54FF] hover:bg-[#9E54FF] hover:opacity-70 shadow-none rounded-full"
-        >
-          x
-        </Button>
+        <div className="absolute right-4 top-4">
+          <Button
+            onClick={() => setVisible(false)}
+            className="font-semibold h-10 w-10 text-xl text-white bg-[#9E54FF] hover:bg-[#9E54FF] hover:opacity-70 shadow-none rounded-full"
+          >
+            x
+          </Button>
+        </div>
         <div className="col-span-5 2xl:col-span-6 my-[77px] mx-12 relative">
           <h1 className="text-[40px] font-bold mb-[18px]">
             {milestone?.milestone?.milestones[0]?.name}
@@ -59,29 +59,32 @@ export default function MilestoneModal({
           </div>
           <div className="flex flex-col mb-[42px]">
             <div className="flex flex-row gap-3 flex-wrap">
-              {milestone?.skillNames.length > 0 && (
+              {milestone?.milestone?.milestones[0]?.skillRequirements?.length >
+                0 && (
                 <div className="flex flex-col mb-[84px]">
                   <h3 className="text-base font-medium mb-[9px]">
                     Skills you&apos;ll learn
                   </h3>
                   <div className="flex flex-row gap-3 flex-wrap">
-                    {milestone?.skillNames?.map((item: any, key: number) => (
-                      <Badge
-                        key={key}
-                        variant={"nonHoverable"}
-                        className={`rounded-full w-fit px-4 py-2 flex justify-center text-badge_text bg-apricot/[.56] text-sm shadow-none tracking-tighter-[-0.154px] ${
-                          key % 4 === 0
-                            ? "bg[#A8DAFF8F]"
-                            : key % 4 === 1
-                            ? "bg-[#94C6EB8F]"
-                            : key % 4 === 2
-                            ? "bg-[#FFA8D28F]"
-                            : "bg-[#FF84005E]"
-                        }`}
-                      >
-                        {item.skillName}
-                      </Badge>
-                    ))}
+                    {milestone?.milestone?.milestones[0]?.skillRequirements?.map(
+                      (item: Skill, key: number) => (
+                        <Badge
+                          key={key}
+                          variant={"nonHoverable"}
+                          className={`rounded-full w-fit px-4 py-2 flex justify-center text-badge_text bg-apricot/[.56] text-sm shadow-none tracking-tighter-[-0.154px] ${
+                            key % 4 === 0
+                              ? "bg[#A8DAFF8F]"
+                              : key % 4 === 1
+                              ? "bg-[#94C6EB8F]"
+                              : key % 4 === 2
+                              ? "bg-[#FFA8D28F]"
+                              : "bg-[#FF84005E]"
+                          }`}
+                        >
+                          {item.skill?.name}
+                        </Badge>
+                      )
+                    )}
                   </div>
                 </div>
               )}
@@ -114,7 +117,7 @@ export default function MilestoneModal({
           </Button>
         </div>
 
-        <div className="col-span-5 2xl:col-span-4 bg-[#E2E2FE] flex flex-col items-center rounded-b-2xl xl:rounded-r-2xl xl:rounded-b-none py-[32px]">
+        <div className="col-span-5 2xl:col-span-4 bg-[#E2E2FE] flex flex-col items-center rounded-b-2xl xl:rounded-r-2xl xl:rounded-b-none py-[32px] xl:max-h-[800px] xl:overflow-y-scroll">
           <div>
             <h2 className="mb-5 text-2xl font-bold">To unlock, you require</h2>
             <div className="flex flex-col items-center xl:items-start">

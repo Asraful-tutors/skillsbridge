@@ -55,6 +55,7 @@ export default function HardSkillsPage({
       { skillId, selfScore },
     ]);
   };
+  
   const handleNextClick = async () => {
     if (!user) {
       console.error("User is not defined");
