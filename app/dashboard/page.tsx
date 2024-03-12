@@ -30,6 +30,7 @@ import {
   isEligible,
 } from "@/lib/backend/mileStoneCourses";
 import PdfDownloader from "@/components/shared/PdfDownloader";
+import SizingOverlay from "@/components/app/dashboard/SizingOverlay";
 
 export default function DashboardPage() {
   const dispatch = useAppDispatch();
@@ -252,7 +253,13 @@ export default function DashboardPage() {
     );
   }
 
-  const pathname = usePathname();
+  const handleDivStyle = (props: any) => {
+    return setDivStyle({
+      scale: props.scale,
+      top: props.position.top,
+      left: props.position.left,
+    });
+  };
 
   const [milestoneCompletion, setMilestoneCompletion] = useState(
     Array(20).fill(false)
@@ -300,7 +307,7 @@ export default function DashboardPage() {
     <section className="bg-[url('/images/dashboard.svg')]   bg-cover bg-center bg-repeat w-screen h-screen relative overflow-hidden">
       <Header />
       <PdfDownloader open={openPdfDownloader} setOpen={setOpenDownloader} />
-      {/* {!userHardSkillsLoading && !userSoftSkillsLoading ? ( */}
+      <SizingOverlay props={handleDivStyle} />
       <SkillsBoard
         //@ts-ignore
         user={user}
