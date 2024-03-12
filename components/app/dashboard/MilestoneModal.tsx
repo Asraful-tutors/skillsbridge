@@ -72,6 +72,8 @@ export default function MilestoneModal({
     );
   }
 
+  console.log("mileStoneData", mileStoneData);
+
   if (isError || skillNameError) {
     return "Something went wrong";
   }
@@ -91,7 +93,7 @@ export default function MilestoneModal({
         </div>
         <div className="col-span-5 2xl:col-span-6 my-[77px] mx-12 relative">
           <h1 className="text-[40px] font-bold mb-[18px]">
-            {mileStoneData?.name}
+            {mileStoneData?.data?.name}
             {/* milestone title */}
           </h1>
           <div className="flex flex-col mb-8">
@@ -99,7 +101,7 @@ export default function MilestoneModal({
               Overview
             </h2>
             <p className="text-base opacity-50">
-              {mileStoneData?.description || (
+              {mileStoneData?.data?.description || (
                 <span>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.
