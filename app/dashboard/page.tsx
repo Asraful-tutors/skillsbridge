@@ -276,7 +276,7 @@ export default function DashboardPage() {
   }, [allMilestonesData, completedMilestones]);
 
   useEffect(() => {
-    if (completedMilestones?.length == 18) {
+    if (completedMilestones?.length == 2) {
       setOpenDownloader(true);
     }
   }, [completedMilestones]);
