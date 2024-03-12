@@ -148,8 +148,17 @@ export async function logOut() {
 
 // get current user
 
-export const getCurrentUser = async () => {
+export const getCurrentUser = async (email: string) => {
   const session = auth();
+
+  if (!session) {
+    return await prisma.user.findFirst({
+      where: {
+        email: email,
+      },
+    });
+  }
+
   return session;
 };
 

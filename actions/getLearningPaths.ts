@@ -45,9 +45,12 @@ export const getSoftSkillsForPath = async () => {
 
 // get users selected paths
 export const getUserSelectedPaths = async (userId: number) => {
+  const session = await auth();
+
+  if (!session) return null;
   const response = await prisma.userPath.findFirst({
     where: {
-      userId: userId,
+      userId: session.user.id,
     },
     include: {
       path: true,
