@@ -15,7 +15,7 @@ const containerVariants = {
 
 export default function Home() {
   return (
-    <AuthWrapper>
+    <>
       <motion.section
         className="bg-[#F9F9F7]"
         initial="initial"
@@ -26,6 +26,6 @@ export default function Home() {
         <CookieDrawer />
         <SignUp />
       </motion.section>
-    </AuthWrapper>
+    </>
   );
 }
