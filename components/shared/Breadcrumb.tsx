@@ -16,9 +16,7 @@ export default function Breadcrumb() {
           </Link>
           <span className="text-sm">&nbsp;&nbsp;/&nbsp;&nbsp;</span>
           <span className="text-sm">MileStone</span>
-          <span className="text-sm">
-            &nbsp;&nbsp;/&nbsp;&nbsp;{params?.pathId}
-          </span>
+          <span className="text-sm">&nbsp;&nbsp;/&nbsp;&nbsp;{params?.id}</span>
         </ul>
       </nav>
     </motion.div>

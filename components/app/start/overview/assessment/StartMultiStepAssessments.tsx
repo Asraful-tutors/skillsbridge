@@ -40,16 +40,16 @@ export default function StartMultiStepAssessments({
 
       switch (userPaths.pathId) {
         case 1:
-          assessmentId = 19;
+          assessmentId = 7;
           break;
         case 2:
-          assessmentId = 20;
+          assessmentId = 19;
           break;
         case 3:
-          assessmentId = 21;
+          assessmentId = 11;
           break;
         case 4:
-          assessmentId = 22;
+          assessmentId = 15;
           break;
         default:
           throw new Error("Unsupported pathId");

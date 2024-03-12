@@ -1,9 +1,18 @@
+// @ts-nocheck
+
 "use client";
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { RequiredSkillCard } from "@/components/shared/RequiredSkillCard";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "@/app/loading";
+import {
+  getSingleAssessment,
+  getSkillNames,
+} from "@/lib/backend/mileStoneCourses";
+import { useState } from "react";
 
 interface Skill {
   skill: {
@@ -16,18 +25,61 @@ interface UserSkill {
 }
 
 export default function MilestoneModal({
-  userSkills,
-  milestone,
+  formattedPathName,
+
   setVisible,
 }: {
-  userSkills: any;
-  milestone: any;
+  formattedPathName: any;
+
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  return milestone?.milestone?.milestones?.length > 0 ? (
+  const [mileStoneData, setMileStone] = useState(null);
+  const [mileStoneName, setMileStoneName] = useState([]);
+  const {
+    data: mileStone,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["milestoneSIngle", formattedPathName],
+    queryFn: async () => {
+      const data = await getSingleAssessment(formattedPathName);
+
+      setMileStone(data);
+      return data;
+    },
+    enabled: !!formattedPathName,
+  });
+
+  const {
+    data: skillName,
+    isLoading: skillNameLoading,
+    isError: skillNameError,
+  } = useQuery({
+    queryKey: ["skillName", mileStone],
+    queryFn: async () => {
+      const data = await getSkillNames(formattedPathName);
+      setMileStoneName(data);
+      return data;
+    },
+    enabled: !!mileStoneData,
+  });
+
+  if (isLoading || skillNameLoading) {
+    return (
+      <>
+        <Loading />
+      </>
+    );
+  }
+
+  if (isError || skillNameError) {
+    return "Something went wrong";
+  }
+
+  return (
     <div className="z-[100] bg-black/[.70] w-screen h-screen absolute top-0 left-0 flex items-center">
       <motion.div
-        className={`popup w-max relative text-black max-w-screen-2xl max-h-[800px] max-h-screen my-8 rounded-2xl sm:mx-10 xl:mx-auto grid grid-cols-1 xl:grid-cols-10 gap-12 p-0 bg-white_background overflow-y-scroll xl:overflow-hidden`}
+        className={`popup w-full relative text-black max-w-screen-2xl mx-auto max-h-[800px] max-h-screen my-8 rounded-2xl sm:mx-10 xl:mx-auto grid grid-cols-1 xl:grid-cols-10 gap-12 p-0 bg-white_background overflow-y-scroll xl:overflow-hidden`}
       >
         <div className="absolute right-4 top-4">
           <Button
@@ -39,7 +91,7 @@ export default function MilestoneModal({
         </div>
         <div className="col-span-5 2xl:col-span-6 my-[77px] mx-12 relative">
           <h1 className="text-[40px] font-bold mb-[18px]">
-            {milestone?.milestone?.milestones[0]?.name}
+            {mileStoneData?.name}
             {/* milestone title */}
           </h1>
           <div className="flex flex-col mb-8">
@@ -47,7 +99,7 @@ export default function MilestoneModal({
               Overview
             </h2>
             <p className="text-base opacity-50">
-              {milestone?.milestone?.milestones[0]?.description || (
+              {mileStoneData?.description || (
                 <span>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -59,15 +111,14 @@ export default function MilestoneModal({
           </div>
           <div className="flex flex-col mb-[42px]">
             <div className="flex flex-row gap-3 flex-wrap">
-              {milestone?.milestone?.milestones[0]?.skillRequirements?.length >
-                0 && (
+              {mileStoneName?.length > 0 ? (
                 <div className="flex flex-col mb-[84px]">
                   <h3 className="text-base font-medium mb-[9px]">
                     Skills you&apos;ll learn
                   </h3>
                   <div className="flex flex-row gap-3 flex-wrap">
-                    {milestone?.milestone?.milestones[0]?.skillRequirements?.map(
-                      (item: Skill, key: number) => (
+                    {mileStoneName?.map((item: Skill, key: number) => {
+                      return (
                         <Badge
                           key={key}
                           variant={"nonHoverable"}
@@ -81,13 +132,13 @@ export default function MilestoneModal({
                               : "bg-[#FF84005E]"
                           }`}
                         >
-                          {item.skill?.name}
+                          {item?.name}
                         </Badge>
-                      )
-                    )}
+                      );
+                    })}
                   </div>
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
           <Button
@@ -117,19 +168,31 @@ export default function MilestoneModal({
           </Button>
         </div>
 
-        <div className="col-span-5 2xl:col-span-4 bg-[#E2E2FE] flex flex-col items-center rounded-b-2xl xl:rounded-r-2xl xl:rounded-b-none py-[32px] xl:max-h-[800px] xl:overflow-y-scroll">
-          <div>
-            <h2 className="mb-5 text-2xl font-bold">To unlock, you require</h2>
-            <div className="flex flex-col items-center xl:items-start">
-              {milestone?.milestone?.milestones[0]?.skillRequirements.map(
-                (skill: any, i: number) => (
-                  <RequiredSkillCard key={i} skill={skill} />
-                )
-              )}
+        {mileStoneData?.data?.skillRequirements?.length > 0 ? (
+          <div className="col-span-5 2xl:col-span-4 bg-[#E2E2FE] flex flex-col items-center rounded-b-2xl xl:rounded-r-2xl xl:rounded-b-none py-[32px] xl:max-h-[800px] xl:overflow-y-scroll">
+            <div>
+              <h2 className="mb-5 text-2xl font-bold">
+                To unlock, you require
+              </h2>
+              <div className="flex flex-col items-center xl:items-start">
+                {mileStoneData?.data?.skillRequirements?.map(
+                  (skill: any, i: number) => (
+                    <RequiredSkillCard
+                      key={i}
+                      skill={skill}
+                      mileStoneName={mileStoneName}
+                    />
+                  )
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="col-span-5 mt-20 text-xl font-semibold 2xl:col-span-4 bg-[#E2E2FE] flex flex-col items-center rounded-b-2xl xl:rounded-r-2xl xl:rounded-b-none py-[32px] xl:max-h-[800px] xl:overflow-y-scroll">
+            No required skills
+          </div>
+        )}
       </motion.div>
     </div>
-  ) : null;
+  );
 }

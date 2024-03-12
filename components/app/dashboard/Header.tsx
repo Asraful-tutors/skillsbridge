@@ -33,8 +33,6 @@ export default function Header() {
     user as any
   );
 
-  console.log("userPaths", userPaths);
-
   const handleVisibility = () => {
     setVisible(!visible);
   };

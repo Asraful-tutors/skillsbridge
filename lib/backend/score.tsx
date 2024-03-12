@@ -9,60 +9,51 @@ export const getScoreCard = async (id: any) => {
   if (!session) {
     return null;
   }
-  const scores = await prisma.userSkill.findFirst({
+  const skillName = await prisma.skill.findFirst({
     where: {
-      userId: session.user.id,
-      skillId: id,
+      id: parseInt(id),
     },
   });
-  console.log("scores", scores);
-  return scores;
+
+  return skillName;
 };
 
-export const markCompletedMilestones = async (milestoneName: string) => {
+export const markCompletedMilestones = async (milestoneId: string) => {
   const session = await auth();
   if (!session) {
     return null;
   }
 
-  const existCompletedMilestone = await prisma.userProfile.findFirst({
-    where: { userId: session.user.id },
-    include: {
-      completed: true,
+  // Get the user ID from the session
+  const userId = session.user.id;
+
+  // Find the milestone by name
+  const milestone = await prisma.milestone.findFirst({
+    where: {
+      id: parseInt(milestoneId),
     },
   });
-  const isCompleted = existCompletedMilestone?.completed?.find(
-    (milestone) => milestone.name === milestoneName
-  );
 
-  console.log("isCompleted", isCompleted);
-
-  if (isCompleted) {
-    return { messame: "Milestone already completed", isCompleted };
+  // If milestone not found, return an error message
+  if (!milestone) {
+    return "Milestone not found";
   }
 
-  const upsertCompletion = await prisma.userProfile.upsert({
+  // Use upsert to mark the milestone as completed if not already completed
+  const upsertCompletion = await prisma.userMilestone.upsert({
     where: {
-      userId: session.user.id,
+      userId_milestoneId: {
+        userId,
+        milestoneId: milestone.id,
+      },
     },
     update: {
-      // Update the existing completed milestone if it exists
-      completed: {
-        create: {
-          name: milestoneName,
-          completed: true,
-        },
-      },
+      completed: true,
     },
     create: {
-      // Create a new user profile with the completed milestone if it doesn't exist
-      userId: session.user.id,
-      completed: {
-        create: {
-          name: milestoneName,
-          completed: true,
-        },
-      },
+      userId,
+      milestoneId: milestone.id,
+      completed: true,
     },
   });
 

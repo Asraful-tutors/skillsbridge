@@ -21,17 +21,20 @@ interface CardProps {
 
 export function SkillCard({ skill }: CardProps) {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["scorecard", skill?.id],
-    queryFn: () => getScoreCard(skill?.id),
+    queryKey: ["scorecard", skill?.skillId],
+    queryFn: () => getScoreCard(skill?.skillId),
     enabled: !!skill,
   });
 
-  console.log("data", data?.score);
+  if (isLoading) return "loading...";
+  if (isError) return "Something went wrong";
+
+  console.log("skill", skill);
 
   return (
     <div className="bg-[#F0F1F5] overflow-hidden w-fit rounded-[20px] px-[30px] py-5 justify-self-center">
       <h3 className="text-xl font-semibold text-[#4D4D9B] mb-[60px]">
-        {skill.name}
+        {data.name}
       </h3>
       <div className="flex flex-row mb-5">
         {Array.from({ length: 100 }).map((value, innerIndex) => {
@@ -51,10 +54,10 @@ export function SkillCard({ skill }: CardProps) {
                 animate={{
                   // width: `${entry?.score}%`,
                   backgroundColor:
-                    data?.score !== undefined && innerIndex + 1 <= data?.score
+                    innerIndex + 1 <= skill?.score
                       ? "#9d64d6"
-                      : data?.assessedScore !== undefined &&
-                        innerIndex + 1 <= data?.assessedScore
+                      : skill?.assessedScore !== undefined &&
+                        innerIndex + 1 <= skill?.assessedScore
                       ? "#14AE5C"
                       : "#D9D9D9",
                 }}
@@ -62,13 +65,13 @@ export function SkillCard({ skill }: CardProps) {
                   innerIndex === 0 ? "rounded-l-full" : ""
                 } ${innerIndex === 99 ? "rounded-r-full" : ""}`}
               ></motion.div>
-              {Math.ceil(data?.assessedScore ?? 0) == innerIndex + 1 ? (
-                <div className="absolute -top-6 -right-6 z-50 bg-Moderate_violet rounded-md text-[8px] !text-white px-1.5 py-1">
-                  {data.assessedScore ?? 0}
+              {Math.ceil(skill?.assessedScore ?? 0) == innerIndex + 1 ? (
+                <div className="absolute -top-6 -right-3 z-50 bg-green-600 rounded-md text-[8px] !text-white px-1.5 py-1">
+                  {skill.assessedScore ?? 0}
                 </div>
               ) : null}
 
-              {innerIndex === data?.selfScore && (
+              {innerIndex === skill?.selfScore && (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="18"
@@ -100,7 +103,7 @@ export function SkillCard({ skill }: CardProps) {
         {/* Display the last index */}
         <div className="flex flex-col items-center relative">
           <span className="text-xs text-gray-500 absolute -bottom-5 left-0">
-            10
+            100
           </span>
         </div>
       </div>

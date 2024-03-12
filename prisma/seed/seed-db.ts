@@ -1,5 +1,5 @@
 import { Factory, NamedFactory, connect } from "./seed-util";
-import assessmentData from "./data/assessments.json";
+import questionsData from "./data/questions.json";
 import mainSkillsData from "./data/main-skills.json";
 import milestonesData from "./data/milestones.json";
 // @ts-ignore
@@ -33,7 +33,7 @@ namespace SeedDB {
 
 async function parseAssessmentsData() {
   // Assessment name | Question | Answers | Points by skill...
-  const data = assessmentData;
+  const data = questionsData;
 
   const headers = data[0];
 

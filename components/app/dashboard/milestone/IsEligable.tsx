@@ -15,23 +15,14 @@ interface Skill {
   };
 }
 
-export default function IsEligable({
-  userPaths,
-  milestone,
-}: {
-  userPaths: any;
-  milestone: any;
-}) {
+export default function IsEligable({ milestone }: { milestone: any }) {
   const params = useParams();
-  const { path } = userPaths;
-  console.log("milestone", milestone);
+
   return (
     <motion.div className="w-full text-black max-w-screen-2xl h-full my-8 rounded-2xl mx-auto grid grid-cols-1 xl:grid-cols-2 gap-12 py-[77px] xl:pr-0 px-12 bg-white_background">
       <div className="">
         <Breadcrumb />
-        <h1 className="text-[40px] font-bold mb-[18px]">
-          {milestone?.milestones[0]?.name}
-        </h1>
+        <h1 className="text-[40px] font-bold mb-[18px]">{milestone?.name}</h1>
         <Image
           src={"/images/gamer.svg"}
           alt={"gamer"}
@@ -44,7 +35,7 @@ export default function IsEligable({
             Overview
           </h2>
           <p className="text-base opacity-50">
-            {milestone?.milestones[0]?.description || (
+            {milestone?.description || (
               <span>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
@@ -54,31 +45,29 @@ export default function IsEligable({
             )}
           </p>
         </div>
-        {milestone?.milestones[0]?.skillRequirements?.length > 0 && (
+        {skillNames.length > 0 && (
           <div className="flex flex-col mb-[84px]">
             <h3 className="text-base font-medium mb-[9px]">
               Skills you&apos;ll learn
             </h3>
             <div className="flex flex-row gap-3 flex-wrap">
-              {milestone?.milestones[0]?.skillRequirements?.map(
-                (item: Skill, key: number) => (
-                  <Badge
-                    key={key}
-                    variant={"nonHoverable"}
-                    className={`rounded-full w-fit px-4 py-2 flex justify-center text-badge_text bg-apricot/[.56] text-sm shadow-none tracking-tighter-[-0.154px] ${
-                      key % 4 === 0
-                        ? "bg[#A8DAFF8F]"
-                        : key % 4 === 1
-                        ? "bg-[#94C6EB8F]"
-                        : key % 4 === 2
-                        ? "bg-[#FFA8D28F]"
-                        : "bg-[#FF84005E]"
-                    }`}
-                  >
-                    {item.skill?.name}
-                  </Badge>
-                )
-              )}
+              {skillNames?.map((item: Skill, key: number) => (
+                <Badge
+                  key={key}
+                  variant={"nonHoverable"}
+                  className={`rounded-full w-fit px-4 py-2 flex justify-center text-badge_text bg-apricot/[.56] text-sm shadow-none tracking-tighter-[-0.154px] ${
+                    key % 4 === 0
+                      ? "bg[#A8DAFF8F]"
+                      : key % 4 === 1
+                      ? "bg-[#94C6EB8F]"
+                      : key % 4 === 2
+                      ? "bg-[#FFA8D28F]"
+                      : "bg-[#FF84005E]"
+                  }`}
+                >
+                  {item?.name}
+                </Badge>
+              ))}
             </div>
           </div>
         )}
@@ -88,7 +77,7 @@ export default function IsEligable({
             variant={"violate"}
             className="w-full md:max-w-[284px]"
           >
-            <a href={milestone?.milestones[0]?.link || "#"} target="_blank">
+            <a href={milestone?.link || "#"} target="_blank">
               Go to course
             </a>
           </Button>
@@ -97,9 +86,7 @@ export default function IsEligable({
             variant={"violate"}
             className="w-full md:max-w-[284px]"
           >
-            <Link
-              href={`/dashboard/milestone/${userPaths?.path.name}/${params?.pathId}/assessment`}
-            >
+            <Link href={`/dashboard/milestone/${params?.id}/assessment`}>
               Take Assessments
             </Link>
           </Button>

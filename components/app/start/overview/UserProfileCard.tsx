@@ -41,7 +41,7 @@ export default function UserProfileCard({ link }: { link?: string }) {
     <motion.div className="flex flex-col items-center justify-center gap-[50px]">
       <div className="flex flex-col items-center justify-center gap-[50px] bg-[#F2F7F7] p-10 rounded-2xl">
         <div className="w-full flex items-center justify-end">
-          <Button
+          {/* <Button
             variant={"outline"}
             className="max-w-[70px] flex items-center gap-2 p-2 text-sm font-medium leading-5"
           >
@@ -60,7 +60,7 @@ export default function UserProfileCard({ link }: { link?: string }) {
                 fill="#757575"
               />
             </svg>
-          </Button>
+          </Button> */}
         </div>
         <div className=" flex flex-col gap-2.5 rounded-3xl">
           <div className="max-w-[200px] mx-auto rounded-full overflow-hidden">

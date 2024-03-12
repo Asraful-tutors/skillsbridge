@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
@@ -23,19 +25,23 @@ import {
   getSoftSkills,
 } from "@/actions/overView";
 import {
+  getAllMilestones,
   getMilestoneQuestions,
   isEligible,
 } from "@/lib/backend/mileStoneCourses";
+import PdfDownloader from "@/components/shared/PdfDownloader";
 
 export default function DashboardPage() {
   const dispatch = useAppDispatch();
   const [selectedData, setSelectedData] = useState([]);
-  const [formattedPathName, setFormattedPathName] = useState(``);
+  const [formattedPathName, setFormattedPathName] = useState(null);
   const userEmail =
     typeof window !== "undefined" ? localStorage.getItem("userData") : null;
   const parsedEmail = userEmail ? JSON.parse(userEmail) : null;
   const email = parsedEmail ? parsedEmail.email : null;
 
+  const [allMilestonesData, setAllMilestonesData] = useState([]);
+  const [completedMilestoesData, setCompletedMilestoesData] = useState([]);
   const [pathId, setPathId] = useState(0);
 
   const { data: user, isLoading: userLoading } = useQuery({
@@ -62,11 +68,8 @@ export default function DashboardPage() {
 
   const params = useParams();
 
-  const { userSkills, userSkillsLoading, userSkillsError } = useUserPathSkills(
-    //@ts-ignore
-    user?.id,
-    formattedPathName
-  );
+  const { userSkills, userSkillsLoading, userSkillsError } =
+    useUserPathSkills();
 
   const {
     data: userSoftSkills,
@@ -97,7 +100,33 @@ export default function DashboardPage() {
   } = useQuery({
     queryKey: ["completedMilestones"],
     // @ts-ignore
-    queryFn: () => getCompletedMilestones(user?.user?.id),
+    queryFn: async () => {
+      const data = await getCompletedMilestones(user?.user?.id);
+      setCompletedMilestoesData(data);
+      return data || [];
+    },
+    enabled: !!userPaths,
+  });
+
+  const {
+    data: allMilestones,
+    isLoading: isLoadingAllMilestones,
+    isError: isErrorAllMilestones,
+  } = useQuery({
+    queryKey: ["getAllMilestones", userPaths],
+    // @ts-ignore
+    queryFn: async () => {
+      // Check if userPaths is available
+      if (!userPaths) {
+        return []; // or any default value that makes sense for your application
+      }
+
+      // Ensure that getAllMilestones returns data
+      const data = await getAllMilestones(userPaths.pathId);
+      setAllMilestonesData(data);
+      // Return the data to satisfy useQuery expectations
+      return data;
+    },
     enabled: !!userPaths,
   });
 
@@ -107,8 +136,6 @@ export default function DashboardPage() {
     queryFn: () => isEligible(userPaths?.path?.name, pathId),
     enabled: !!pathId,
   });
-
-  console.log("milestone", milestone);
 
   const [hovered, setHovered] = useState<{ [key: number]: boolean }>({});
   const [divStyle, setDivStyle] = useState({
@@ -214,20 +241,31 @@ export default function DashboardPage() {
     };
   }, [handleMouseMove, handleMouseUp, divStyle.scale, divStyle.isDragging]);
 
-  function isNameInCompletedArray(name: string) {
-    // @ts-ignore
-    return completedMilestones?.completed?.some(
-      // @ts-ignore
-      (milestone) => milestone.name === name
+  const [openPdfDownloader, setOpenDownloader] = useState(false);
+
+  function isMilestoneCompleted(milestoneId: number) {
+    return (
+      completedMilestones?.some(
+        (milestone) =>
+          milestone.milestoneId === milestoneId && milestone.completed
+      ) ?? false
     );
   }
+
+  useEffect(() => {
+    if (completedMilestones?.length == 21) {
+      setOpenDownloader(true);
+    }
+  }, [completedMilestones]);
 
   if (
     userPathsLoading ||
     userSoftSkillsLoading ||
     userHardSkillsLoading ||
-    isLoading ||
-    userLoading
+    // isLoading ||
+    isLoadingAllMilestones ||
+    userLoading ||
+    isLoading
   )
     return (
       <>
@@ -235,12 +273,13 @@ export default function DashboardPage() {
       </>
     );
 
-  if (userPathsError || isError) return <>Something went wrong</>;
+  if (userPathsError || isErrorAllMilestones || isError)
+    return <>Something went wrong</>;
 
   return (
     <section className="bg-[url('/images/dashboard.svg')] bg-cover bg-center bg-repeat w-screen h-screen relative overflow-hidden">
       <Header />
-
+      <PdfDownloader open={openPdfDownloader} setOpen={setOpenDownloader} />
       {/* {!userHardSkillsLoading && !userSoftSkillsLoading ? ( */}
       <SkillsBoard
         //@ts-ignore
@@ -255,11 +294,11 @@ export default function DashboardPage() {
         <MilestoneModal
           setVisible={setVisible}
           userSkills={userSkills}
-          milestone={milestone}
+          formattedPathName={formattedPathName}
         />
       )}
       <motion.div
-        className="relative min-w-[1401.75px]"
+        className="relative w-[5000.75px]"
         style={{
           transform: `scale(${divStyle.scale})`,
           top: `${divStyle.top}px`,
@@ -281,7 +320,7 @@ export default function DashboardPage() {
           "
           >
             <Link
-              href={`/dashboard/milestone/${userPaths?.path.name}/1`}
+              href={`/dashboard/milestone/${allMilestonesData[0]?.id}`}
               className="group relative cursor-pointer"
             >
               <Image
@@ -303,14 +342,14 @@ export default function DashboardPage() {
         </div>
         {/* Milestone 2 */}
         <div className="absolute -top-[35px] left-[490px]">
-          {isNameInCompletedArray(`${userPaths?.path.name} 1`) ? (
+          {isMilestoneCompleted(allMilestonesData[0]?.id) ? (
             <div
               className="z-0 relative before:absolute before:content-[url('/images/milestone2_before.svg')] before:top-[80px] before:-right-[335px] before:w-full before:h-full
          after:absolute after:content-[url('/images/milestone2_after.svg')] after:-bottom-[230px] after:-right-[300px] after:w-full after:h-full after:object-cover after:object-center
          "
             >
               <Link
-                href={`/dashboard/milestone/${userPaths?.path.name}/2`}
+                href={`/dashboard/milestone/${allMilestonesData[1]?.id}`}
                 className="group relative cursor-pointer"
               >
                 <Image
@@ -339,7 +378,7 @@ export default function DashboardPage() {
                 onMouseEnter={() => handleMouseAction(2, true)}
                 onMouseLeave={() => handleMouseAction(2, false)}
                 onClick={() => {
-                  setFormattedPathName(`${userPaths?.path.name} 2`);
+                  setFormattedPathName(allMilestonesData[1]?.id);
                   // setSelectedData();
                   setPathId(2);
                   handleModal();
@@ -366,14 +405,14 @@ export default function DashboardPage() {
         </div>
         {/* Milestone 3 */}
         <div className="absolute top-[810px] left-[220px]">
-          {isNameInCompletedArray(`${userPaths?.path.name} 2`) ? (
+          {isMilestoneCompleted(allMilestonesData[1]?.id) ? (
             <div
               className="z-0 relative before:absolute before:content-[url('/images/milestone3_before.svg')] before:rotate-2 before:-top-[559px] before:left-[217px] before:w-full before:h-full before:object-cover before:object-center
             after:absolute after:content-[url('/images/milestone3_after.svg')] after:-top-[85px] after:-right-[255px] after:w-full after:h-full after:object-cover after:object-center
             "
             >
               <Link
-                href={`/dashboard/milestone/${userPaths?.path.name}/3`}
+                href={`/dashboard/milestone/${allMilestonesData[2]?.id}`}
                 className="group relative cursor-pointer"
               >
                 <Image
@@ -402,7 +441,8 @@ export default function DashboardPage() {
                 onMouseEnter={() => handleMouseAction(3, true)}
                 onMouseLeave={() => handleMouseAction(3, false)}
                 onClick={() => {
-                  setFormattedPathName(`${userPaths?.path.name} 3`);
+                  setFormattedPathName(allMilestonesData[2]?.id);
+
                   // setSelectedData();
                   setPathId(3);
 
@@ -430,13 +470,13 @@ export default function DashboardPage() {
         </div>
         {/* Milestone 4 */}
         <div className="absolute top-[400px] left-[580px]">
-          {isNameInCompletedArray(`${userPaths?.path.name} 3`) ? (
+          {isMilestoneCompleted(allMilestonesData[2]?.id) ? (
             <div
               className="z-10 relative
               after:absolute after:content-[url('/images/milestone4_after.svg')] after:top-[120px] after:-right-[340px] after:w-full after:h-full after:object-cover after:object-center"
             >
               <Link
-                href={`/dashboard/milestone/${userPaths?.path.name}/4`}
+                href={`/dashboard/milestone/${allMilestonesData[3]?.id}`}
                 className="group relative cursor-pointer"
               >
                 <Image
@@ -457,7 +497,8 @@ export default function DashboardPage() {
                 onMouseEnter={() => handleMouseAction(4, true)}
                 onMouseLeave={() => handleMouseAction(4, false)}
                 onClick={() => {
-                  setFormattedPathName(`${userPaths?.path.name} 4`);
+                  setFormattedPathName(allMilestonesData[3]?.id);
+
                   setPathId(4);
 
                   handleModal();
@@ -477,10 +518,10 @@ export default function DashboardPage() {
         </div>
         {/* Milestone 5 */}
         <div className="absolute -top-[50px] left-[1000px] z-40">
-          {isNameInCompletedArray(`${userPaths?.path.name} 4`) ? (
+          {isMilestoneCompleted(allMilestonesData[3]?.id) ? (
             <div className="">
               <Link
-                href={`/dashboard/milestone/${userPaths?.path.name}/5`}
+                href={`/dashboard/milestone/${allMilestonesData[4]?.id}}`}
                 className="group relative cursor-pointer"
               >
                 <Image
@@ -505,7 +546,8 @@ export default function DashboardPage() {
                 onMouseEnter={() => handleMouseAction(5, true)}
                 onMouseLeave={() => handleMouseAction(5, false)}
                 onClick={() => {
-                  setFormattedPathName(`${userPaths?.path.name} 5`);
+                  setFormattedPathName(allMilestonesData[4]?.id);
+
                   setPathId(5);
                   handleModal();
                 }}
@@ -531,13 +573,13 @@ export default function DashboardPage() {
         </div>
         {/* Milestone 6 */}
         <div className="absolute top-[735px] left-[1165px] z-40">
-          {isNameInCompletedArray(`${userPaths?.path.name} 5`) ? (
+          {isMilestoneCompleted(allMilestonesData[4]?.id) ? (
             <div
               className="z-0 relative before:absolute before:content-[url('/images/milestone6_before.svg')] before:rotate-2 before:-top-[40px] before:-left-[240px] before:w-full before:h-full before:object-cover before:object-center
              after:absolute after:content-[url('/images/milestone6_after.svg')] after:-top-[115px] after:-right-[125px] after:w-full after:h-full after:object-cover after:object-center"
             >
               <Link
-                href={`/dashboard/milestone/${userPaths?.path.name}/6`}
+                href={`/dashboard/milestone/${allMilestonesData[5]?.id}`}
                 className="group relative cursor-pointer"
               >
                 <Image
@@ -565,7 +607,8 @@ export default function DashboardPage() {
                 onMouseEnter={() => handleMouseAction(6, true)}
                 onMouseLeave={() => handleMouseAction(6, false)}
                 onClick={() => {
-                  setFormattedPathName(`${userPaths?.path.name} 6`);
+                  setFormattedPathName(allMilestonesData[5]?.id);
+
                   setPathId(6);
                   handleModal();
                 }}
@@ -591,13 +634,13 @@ export default function DashboardPage() {
         </div>
         {/* Milestone 7 */}
         <div className="absolute top-[420px] left-[1290px] z-30">
-          {isNameInCompletedArray(`${userPaths?.path.name} 6`) ? (
+          {isMilestoneCompleted(allMilestonesData[5]?.id) ? (
             <div
               className="relative before:absolute before:content-[url('/images/milestone7_before.svg')] before:rotate-2 before:-top-[340px] before:-left-[115px] before:w-full before:h-full before:object-cover before:object-center
             "
             >
               <Link
-                href={`/dashboard/milestone/${userPaths?.path.name}/7`}
+                href={`/dashboard/milestone/${allMilestonesData[6]?.id}`}
                 className="group relative cursor-pointer"
               >
                 <Image
@@ -625,7 +668,8 @@ export default function DashboardPage() {
                 onMouseEnter={() => handleMouseAction(7, true)}
                 onMouseLeave={() => handleMouseAction(7, false)}
                 onClick={() => {
-                  setFormattedPathName(`${userPaths?.path.name} 7`);
+                  setFormattedPathName(allMilestonesData[6]?.id);
+
                   setPathId(7);
                   handleModal();
                 }}
@@ -645,6 +689,746 @@ export default function DashboardPage() {
                   src={"/images/milestone7_title.svg"}
                   className="w-[134px] h-[32px] h-full absolute top-[50px] left-[50px] z-50"
                 />
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* milestone 8 */}
+
+        <div className="absolute top-[19rem] left-[89rem]">
+          {isMilestoneCompleted(allMilestonesData[6]?.id) ? (
+            <div
+              className="z-0 relative  after:object-cover after:object-center
+         "
+            >
+              <Link
+                href={`/dashboard/milestone/${allMilestonesData[7]?.id}`}
+                className="group relative cursor-pointer"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone8.png"}
+                  className="w-full h-full z-40  rotate-[-39deg]"
+                />
+
+                <span className=" absolute top-[10px] left-[100px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 8
+                </span>
+              </Link>
+            </div>
+          ) : (
+            <div
+              className="z-0 relative  after:object-cover after:object-center
+         "
+            >
+              <div
+                onMouseEnter={() => handleMouseAction(2, true)}
+                onMouseLeave={() => handleMouseAction(2, false)}
+                onClick={() => {
+                  setFormattedPathName(allMilestonesData[7]?.id);
+                  // setSelectedData();
+                  setPathId(2);
+                  handleModal();
+                }}
+                className="group relative"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone8.png"}
+                  className="w-full h-full z-40 rotate-[-35deg] opacity-50"
+                />
+
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 8
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+        {/* milestone 9 */}
+
+        <div className="absolute top-[15rem] left-[100rem]">
+          {isMilestoneCompleted(allMilestonesData[7]?.id) ? (
+            <div
+              className="z-0 relative  after:object-cover after:object-center
+         "
+            >
+              <Link
+                href={`/dashboard/milestone/${allMilestonesData[8]?.id}`}
+                className="group relative cursor-pointer"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40 scale-[1.05] rotate-[-25deg]"
+                />
+
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 9
+                </span>
+              </Link>
+            </div>
+          ) : (
+            <div className="z-0 relative ">
+              <div
+                onMouseEnter={() => handleMouseAction(2, true)}
+                onMouseLeave={() => handleMouseAction(2, false)}
+                onClick={() => {
+                  setFormattedPathName(allMilestonesData[8]?.id);
+                  // setSelectedData();
+                  setPathId(2);
+                  handleModal();
+                }}
+                className="group relative"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40 opacity-50 scale-[1.05] rotate-[-25deg]"
+                />
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 9
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+        {/* milestone 10 */}
+
+        <div className="absolute top-[14rem] left-[111rem]">
+          {isMilestoneCompleted(allMilestonesData[8]?.id) ? (
+            <div
+              className="z-0 relative  after:object-cover after:object-center
+         "
+            >
+              <Link
+                href={`/dashboard/milestone/${allMilestonesData[9]?.id}`}
+                className="group relative cursor-pointer"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40"
+                />
+
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 10
+                </span>
+              </Link>
+            </div>
+          ) : (
+            <div className="z-0 relative ">
+              <div
+                onMouseEnter={() => handleMouseAction(2, true)}
+                onMouseLeave={() => handleMouseAction(2, false)}
+                onClick={() => {
+                  setFormattedPathName(allMilestonesData[9]?.id);
+                  // setSelectedData();
+                  setPathId(2);
+                  handleModal();
+                }}
+                className="group relative"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40 opacity-50 "
+                />
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 10
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+        {/* milestone 11 */}
+
+        <div className="absolute top-[14rem] left-[122rem]">
+          {isMilestoneCompleted(allMilestonesData[9]?.id) ? (
+            <div
+              className="z-0 relative  after:object-cover after:object-center
+         "
+            >
+              <Link
+                href={`/dashboard/milestone/${allMilestonesData[10]?.id}`}
+                className="group relative cursor-pointer"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40"
+                />
+
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 11
+                </span>
+              </Link>
+            </div>
+          ) : (
+            <div className="z-0 relative ">
+              <div
+                onMouseEnter={() => handleMouseAction(2, true)}
+                onMouseLeave={() => handleMouseAction(2, false)}
+                onClick={() => {
+                  setFormattedPathName(allMilestonesData[10]?.id);
+                  // setSelectedData();
+                  setPathId(2);
+                  handleModal();
+                }}
+                className="group relative"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40 opacity-50 "
+                />
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 11
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+        {/* milestone 12 */}
+
+        <div className="absolute top-[14rem] left-[133rem]">
+          {isMilestoneCompleted(allMilestonesData[10]?.id) ? (
+            <div
+              className="z-0 relative  after:object-cover after:object-center
+         "
+            >
+              <Link
+                href={`/dashboard/milestone/${allMilestonesData[11]?.id}`}
+                className="group relative cursor-pointer"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40"
+                />
+
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 12
+                </span>
+              </Link>
+            </div>
+          ) : (
+            <div className="z-0 relative ">
+              <div
+                onMouseEnter={() => handleMouseAction(2, true)}
+                onMouseLeave={() => handleMouseAction(2, false)}
+                onClick={() => {
+                  setFormattedPathName(allMilestonesData[11]?.id);
+                  // setSelectedData();
+                  setPathId(2);
+                  handleModal();
+                }}
+                className="group relative"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40 opacity-50 "
+                />
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 12
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* milestone 13 */}
+
+        <div className="absolute top-[14rem] left-[145rem]">
+          {isMilestoneCompleted(allMilestonesData[11]?.id) ? (
+            <div
+              className="z-0 relative 
+         "
+            >
+              <Link
+                href={`/dashboard/milestone/${allMilestonesData[12]?.id}`}
+                className="group relative cursor-pointer"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40"
+                />
+
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 13
+                </span>
+              </Link>
+            </div>
+          ) : (
+            <div className="z-0 relative ">
+              <div
+                onMouseEnter={() => handleMouseAction(2, true)}
+                onMouseLeave={() => handleMouseAction(2, false)}
+                onClick={() => {
+                  setFormattedPathName(allMilestonesData[12]?.id);
+                  // setSelectedData();
+                  setPathId(2);
+                  handleModal();
+                }}
+                className="group relative"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40 opacity-50 "
+                />
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 13
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+        {/* milestone 14 */}
+
+        <div className="absolute top-[14rem] left-[156rem]">
+          {isMilestoneCompleted(allMilestonesData[12]?.id) ? (
+            <div
+              className="z-0 relative 
+         "
+            >
+              <Link
+                href={`/dashboard/milestone/${allMilestonesData[13]?.id}`}
+                className="group relative cursor-pointer"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40"
+                />
+
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 14
+                </span>
+              </Link>
+            </div>
+          ) : (
+            <div className="z-0 relative ">
+              <div
+                onMouseEnter={() => handleMouseAction(2, true)}
+                onMouseLeave={() => handleMouseAction(2, false)}
+                onClick={() => {
+                  setFormattedPathName(allMilestonesData[13]?.id);
+                  // setSelectedData();
+                  setPathId(2);
+                  handleModal();
+                }}
+                className="group relative"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40 opacity-50 "
+                />
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 14
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* milestone 15 */}
+
+        <div className="absolute top-[14rem] left-[168rem]">
+          {isMilestoneCompleted(allMilestonesData[13]?.id) ? (
+            <div
+              className="z-0 relative 
+         "
+            >
+              <Link
+                href={`/dashboard/milestone/${allMilestonesData[14]?.id}`}
+                className="group relative cursor-pointer"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40"
+                />
+
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 15
+                </span>
+              </Link>
+            </div>
+          ) : (
+            <div className="z-0 relative ">
+              <div
+                onMouseEnter={() => handleMouseAction(2, true)}
+                onMouseLeave={() => handleMouseAction(2, false)}
+                onClick={() => {
+                  setFormattedPathName(allMilestonesData[14]?.id);
+                  // setSelectedData();
+                  setPathId(2);
+                  handleModal();
+                }}
+                className="group relative"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40 opacity-50 "
+                />
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 15
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* milestone 16 */}
+
+        <div className="absolute top-[14rem] left-[180rem]">
+          {isMilestoneCompleted(allMilestonesData[14]?.id) ? (
+            <div
+              className="z-0 relative 
+         "
+            >
+              <Link
+                href={`/dashboard/milestone/${allMilestonesData[15]?.id}`}
+                className="group relative cursor-pointer"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40"
+                />
+
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 16
+                </span>
+              </Link>
+            </div>
+          ) : (
+            <div className="z-0 relative ">
+              <div
+                onMouseEnter={() => handleMouseAction(2, true)}
+                onMouseLeave={() => handleMouseAction(2, false)}
+                onClick={() => {
+                  setFormattedPathName(allMilestonesData[15]?.id);
+                  // setSelectedData();
+                  setPathId(2);
+                  handleModal();
+                }}
+                className="group relative"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40 opacity-50 "
+                />
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 16
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+        {/* milestone 17 */}
+
+        <div className="absolute top-[14rem] left-[192rem]">
+          {isMilestoneCompleted(allMilestonesData[15]?.id) ? (
+            <div
+              className="z-0 relative 
+         "
+            >
+              <Link
+                href={`/dashboard/milestone/${allMilestonesData[16]?.id}`}
+                className="group relative cursor-pointer"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40"
+                />
+
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 17
+                </span>
+              </Link>
+            </div>
+          ) : (
+            <div className="z-0 relative ">
+              <div
+                onMouseEnter={() => handleMouseAction(2, true)}
+                onMouseLeave={() => handleMouseAction(2, false)}
+                onClick={() => {
+                  setFormattedPathName(allMilestonesData[16]?.id);
+                  // setSelectedData();
+                  setPathId(2);
+                  handleModal();
+                }}
+                className="group relative"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40 opacity-50 "
+                />
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 17
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* milestone 18 */}
+
+        <div className="absolute top-[14rem] left-[203rem]">
+          {isMilestoneCompleted(allMilestonesData[16]?.id) ? (
+            <div
+              className="z-0 relative 
+         "
+            >
+              <Link
+                href={`/dashboard/milestone/${allMilestonesData[17]?.id}`}
+                className="group relative cursor-pointer"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40"
+                />
+
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 18
+                </span>
+              </Link>
+            </div>
+          ) : (
+            <div className="z-0 relative ">
+              <div
+                onMouseEnter={() => handleMouseAction(2, true)}
+                onMouseLeave={() => handleMouseAction(2, false)}
+                onClick={() => {
+                  setFormattedPathName(allMilestonesData[17]?.id);
+                  // setSelectedData();
+                  setPathId(2);
+                  handleModal();
+                }}
+                className="group relative"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40 opacity-50 "
+                />
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 18
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* milestone 19 */}
+
+        <div className="absolute top-[14rem] left-[215rem]">
+          {isMilestoneCompleted(allMilestonesData[17]?.id) ? (
+            <div
+              className="z-0 relative 
+         "
+            >
+              <Link
+                href={`/dashboard/milestone/${allMilestonesData[18]?.id}`}
+                className="group relative cursor-pointer"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40"
+                />
+
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 19
+                </span>
+              </Link>
+            </div>
+          ) : (
+            <div className="z-0 relative ">
+              <div
+                onMouseEnter={() => handleMouseAction(2, true)}
+                onMouseLeave={() => handleMouseAction(2, false)}
+                onClick={() => {
+                  setFormattedPathName(allMilestonesData[18]?.id);
+                  // setSelectedData();
+                  setPathId(2);
+                  handleModal();
+                }}
+                className="group relative"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40 opacity-50 "
+                />
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 19
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* milestone 20 */}
+
+        <div className="absolute top-[14rem] left-[226rem]">
+          {isMilestoneCompleted(allMilestonesData[18]?.id) ? (
+            <div
+              className="z-0 relative 
+         "
+            >
+              <Link
+                href={`/dashboard/milestone/${allMilestonesData[19]?.id}`}
+                className="group relative cursor-pointer"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40"
+                />
+
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 20
+                </span>
+              </Link>
+            </div>
+          ) : (
+            <div className="z-0 relative ">
+              <div
+                onMouseEnter={() => handleMouseAction(2, true)}
+                onMouseLeave={() => handleMouseAction(2, false)}
+                onClick={() => {
+                  setFormattedPathName(allMilestonesData[19]?.id);
+                  // setSelectedData();
+                  setPathId(2);
+                  handleModal();
+                }}
+                className="group relative"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40 opacity-50 "
+                />
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 20
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* milestone 21 */}
+
+        <div className="absolute top-[14rem] left-[237rem]">
+          {isMilestoneCompleted(allMilestonesData[19]?.id) ? (
+            <div
+              className="z-0 relative 
+         "
+            >
+              <Link
+                href={`/dashboard/milestone/${allMilestonesData[20]?.id}`}
+                className="group relative cursor-pointer"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40"
+                />
+
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 21
+                </span>
+              </Link>
+            </div>
+          ) : (
+            <div className="z-0 relative ">
+              <div
+                onMouseEnter={() => handleMouseAction(2, true)}
+                onMouseLeave={() => handleMouseAction(2, false)}
+                onClick={() => {
+                  setFormattedPathName(allMilestonesData[20]?.id);
+                  // setSelectedData();
+                  setPathId(2);
+                  handleModal();
+                }}
+                className="group relative"
+              >
+                <Image
+                  alt="milestone 2"
+                  width={240.638}
+                  height={245.156}
+                  src={"/images/milestone19.png"}
+                  className="w-full h-full z-40 opacity-50 "
+                />
+                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
+                  Milestone 21
+                </span>
               </div>
             </div>
           )}

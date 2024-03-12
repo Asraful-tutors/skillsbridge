@@ -55,7 +55,6 @@ export default function QuestionsPanel({
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [isOptionSelected, setIsOptionSelected] = useState(false);
   const [percentage, setPercentage] = useState([]);
-  console.log("answer", answers);
   // get the total number of questions
   const totalQuestions = questions?.questions?.length || 0;
   const remainingQuestions = totalQuestions - currentQuestion - 1;

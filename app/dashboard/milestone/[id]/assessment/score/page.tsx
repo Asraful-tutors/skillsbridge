@@ -25,18 +25,15 @@ export default function ScorePage() {
   // Concatenate params.id and getmilestoneId and then format the path name
   const formattedPathName = `${params?.id} ${params?.pathId}`;
 
-  const { userSkills, userSkillsLoading, userSkillsError } = useUserPathSkills(
-    //@ts-ignore
-    user?.id,
-    formattedPathName
-  );
+  const { userSkills, userSkillsLoading, userSkillsError } =
+    useUserPathSkills();
 
   const { isPending, mutate } = useMutation({
-    mutationFn: (milestoneName) => markCompletedMilestones(milestoneName),
+    mutationFn: () => markCompletedMilestones(params?.id),
 
     onSuccess: () => {
       // queryClient.invalidateQueries('your-query-key');
-      toast.success(`${formattedPathName} completed successfully`);
+      toast.success(`Milestone completed successfully`);
       router.push("/dashboard");
     },
     onError: () => {
@@ -68,7 +65,9 @@ export default function ScorePage() {
       </div>
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-10 xl:mx-[50px]">
         {userSkills &&
-          userSkills.map((skill, i) => <SkillCard key={i} skill={skill} />)}
+          userSkills
+            .filter((self) => self.selfScore !== null)
+            .map((skill, i) => <SkillCard key={i} skill={skill} />)}
       </div>
       <div className="flex flex-col items-center">
         <Button

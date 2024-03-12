@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 "use client";
 import Loading from "@/app/loading";
 import IsEligable from "@/components/app/dashboard/milestone/IsEligable";
@@ -5,7 +7,10 @@ import IsEligable from "@/components/app/dashboard/milestone/IsEligable";
 import useUserPathSkills from "@/components/hooks/useUserPathSkills";
 import useUserPaths from "@/components/hooks/useUserPaths";
 import Breadcrumb from "@/components/shared/Breadcrumb";
-import { getMilestoneQuestions } from "@/lib/backend/mileStoneCourses";
+import {
+  getMilestoneQuestions,
+  getSingleAssessment,
+} from "@/lib/backend/mileStoneCourses";
 import { useAppSelector } from "@/lib/store/hooks";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
@@ -41,10 +46,12 @@ export default function MileStonePage() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["milestone", params],
-    queryFn: () => getMilestoneQuestions(formattedPathName, params?.pathId),
-    enabled: !!formattedPathName,
+    queryKey: ["milestoneSIngle", params],
+    queryFn: () => getSingleAssessment(params?.id),
+    enabled: !!params,
   });
+
+  console.log("milestone", milestone);
 
   if (isLoading || userPathsLoading)
     return (
@@ -66,7 +73,9 @@ export default function MileStonePage() {
     <>
       <IsEligable
         //@ts-ignore
-        milestone={milestone}
+        milestone={milestone?.data}
+        skillNames={milestone?.skillNames}
+        userPaths={userPaths}
       />
     </>
   );
