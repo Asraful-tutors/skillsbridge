@@ -50,8 +50,6 @@ export default function MilestoneModal({
     enabled: !!formattedPathName,
   });
 
-  console.log("mileStoneData", mileStoneData);
-
   const {
     data: skillName,
     isLoading: skillNameLoading,
@@ -59,10 +57,7 @@ export default function MilestoneModal({
   } = useQuery({
     queryKey: ["skillName", mileStone],
     queryFn: async () => {
-      const data = await getSkillNames(
-        mileStoneData?.skillRequirements,
-        mileStoneData?.assessments
-      );
+      const data = await getSkillNames(formattedPathName);
       setMileStoneName(data);
       return data;
     },
@@ -84,7 +79,7 @@ export default function MilestoneModal({
   return (
     <div className="z-[100] bg-black/[.70] w-screen h-screen absolute top-0 left-0 flex items-center">
       <motion.div
-        className={`popup w-max relative text-black max-w-screen-2xl max-h-[800px] max-h-screen my-8 rounded-2xl sm:mx-10 xl:mx-auto grid grid-cols-1 xl:grid-cols-10 gap-12 p-0 bg-white_background overflow-y-scroll xl:overflow-hidden`}
+        className={`popup w-full relative text-black max-w-screen-2xl mx-auto max-h-[800px] max-h-screen my-8 rounded-2xl sm:mx-10 xl:mx-auto grid grid-cols-1 xl:grid-cols-10 gap-12 p-0 bg-white_background overflow-y-scroll xl:overflow-hidden`}
       >
         <div className="absolute right-4 top-4">
           <Button
@@ -116,33 +111,31 @@ export default function MilestoneModal({
           </div>
           <div className="flex flex-col mb-[42px]">
             <div className="flex flex-row gap-3 flex-wrap">
-              {mileStoneName?.skillNames?.length > 0 ? (
+              {mileStoneName?.length > 0 ? (
                 <div className="flex flex-col mb-[84px]">
                   <h3 className="text-base font-medium mb-[9px]">
                     Skills you&apos;ll learn
                   </h3>
                   <div className="flex flex-row gap-3 flex-wrap">
-                    {mileStoneName?.skillNames?.map(
-                      (item: Skill, key: number) => {
-                        return (
-                          <Badge
-                            key={key}
-                            variant={"nonHoverable"}
-                            className={`rounded-full w-fit px-4 py-2 flex justify-center text-badge_text bg-apricot/[.56] text-sm shadow-none tracking-tighter-[-0.154px] ${
-                              key % 4 === 0
-                                ? "bg[#A8DAFF8F]"
-                                : key % 4 === 1
-                                ? "bg-[#94C6EB8F]"
-                                : key % 4 === 2
-                                ? "bg-[#FFA8D28F]"
-                                : "bg-[#FF84005E]"
-                            }`}
-                          >
-                            {item?.name}
-                          </Badge>
-                        );
-                      }
-                    )}
+                    {mileStoneName?.map((item: Skill, key: number) => {
+                      return (
+                        <Badge
+                          key={key}
+                          variant={"nonHoverable"}
+                          className={`rounded-full w-fit px-4 py-2 flex justify-center text-badge_text bg-apricot/[.56] text-sm shadow-none tracking-tighter-[-0.154px] ${
+                            key % 4 === 0
+                              ? "bg[#A8DAFF8F]"
+                              : key % 4 === 1
+                              ? "bg-[#94C6EB8F]"
+                              : key % 4 === 2
+                              ? "bg-[#FFA8D28F]"
+                              : "bg-[#FF84005E]"
+                          }`}
+                        >
+                          {item?.name}
+                        </Badge>
+                      );
+                    })}
                   </div>
                 </div>
               ) : null}
@@ -175,22 +168,30 @@ export default function MilestoneModal({
           </Button>
         </div>
 
-        <div className="col-span-5 2xl:col-span-4 bg-[#E2E2FE] flex flex-col items-center rounded-b-2xl xl:rounded-r-2xl xl:rounded-b-none py-[32px] xl:max-h-[800px] xl:overflow-y-scroll">
-          <div>
-            <h2 className="mb-5 text-2xl font-bold">To unlock, you require</h2>
-            <div className="flex flex-col items-center xl:items-start">
-              {mileStoneData?.skillRequirements?.map(
-                (skill: any, i: number) => (
-                  <RequiredSkillCard
-                    key={i}
-                    skill={skill}
-                    mileStoneName={mileStoneName}
-                  />
-                )
-              )}
+        {mileStoneData?.data?.skillRequirements?.length > 0 ? (
+          <div className="col-span-5 2xl:col-span-4 bg-[#E2E2FE] flex flex-col items-center rounded-b-2xl xl:rounded-r-2xl xl:rounded-b-none py-[32px] xl:max-h-[800px] xl:overflow-y-scroll">
+            <div>
+              <h2 className="mb-5 text-2xl font-bold">
+                To unlock, you require
+              </h2>
+              <div className="flex flex-col items-center xl:items-start">
+                {mileStoneData?.data?.skillRequirements?.map(
+                  (skill: any, i: number) => (
+                    <RequiredSkillCard
+                      key={i}
+                      skill={skill}
+                      mileStoneName={mileStoneName}
+                    />
+                  )
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="col-span-5 mt-20 text-xl font-semibold 2xl:col-span-4 bg-[#E2E2FE] flex flex-col items-center rounded-b-2xl xl:rounded-r-2xl xl:rounded-b-none py-[32px] xl:max-h-[800px] xl:overflow-y-scroll">
+            No required skills
+          </div>
+        )}
       </motion.div>
     </div>
   );

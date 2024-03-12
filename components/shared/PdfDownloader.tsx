@@ -1,4 +1,5 @@
 // @ts-nocheck
+"use client";
 
 import {
   Dialog,
@@ -15,8 +16,30 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { modifyPdf } from "@/actions/pdfDownloader";
+import addUserNameToPdf, { modifyPdf } from "@/actions/pdfDownloader";
 import { useAppSelector } from "@/lib/store/hooks";
+import {
+  Document,
+  Page,
+  View,
+  Text,
+  StyleSheet,
+  BlobProvider,
+} from "@react-pdf/renderer";
+import PdfView from "./PdfView";
+
+const styles = StyleSheet.create({
+  page: {
+    padding: 50, // Adjust padding for user name placement
+  },
+  userName: {
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+    position: "absolute",
+    top: 20, // Adjust top position as needed
+  },
+});
 
 export default function PdfDownloader({
   open,
@@ -27,14 +50,14 @@ export default function PdfDownloader({
 }) {
   const [error, setError] = useState(false);
   const [code, setCode] = useState("");
+  const [openPdf, setOpenPdf] = useState(false);
+
   const user = useAppSelector((state) => state.user.userData);
   const handlePasswordAccept = async (e: any) => {
     e.preventDefault();
 
     if ("aX76fQ93z" === code) {
-      const modifiedPdfBytes = await modifyPdf(user?.name);
-      downloadPdf(modifiedPdfBytes, "certificate.pdf");
-      setOpen(false);
+      setOpenPdf(true);
     } else {
       console.error("Invalid code");
       setError(true);
@@ -44,16 +67,9 @@ export default function PdfDownloader({
     }
   };
 
-  const downloadPdf = (pdfBytes: Uint8Array, filename: string) => {
-    const blob = new Blob([pdfBytes], { type: "application/pdf" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = filename;
-    link.click();
-  };
-
   return (
     <>
+      <PdfView open={openPdf} setOpen={setOpenPdf} />
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader className="flex flex-col gap-2">

@@ -22,10 +22,10 @@ interface CardProps {
     };
     milestone: number;
   };
-  mileStoneName: any;
+  mileStoneName?: any;
 }
 
-export function RequiredSkillCard({ skill, mileStoneName }: CardProps) {
+export function RequiredSkillCard({ skill }: CardProps) {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["getskillrequirements", skill.skillId],
     queryFn: () => getSkillRequirements(skill.skillId),

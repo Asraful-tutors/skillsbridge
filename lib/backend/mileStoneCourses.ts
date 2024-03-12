@@ -348,29 +348,10 @@ export const getSingleAssessment = async (milestoneId: number) => {
 
 //
 
-export const getSkillNames = async (skillIds: any, milestones: any) => {
-  if (!skillIds) return null;
-  const skillIdArray = skillIds?.map((item: any) => item.skillId);
-
-  const skills = await prisma.skill.findMany({
-    where: {
-      id: {
-        in: skillIdArray,
-      },
-    },
-    select: {
-      id: true,
-      name: true,
-    },
-  });
-
-  const milestonesArray = milestones?.map((item: any) => item.id);
-
+export const getSkillNames = async (milestoneId: any) => {
   const getQuestions = await prisma.assessment.findMany({
     where: {
-      id: {
-        in: milestonesArray,
-      },
+      id: parseInt(milestoneId),
     },
     select: {
       questions: {
@@ -408,5 +389,5 @@ export const getSkillNames = async (skillIds: any, milestones: any) => {
     },
   });
 
-  return { skills, skillNames } || [];
+  return skillNames || [];
 };

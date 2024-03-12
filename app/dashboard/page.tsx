@@ -108,8 +108,6 @@ export default function DashboardPage() {
     enabled: !!userPaths,
   });
 
-  console.log("completedMilestones", completedMilestones);
-
   const {
     data: allMilestones,
     isLoading: isLoadingAllMilestones,
@@ -256,7 +254,6 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (completedMilestones?.length == 21) {
-      console.log("open");
       setOpenDownloader(true);
     }
   }, [completedMilestones]);
@@ -743,7 +740,7 @@ export default function DashboardPage() {
                   width={240.638}
                   height={245.156}
                   src={"/images/milestone8.png"}
-                  className="w-full h-full z-40 rotate-[35deg]"
+                  className="w-full h-full z-40 rotate-[-35deg] opacity-50"
                 />
 
                 <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
