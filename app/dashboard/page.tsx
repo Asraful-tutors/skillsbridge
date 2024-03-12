@@ -327,7 +327,7 @@ export default function DashboardPage() {
                 alt="milestone 1"
                 width={240.638}
                 height={245.156}
-                src={"/images/milestone1_light.svg"}
+                src={"/images/milestone1.png"}
                 className="w-[300px] h-[245.156px] z-40 "
               />
               <Image
