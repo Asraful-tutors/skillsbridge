@@ -46,12 +46,8 @@ interface Question {
 }
 export default function MileStoneAssessment({
   questions,
-  setCurrentSkillType,
-  currentSkillType,
 }: {
   questions: { questions: Question[] };
-  setCurrentSkillType: any;
-  currentSkillType: string;
 }) {
   const user = useAppSelector((state) => state.user.userData);
   const router = useRouter();
@@ -85,20 +81,7 @@ export default function MileStoneAssessment({
 
   const handleNext = () => {
     if (isOptionSelected) {
-      if (currentQuestion === questions?.length - 1) {
-        // It's the last question, set another state for step 2
-        if (user) {
-          startTransition(() => {
-            mileStoneAssessment(percentage);
-          });
-        }
-
-        setCurrentSkillType("soft");
-        setAnswers([]);
-        setCurrentQuestion(0);
-      } else {
-        setCurrentQuestion(currentQuestion + 1);
-      }
+      setCurrentQuestion(currentQuestion + 1);
 
       setIsOptionSelected(false);
     }
@@ -108,8 +91,7 @@ export default function MileStoneAssessment({
     setCurrentQuestion(currentQuestion - 1);
   };
 
-  const isLastSoftQuestion =
-    currentQuestion === questions?.length - 1 && currentSkillType === "soft";
+  const isLastSoftQuestion = currentQuestion === questions?.length - 1;
 
   if (!questions || questions?.length < 1) {
     return <Loading />;
@@ -132,78 +114,35 @@ export default function MileStoneAssessment({
               remaining
             </p>
             <h2 className="text-black text-base font-semibold leading-[150%]">
-              {currentSkillType !== "hard" ? (
-                <>{currentQuestionData?.text}</>
-              ) : (
-                <>{currentQuestionData?.text}</>
-              )}
+              {currentQuestionData?.text}
             </h2>
             {/* Add the question text above the answer choices */}
             <RadioGroup className="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-7">
-              {currentSkillType !== "hard" ? (
-                <>
-                  {currentQuestionData?.data?.options.map(
-                    (answer: QuestionOption, index: number) => {
-                      return (
-                        <div
-                          className="flex items-center space-x-2"
-                          key={index}
-                        >
-                          <RadioGroupItem
-                            type={currentQuestionData?.question?.data?.type}
-                            onClick={() =>
-                              handleAnswer(
-                                currentQuestionData,
-                                index,
-                                answer.points
-                              )
-                            }
-                            value={answer.text}
-                            id={answer.text}
-                          />
-                          <Label
-                            htmlFor={answer.text}
-                            className="tracking-wide leading-3"
-                          >
-                            {answer.text}
-                          </Label>
-                        </div>
-                      );
-                    }
-                  )}
-                </>
-              ) : (
-                <>
-                  {currentQuestionData?.data?.options.map(
-                    (answer: QuestionOption, index: number) => {
-                      return (
-                        <div
-                          className="flex items-center space-x-2"
-                          key={index}
-                        >
-                          <RadioGroupItem
-                            type={currentQuestionData?.question?.data?.type}
-                            onClick={() =>
-                              handleAnswer(
-                                currentQuestionData,
-                                index,
-                                answer.points
-                              )
-                            }
-                            value={answer.text}
-                            id={answer.text}
-                          />
-                          <Label
-                            className="tracking-wide leading-3"
-                            htmlFor={answer.text}
-                          >
-                            {answer.text}
-                          </Label>
-                        </div>
-                      );
-                    }
-                  )}
-                </>
+              {currentQuestionData?.data?.options.map(
+                (answer: QuestionOption, index: number) => {
+                  return (
+                    <div className="flex items-center space-x-2" key={index}>
+                      <RadioGroupItem
+                        type={currentQuestionData?.question?.data?.type}
+                        onClick={() =>
+                          handleAnswer(
+                            currentQuestionData,
+                            index,
+                            answer.points
+                          )
+                        }
+                        value={answer.text}
+                        id={answer.text}
+                      />
+                      <Label
+                        className="tracking-wide leading-5"
+                        htmlFor={answer.text}
+                      >
+                        {answer.text}
+                      </Label>
+                    </div>
+                  );
+                }
               )}
             </RadioGroup>
           </div>

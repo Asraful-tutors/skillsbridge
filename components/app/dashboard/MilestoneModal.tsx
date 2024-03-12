@@ -1,9 +1,18 @@
+// @ts-nocheck
+
 "use client";
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { RequiredSkillCard } from "@/components/shared/RequiredSkillCard";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "@/app/loading";
+import {
+  getSingleAssessment,
+  getSkillNames,
+} from "@/lib/backend/mileStoneCourses";
+import { useState } from "react";
 
 interface Skill {
   skill: {
@@ -16,15 +25,63 @@ interface UserSkill {
 }
 
 export default function MilestoneModal({
-  userSkills,
-  milestone,
+  formattedPathName,
+
   setVisible,
 }: {
-  userSkills: any;
-  milestone: any;
+  formattedPathName: any;
+
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  return milestone?.milestone?.milestones?.length > 0 ? (
+  const [mileStoneData, setMileStone] = useState(null);
+  const [mileStoneName, setMileStoneName] = useState([]);
+  const {
+    data: mileStone,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["milestoneSIngle", formattedPathName],
+    queryFn: async () => {
+      const data = await getSingleAssessment(formattedPathName);
+
+      setMileStone(data);
+      return data;
+    },
+    enabled: !!formattedPathName,
+  });
+
+  console.log("mileStoneData", mileStoneData);
+
+  const {
+    data: skillName,
+    isLoading: skillNameLoading,
+    isError: skillNameError,
+  } = useQuery({
+    queryKey: ["skillName", mileStone],
+    queryFn: async () => {
+      const data = await getSkillNames(
+        mileStoneData?.skillRequirements,
+        mileStoneData?.assessments
+      );
+      setMileStoneName(data);
+      return data;
+    },
+    enabled: !!mileStoneData,
+  });
+
+  if (isLoading || skillNameLoading) {
+    return (
+      <>
+        <Loading />
+      </>
+    );
+  }
+
+  if (isError || skillNameError) {
+    return "Something went wrong";
+  }
+
+  return (
     <div className="z-[100] bg-black/[.70] w-screen h-screen absolute top-0 left-0 flex items-center">
       <motion.div
         className={`popup w-max relative text-black max-w-screen-2xl max-h-[800px] max-h-screen my-8 rounded-2xl sm:mx-10 xl:mx-auto grid grid-cols-1 xl:grid-cols-10 gap-12 p-0 bg-white_background overflow-y-scroll xl:overflow-hidden`}
@@ -39,7 +96,7 @@ export default function MilestoneModal({
         </div>
         <div className="col-span-5 2xl:col-span-6 my-[77px] mx-12 relative">
           <h1 className="text-[40px] font-bold mb-[18px]">
-            {milestone?.milestone?.milestones[0]?.name}
+            {mileStoneData?.name}
             {/* milestone title */}
           </h1>
           <div className="flex flex-col mb-8">
@@ -47,7 +104,7 @@ export default function MilestoneModal({
               Overview
             </h2>
             <p className="text-base opacity-50">
-              {milestone?.milestone?.milestones[0]?.description || (
+              {mileStoneData?.description || (
                 <span>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -59,35 +116,36 @@ export default function MilestoneModal({
           </div>
           <div className="flex flex-col mb-[42px]">
             <div className="flex flex-row gap-3 flex-wrap">
-              {milestone?.milestone?.milestones[0]?.skillRequirements?.length >
-                0 && (
+              {mileStoneName?.skillNames?.length > 0 ? (
                 <div className="flex flex-col mb-[84px]">
                   <h3 className="text-base font-medium mb-[9px]">
                     Skills you&apos;ll learn
                   </h3>
                   <div className="flex flex-row gap-3 flex-wrap">
-                    {milestone?.milestone?.milestones[0]?.skillRequirements?.map(
-                      (item: Skill, key: number) => (
-                        <Badge
-                          key={key}
-                          variant={"nonHoverable"}
-                          className={`rounded-full w-fit px-4 py-2 flex justify-center text-badge_text bg-apricot/[.56] text-sm shadow-none tracking-tighter-[-0.154px] ${
-                            key % 4 === 0
-                              ? "bg[#A8DAFF8F]"
-                              : key % 4 === 1
-                              ? "bg-[#94C6EB8F]"
-                              : key % 4 === 2
-                              ? "bg-[#FFA8D28F]"
-                              : "bg-[#FF84005E]"
-                          }`}
-                        >
-                          {item.skill?.name}
-                        </Badge>
-                      )
+                    {mileStoneName?.skillNames?.map(
+                      (item: Skill, key: number) => {
+                        return (
+                          <Badge
+                            key={key}
+                            variant={"nonHoverable"}
+                            className={`rounded-full w-fit px-4 py-2 flex justify-center text-badge_text bg-apricot/[.56] text-sm shadow-none tracking-tighter-[-0.154px] ${
+                              key % 4 === 0
+                                ? "bg[#A8DAFF8F]"
+                                : key % 4 === 1
+                                ? "bg-[#94C6EB8F]"
+                                : key % 4 === 2
+                                ? "bg-[#FFA8D28F]"
+                                : "bg-[#FF84005E]"
+                            }`}
+                          >
+                            {item?.name}
+                          </Badge>
+                        );
+                      }
                     )}
                   </div>
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
           <Button
@@ -121,9 +179,13 @@ export default function MilestoneModal({
           <div>
             <h2 className="mb-5 text-2xl font-bold">To unlock, you require</h2>
             <div className="flex flex-col items-center xl:items-start">
-              {milestone?.milestone?.milestones[0]?.skillRequirements.map(
+              {mileStoneData?.skillRequirements?.map(
                 (skill: any, i: number) => (
-                  <RequiredSkillCard key={i} skill={skill} />
+                  <RequiredSkillCard
+                    key={i}
+                    skill={skill}
+                    mileStoneName={mileStoneName}
+                  />
                 )
               )}
             </div>
@@ -131,5 +193,5 @@ export default function MilestoneModal({
         </div>
       </motion.div>
     </div>
-  ) : null;
+  );
 }

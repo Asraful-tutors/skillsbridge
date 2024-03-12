@@ -1,36 +1,107 @@
+// @ts-nocheck
+
 "use server";
 
 import { auth } from "@/auth";
 import prisma from "./prisma";
 import { constructFrom } from "date-fns";
 
-export const getQuestions = async (assessmentName: string) => {
+export const getQuestions = async (id: any) => {
+  // let id = parseInt(assessment);
   const session = await auth();
 
   if (!session) {
     return { message: "UserId not found" };
   }
 
-  const assessment = await prisma.assessment.findFirst({
-    where: {
-      name: assessmentName,
-    },
-    include: {
-      questions: true,
-    },
-  });
+  if (id == 19) {
+    const getMilestone = await prisma.assessment.findFirst({
+      where: {
+        id: 7,
+      },
+      include: {
+        questions: true,
+        milestones: true,
+      },
+    });
 
-  const questions = await prisma.question.findMany({
-    where: {
-      assessmentId: assessment?.id,
-    },
-    include: {
-      assessment: true,
-      questionRecord: true,
-    },
-  });
+    return getMilestone?.questions || [];
+  } else if (id == 22) {
+    const getMilestone = await prisma.assessment.findFirst({
+      where: {
+        id: 11,
+      },
+      include: {
+        questions: true,
+        milestones: true,
+      },
+    });
 
-  return questions;
+    return getMilestone?.questions || [];
+  } else if (id == 25) {
+    const getMilestone = await prisma.assessment.findFirst({
+      where: {
+        id: 20,
+      },
+      include: {
+        questions: true,
+        milestones: true,
+      },
+    });
+
+    return getMilestone?.questions || [];
+  } else if (id == 28) {
+    const getMilestone = await prisma.assessment.findFirst({
+      where: {
+        id: 16,
+      },
+      include: {
+        questions: true,
+        milestones: true,
+      },
+    });
+
+    return getMilestone?.questions || [];
+  }
+
+  // get soft questions
+  else {
+    const getassessment = await prisma.milestone.findFirst({
+      where: {
+        id: parseInt(id),
+      },
+      include: {
+        assessments: true,
+      },
+    });
+    console.log("getassessment", getassessment);
+    const assessmentIds =
+      getassessment?.assessments.map((assessment) => assessment.id) || [];
+
+    // Fetch additional data for each assessment ID
+    const assessmentDetails = await Promise.all(
+      assessmentIds.map(async (assessmentId) => {
+        const assessmentData = await prisma.assessment.findFirst({
+          where: {
+            id: assessmentId,
+          },
+          include: {
+            questions: true,
+            milestones: true,
+          },
+        });
+        return assessmentData?.questions || [];
+      })
+    );
+
+    // Concatenate the arrays of questions into a single array
+    const concatenatedQuestions = assessmentDetails.reduce(
+      (acc, questions) => acc.concat(questions),
+      []
+    );
+
+    return concatenatedQuestions || [];
+  }
 };
 
 export const getMilestoneQuestions = async (name: string, id: any) => {
@@ -156,7 +227,13 @@ export const getSkillRequirements = async (skillId: any) => {
     },
   });
 
-  return requirements;
+  const getSkillName = await prisma.skill.findFirst({
+    where: {
+      id: skillId,
+    },
+  });
+
+  return { requirements, getSkillName };
 };
 
 // go to course link
@@ -177,3 +254,159 @@ export const getSkillRequirements = async (skillId: any) => {
 
 //   return link;
 // };
+
+export const getAllMilestones = async (pathid: number) => {
+  const milestones = await prisma.milestone.findMany({
+    where: {
+      id: {
+        in: Array.from({ length: 18 }, (_, i) => i + 1),
+      },
+    },
+  });
+
+  // cosnt get required hard milestones
+  // Define mapping of pathid to milestone ids
+  const pathidToMilestoneIds = {
+    1: [19, 20, 21],
+    2: [25, 26, 27],
+    3: [22, 23, 24],
+    4: [28, 29, 30],
+  };
+
+  // Get the required milestones based on pathid
+  // @ts-ignore
+  const requiredMilestoneIds = pathidToMilestoneIds[pathid] || [];
+  const getRequiredMilestones = await prisma.milestone.findMany({
+    where: {
+      id: {
+        in: requiredMilestoneIds,
+      },
+    },
+  });
+
+  const updatedData = [...getRequiredMilestones, ...milestones];
+
+  return updatedData || [];
+};
+
+// get assessment
+
+export const getSingleAssessment = async (milestoneId: number) => {
+  const data = await prisma.milestone.findFirst({
+    where: {
+      id: parseInt(milestoneId),
+    },
+    include: {
+      assessments: true,
+      skillRequirements: true,
+      skills: true,
+    },
+  });
+
+  const getQuestions = await prisma.assessment.findMany({
+    where: {
+      id: parseInt(milestoneId),
+    },
+    select: {
+      questions: {
+        select: {
+          data: true,
+        },
+      },
+    },
+  });
+
+  // Flatten the array of questions and get the 'data' field
+  const questionsData = getQuestions.flatMap((assessment) =>
+    assessment.questions.map((question) => question?.data)
+  );
+
+  // Extract skill IDs from the 'options' array
+  const AllskillIds = questionsData.flatMap((data) =>
+    data?.type === "select"
+      ? data?.options?.flatMap((point) =>
+          point?.points?.map((option) => option.skillId)
+        )
+      : []
+  );
+
+  // Fetch skill names based on the skill IDs
+  const skillNames = await prisma.skill.findMany({
+    where: {
+      id: {
+        in: AllskillIds,
+      },
+    },
+    select: {
+      id: true,
+      name: true, // Add other properties you need
+    },
+  });
+
+  return { data, skillNames };
+};
+
+//
+
+export const getSkillNames = async (skillIds: any, milestones: any) => {
+  if (!skillIds) return null;
+  const skillIdArray = skillIds?.map((item: any) => item.skillId);
+
+  const skills = await prisma.skill.findMany({
+    where: {
+      id: {
+        in: skillIdArray,
+      },
+    },
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+
+  const milestonesArray = milestones?.map((item: any) => item.id);
+
+  const getQuestions = await prisma.assessment.findMany({
+    where: {
+      id: {
+        in: milestonesArray,
+      },
+    },
+    select: {
+      questions: {
+        select: {
+          data: true,
+        },
+      },
+    },
+  });
+
+  // Flatten the array of questions and get the 'data' field
+  const questionsData = getQuestions.flatMap((assessment) =>
+    assessment.questions.map((question) => question?.data)
+  );
+
+  // Extract skill IDs from the 'options' array
+  const AllskillIds = questionsData.flatMap((data) =>
+    data?.type === "select"
+      ? data?.options?.flatMap((point) =>
+          point?.points?.map((option) => option.skillId)
+        )
+      : []
+  );
+
+  // Fetch skill names based on the skill IDs
+  const skillNames = await prisma.skill.findMany({
+    where: {
+      id: {
+        in: AllskillIds,
+      },
+    },
+    select: {
+      id: true,
+      name: true, // Add other properties you need
+    },
+  });
+
+  return { skills, skillNames } || [];
+};

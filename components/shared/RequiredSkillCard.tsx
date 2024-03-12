@@ -22,21 +22,24 @@ interface CardProps {
     };
     milestone: number;
   };
+  mileStoneName: any;
 }
 
-export function RequiredSkillCard({ skill }: CardProps) {
-  const params = useParams();
-
-  const { data } = useQuery({
+export function RequiredSkillCard({ skill, mileStoneName }: CardProps) {
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["getskillrequirements", skill.skillId],
     queryFn: () => getSkillRequirements(skill.skillId),
     enabled: !!skill?.skillId,
   });
 
+  if (isLoading) return "Loading...";
+
+  if (isError) return "Something went wrong";
+
   return (
     <div className="bg-[#F0F1F5] overflow-hidden w-full rounded-[20px] px-[30px] py-5 mb-[10px]">
       <h3 className="text-xl font-semibold text-[#4D4D9B] mb-[40px]">
-        {skill?.skill.name}
+        {data?.getSkillName?.name}
       </h3>
       <div className="flex flex-row mb-10">
         {Array.from({ length: 100 }).map((i, innerIndex) => {
@@ -56,7 +59,8 @@ export function RequiredSkillCard({ skill }: CardProps) {
                 animate={{
                   // width: `${entry?.score}%`,
                   backgroundColor:
-                    data?.score !== undefined && innerIndex + 1 <= data?.score
+                    data?.requirements?.score !== undefined &&
+                    innerIndex + 1 <= data?.requirements?.score
                       ? "#9d64d6"
                       : "#D9D9D9",
                 }}
@@ -65,7 +69,7 @@ export function RequiredSkillCard({ skill }: CardProps) {
                 } ${innerIndex === 99 ? "rounded-r-full" : ""}`}
               ></motion.div>
 
-              {innerIndex === data?.selfScore && (
+              {innerIndex === data?.requirements?.selfScore && (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="18"
@@ -102,8 +106,8 @@ export function RequiredSkillCard({ skill }: CardProps) {
         </div>
       </div>
       <h2 className="text-sm mb-[6px]">
-        Current level: {Math.round(data?.assessedScore + 1)}
-        &nbsp;&nbsp;•&nbsp;&nbsp;Required level: {skill?.score}
+        Current level: {Math.round(data?.requirements?.assessedScore + 1)}
+        &nbsp;&nbsp;•&nbsp;&nbsp;Required level: {skill.score}
       </h2>
       {/* <a
         href={`/milestone/0${skill.milestone}`}

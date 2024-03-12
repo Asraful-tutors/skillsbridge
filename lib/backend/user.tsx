@@ -156,17 +156,9 @@ export const getCurrentUser = async () => {
 // get completed milestones
 
 export const getCompletedMilestones = async (id: any) => {
-  const session = auth();
-  if (!session) {
-    return null;
-  }
-
-  const milestones = await prisma.userProfile.findFirst({
+  const milestones = await prisma.userMilestone.findMany({
     where: {
-      userId: id,
-    },
-    include: {
-      completed: true,
+      userId: parseInt(id),
     },
   });
 

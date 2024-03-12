@@ -1,6 +1,7 @@
 // @ts-nocheck
 "use server";
 
+import { auth } from "@/auth";
 import prisma from "@/lib/backend/prisma";
 
 export const getLearningPaths = async () => {
@@ -57,50 +58,30 @@ export const getUserSelectedPaths = async (userId: number) => {
 };
 
 // get users selected path skills
-export const getUserSelectedPathSkills = async (
-  userId: number,
-  formattedPathName: string
-) => {
-  const response = await prisma.assessment.findFirst({
+export const getUserSelectedPathSkills = async () => {
+  const session = await auth();
+  if (!session) {
+    return null;
+  }
+
+  // Get the user ID from the session
+  const userId = session.user.id;
+
+  console.log("userId", userId);
+  const cards = await prisma.userSkill.findMany({
     where: {
-      name: formattedPathName,
-    },
-    include: {
-      questions: {
-        where: {},
-        include: {
-          assessment: true,
-        },
+      userId: userId,
+      skill: {
+        type: "Hard",
       },
     },
   });
 
-  const selectedSkills = response?.questions.map((question) => {
-    return question?.data.options
-      .flatMap((option) => option.points.map((point) => point.skillId))
-      .filter((skillId) => skillId !== undefined);
-  });
+  const filteredData = cards?.filter(
+    (selfScore) => selfScore.selfScore !== 0 || selfScore.selfScore !== null
+  );
 
-  // Flatten the array of arrays and make it unique
-  const flatSelectedSkills = selectedSkills?.flat();
-  const uniqueSelectedSkills = flatSelectedSkills
-    ? [...new Set(flatSelectedSkills)]
-    : [];
-
-  // Run another query to get names for skill IDs
-  const skillNames = await prisma.skill.findMany({
-    where: {
-      id: {
-        in: uniqueSelectedSkills,
-      },
-    },
-    select: {
-      id: true,
-      name: true,
-    },
-  });
-
-  return skillNames;
+  return filteredData || [];
 };
 
 export const updateUsersLearningPaths = async (
