@@ -15,7 +15,13 @@ interface Skill {
   };
 }
 
-export default function IsEligable({ milestone }: { milestone: any }) {
+export default function IsEligable({
+  milestone,
+  skillNames,
+}: {
+  milestone: any;
+  skillNames: any;
+}) {
   const params = useParams();
 
   return (
@@ -45,7 +51,7 @@ export default function IsEligable({ milestone }: { milestone: any }) {
             )}
           </p>
         </div>
-        {skillNames.length > 0 && (
+        {skillNames?.length > 0 && (
           <div className="flex flex-col mb-[84px]">
             <h3 className="text-base font-medium mb-[9px]">
               Skills you&apos;ll learn
