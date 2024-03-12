@@ -26,10 +26,8 @@ export function SkillCard({ skill }: CardProps) {
     enabled: !!skill,
   });
 
-  if (isLoading) return "loading...";
+  if (isLoading) return "";
   if (isError) return "Something went wrong";
-
-  console.log("skill", skill);
 
   return (
     <div className="bg-[#F0F1F5] overflow-hidden w-fit rounded-[20px] px-[30px] py-5 justify-self-center">

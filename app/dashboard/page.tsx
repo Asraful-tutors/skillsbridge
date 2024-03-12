@@ -17,7 +17,7 @@ import { setUserData } from "@/lib/store/user/userSlice";
 import Link from "next/link";
 import useUserPaths from "@/components/hooks/useUserPaths";
 import Loading from "../loading";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import useUserPathSkills from "@/components/hooks/useUserPathSkills";
 import {
   getDashboardSoftSkills,
@@ -252,6 +252,13 @@ export default function DashboardPage() {
     );
   }
 
+  const pathname = usePathname();
+
+  useEffect(() => {
+    // Call the isMilestoneCompleted function
+    isMilestoneCompleted(allMilestonesData[0]?.id || 1);
+  }, [pathname]);
+
   useEffect(() => {
     if (completedMilestones?.length == 21) {
       setOpenDownloader(true);
@@ -265,7 +272,8 @@ export default function DashboardPage() {
     // isLoading ||
     isLoadingAllMilestones ||
     userLoading ||
-    isLoading
+    isLoading ||
+    !user
   )
     return (
       <>
