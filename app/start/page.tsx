@@ -6,9 +6,18 @@ import { motion } from "framer-motion";
 import HardSkillsPage from "@/components/pages/skill-evaluate/HardSkills";
 import SoftSkills from "@/components/pages/skill-evaluate/SoftSkills";
 import SelectLearningPath from "@/components/pages/learning-path/SelectLearningPath";
+import { useQuery } from "@tanstack/react-query";
+import { getFullFilledQuestions } from "@/actions/assessment";
 
 function StartPage() {
   const [currentStep, setCurrentStep] = useState(1);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["gll"],
+    queryFn: () => getFullFilledQuestions(),
+  });
+
+  console.log("data", isLoading, data);
 
   const handleNext = () => {
     setCurrentStep((prev) => prev + 1);

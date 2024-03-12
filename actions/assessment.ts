@@ -95,3 +95,11 @@ export const upsertSelectedAnswers = async (skillScores: SkillScore[]) => {
     // Throw or handle the error appropriately
   }
 };
+
+// recores
+
+export const getFullFilledQuestions = async () => {
+  const data = await prisma.question.findMany({});
+
+  return data;
+};
