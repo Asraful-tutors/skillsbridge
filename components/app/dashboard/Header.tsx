@@ -37,8 +37,6 @@ export default function Header() {
     setVisible(!visible);
   };
 
-  console.log("user", user);
-
   useOutsideClick(visible, setVisible);
 
   return (

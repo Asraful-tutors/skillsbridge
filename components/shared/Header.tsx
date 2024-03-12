@@ -15,8 +15,6 @@ export default function Header({ user }: any) {
     dispatch(setUserData(user));
   }, [dispatch, user]);
 
-  console.log("userData", userData);
-
   return (
     <header className="flex items-center justify-between gap-24 px-[42px] py-6 lg:py-8 bg-white_background shadow-xl border-b-2 border-gray-200 shadow-gray-200">
       <Link href={"/"}>

@@ -65,7 +65,8 @@ export default function UserProfileCard({ link }: { link?: string }) {
         <div className=" flex flex-col gap-2.5 rounded-3xl">
           <div className="max-w-[200px] mx-auto rounded-full overflow-hidden">
             <Image
-              src={"/images/user.png"}
+              // @ts-ignore
+              src={user?.image ? user.image : "/images/user.png"}
               alt="user"
               width={200}
               height={200}
