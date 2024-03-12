@@ -17,7 +17,7 @@ import { setUserData } from "@/lib/store/user/userSlice";
 import Link from "next/link";
 import useUserPaths from "@/components/hooks/useUserPaths";
 import Loading from "../loading";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import useUserPathSkills from "@/components/hooks/useUserPathSkills";
 import {
   getDashboardSoftSkills,
@@ -40,20 +40,27 @@ export default function DashboardPage() {
   const parsedEmail = userEmail ? JSON.parse(userEmail) : null;
   const email = parsedEmail ? parsedEmail.email : null;
 
+  const [user, setUser] = useState(null);
+
   const [allMilestonesData, setAllMilestonesData] = useState([]);
   const [completedMilestoesData, setCompletedMilestoesData] = useState([]);
   const [pathId, setPathId] = useState(0);
 
-  const { data: user, isLoading: userLoading } = useQuery({
+  const {
+    data: activeUser,
+    isLoading: userLoading,
+    isError: isUserError,
+  } = useQuery({
     queryKey: ["/dashboard/hard"],
     queryFn: async () => {
-      const data = await getCurrentUser();
+      const data = await getCurrentUser(email);
 
       if (data) {
         const userData = {
           ...data.user,
           name: data.user?.name || "",
         };
+        setUser(userData);
         // @ts-ignore
         dispatch(setUserData(userData));
       }
@@ -101,11 +108,11 @@ export default function DashboardPage() {
     queryKey: ["completedMilestones"],
     // @ts-ignore
     queryFn: async () => {
-      const data = await getCompletedMilestones(user?.user?.id);
+      const data = await getCompletedMilestones(user.id);
       setCompletedMilestoesData(data);
       return data || [];
     },
-    enabled: !!userPaths,
+    enabled: !!user,
   });
 
   const {
@@ -127,14 +134,7 @@ export default function DashboardPage() {
       // Return the data to satisfy useQuery expectations
       return data;
     },
-    enabled: !!userPaths,
-  });
-
-  const { data: milestone } = useQuery({
-    queryKey: ["iseligible", pathId],
-    // @ts-ignore
-    queryFn: () => isEligible(userPaths?.path?.name, pathId),
-    enabled: !!pathId,
+    enabled: !!user,
   });
 
   const [hovered, setHovered] = useState<{ [key: number]: boolean }>({});
@@ -252,6 +252,22 @@ export default function DashboardPage() {
     );
   }
 
+  const pathname = usePathname();
+
+  const [milestoneCompletion, setMilestoneCompletion] = useState(
+    Array(20).fill(false)
+  ); // Initialize an array of 20 elements with false
+
+  useEffect(() => {
+    // Call the isMilestoneCompleted function for each milestone
+    const newCompletionStatus = allMilestonesData.map(
+      (milestone, index) =>
+        isMilestoneCompleted(milestone.id) || milestoneCompletion[index]
+    );
+
+    setMilestoneCompletion(newCompletionStatus);
+  }, [allMilestonesData, completedMilestones]);
+
   useEffect(() => {
     if (completedMilestones?.length == 21) {
       setOpenDownloader(true);
@@ -273,8 +289,7 @@ export default function DashboardPage() {
       </>
     );
 
-  if (userPathsError || isErrorAllMilestones || isError)
-    return <>Something went wrong</>;
+  if (!user) return <>Something went wrong</>;
 
   return (
     <section className="bg-[url('/images/dashboard.svg')] bg-cover bg-center bg-repeat w-screen h-screen relative overflow-hidden">

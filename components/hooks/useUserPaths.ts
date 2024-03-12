@@ -11,9 +11,9 @@ const useUserPaths = (user: UserType | null) => {
     isLoading: userPathsLoading,
     isError: userPathsError,
   } = useQuery({
-    queryKey: ["userPaths", user?.id],
-    queryFn: () =>
-      user ? getUserSelectedPaths(user.id) : Promise.resolve(null),
+    queryKey: ["userPaths", user],
+    // @ts-ignore
+    queryFn: () => getUserSelectedPaths(user?.id),
     enabled: !!user,
   });
 
