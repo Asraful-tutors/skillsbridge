@@ -10,12 +10,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export default function UserAvatar() {
+export default function UserAvatar({ userData }: { userData: any }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="cursor-pointer">
         <Avatar>
-          <AvatarImage src="/images/user.png" alt="user" />
+          <AvatarImage
+            src={userData?.image ? userData.image : "/images/user.png"}
+            alt="user"
+          />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
