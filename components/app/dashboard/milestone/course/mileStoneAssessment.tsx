@@ -110,8 +110,8 @@ export default function MileStoneAssessment({
           />
           <div className="flex flex-col gap-8">
             <p>
-              Q: {currentQuestion + 1} of {remainingQuestions} questions
-              remaining
+              Q: {currentQuestion + 1} ({totalQuestions - currentQuestion}{" "}
+              questions remaining)
             </p>
             <h2 className="text-black text-base font-semibold leading-[150%]">
               {currentQuestionData?.text}

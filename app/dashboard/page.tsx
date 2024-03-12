@@ -281,6 +281,8 @@ export default function DashboardPage() {
     }
   }, [completedMilestones]);
 
+  console.log("isMilestoneCompleted", isMilestoneCompleted);
+
   if (
     userPathsLoading ||
     userSoftSkillsLoading ||
@@ -358,7 +360,10 @@ export default function DashboardPage() {
                 className="w-[300px] h-[245.156px] z-40 "
               />
               <span className="w-[134px] h-[32px] h-full absolute -bottom-[160px] left-[80px] z-50 text-white font-bold text-xl shadow-sm">
-                {allMilestonesData[3]?.name}
+                {allMilestonesData[3]?.name}{" "}
+                {isMilestoneCompleted(allMilestonesData[3]?.id)
+                  ? "(Completed)"
+                  : ""}
               </span>
             </Link>
           </div>
@@ -383,6 +388,9 @@ export default function DashboardPage() {
               />
               <span className="w-[134px] h-[32px] h-full absolute -bottom-[160px] left-[80px] z-50 text-white font-bold text-xl shadow-sm">
                 {allMilestonesData[4]?.name}
+                {isMilestoneCompleted(allMilestonesData[4]?.id)
+                  ? "(Completed)"
+                  : ""}
               </span>
             </Link>
           </div>
@@ -407,6 +415,9 @@ export default function DashboardPage() {
               />
               <span className="w-[134px] h-[32px] h-full absolute -bottom-[160px] left-[80px] z-50 text-white font-bold text-xl shadow-sm">
                 {allMilestonesData[5]?.name}
+                {isMilestoneCompleted(allMilestonesData[5]?.id)
+                  ? "(Completed)"
+                  : ""}
               </span>
             </Link>
           </div>
@@ -430,6 +441,9 @@ export default function DashboardPage() {
               />
               <span className="w-[134px] h-[32px] h-full absolute -bottom-[160px] left-[80px] z-50 text-white font-bold text-xl shadow-sm">
                 {allMilestonesData[6]?.name}
+                {isMilestoneCompleted(allMilestonesData[6]?.id)
+                  ? "(Completed)"
+                  : ""}
               </span>
             </Link>
           </div>
@@ -450,6 +464,9 @@ export default function DashboardPage() {
               />
               <span className="w-[134px] h-[32px] h-full absolute -bottom-[160px] left-[80px] z-50 text-white font-bold text-xl shadow-sm">
                 {allMilestonesData[7]?.name}
+                {isMilestoneCompleted(allMilestonesData[7]?.id)
+                  ? "(Completed)"
+                  : ""}
               </span>
             </Link>
           </div>
@@ -473,6 +490,9 @@ export default function DashboardPage() {
               />
               <span className="w-full h-full  absolute -bottom-[160px] left-[80px] z-50 text-white font-bold text-xl shadow-sm">
                 {allMilestonesData[8]?.name}
+                {isMilestoneCompleted(allMilestonesData[8]?.id)
+                  ? "(Completed)"
+                  : ""}
               </span>
             </Link>
           </div>
@@ -496,6 +516,9 @@ export default function DashboardPage() {
               />
               <span className="w-full h-full  absolute -bottom-[160px] left-[80px] z-50 text-white font-bold text-xl shadow-sm">
                 {allMilestonesData[9]?.name}
+                {isMilestoneCompleted(allMilestonesData[9]?.id)
+                  ? "(Completed)"
+                  : ""}
               </span>
             </Link>
           </div>
@@ -522,6 +545,9 @@ export default function DashboardPage() {
 
               <span className="w-full h-full  absolute -bottom-[160px] left-[80px] z-50 text-white font-bold text-xl shadow-sm">
                 {allMilestonesData[10]?.name}
+                {isMilestoneCompleted(allMilestonesData[10]?.id)
+                  ? "(Completed)"
+                  : ""}
               </span>
             </Link>
           </div>
@@ -547,6 +573,9 @@ export default function DashboardPage() {
 
               <span className=" absolute top-[10px] left-[130px] max-w-[250px] whitespace-pre-wrap z-50 text-xl font-bold whitespace-nowrap text-white">
                 {allMilestonesData[11]?.name}
+                {isMilestoneCompleted(allMilestonesData[11]?.id)
+                  ? "(Completed)"
+                  : ""}
               </span>
             </Link>
           </div>
@@ -572,6 +601,9 @@ export default function DashboardPage() {
 
               <span className=" absolute bottom-[4%] left-[80px] z-50 text-xl font-bold max-w-[250px] whitespace-pre-wrap text-white">
                 {allMilestonesData[12]?.name}
+                {isMilestoneCompleted(allMilestonesData[12]?.id)
+                  ? "(Completed)"
+                  : ""}
               </span>
             </Link>
           </div>
@@ -597,6 +629,9 @@ export default function DashboardPage() {
 
               <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
                 {allMilestonesData[13]?.name}
+                {isMilestoneCompleted(allMilestonesData[13]?.id)
+                  ? "(Completed)"
+                  : ""}
               </span>
             </Link>
           </div>
@@ -622,6 +657,9 @@ export default function DashboardPage() {
 
               <span className=" absolute bottom-[10px] left-[100px] z-50 text-xl font-bold max-w-[250px] whitespace-pre-wrap text-white">
                 {allMilestonesData[14]?.name}
+                {isMilestoneCompleted(allMilestonesData[14]?.id)
+                  ? "(Completed)"
+                  : ""}
               </span>
             </Link>
           </div>
@@ -648,6 +686,9 @@ export default function DashboardPage() {
 
               <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold max-w-[250px] whitespace-pre-wrap text-white">
                 {allMilestonesData[15]?.name}
+                {isMilestoneCompleted(allMilestonesData[15]?.id)
+                  ? "(Completed)"
+                  : ""}
               </span>
             </Link>
           </div>
@@ -673,6 +714,9 @@ export default function DashboardPage() {
 
               <span className=" absolute top-[-8%] left-[130px]  z-50 text-xl font-bold max-w-[250px] whitespace-pre-wrap text-white">
                 {allMilestonesData[16]?.name}
+                {isMilestoneCompleted(allMilestonesData[16]?.id)
+                  ? "(Completed)"
+                  : ""}
               </span>
             </Link>
           </div>
@@ -699,6 +743,9 @@ export default function DashboardPage() {
 
               <span className=" absolute top-[-8%] left-[130px] max-w-[250px] whitespace-pre-wrap  z-50 text-xl font-bold text-white">
                 {allMilestonesData[17]?.name}
+                {isMilestoneCompleted(allMilestonesData[17]?.id)
+                  ? "(Completed)"
+                  : ""}
               </span>
             </Link>
           </div>
@@ -725,6 +772,9 @@ export default function DashboardPage() {
 
               <span className=" absolute bottom-[4%] left-[80px] max-w-[250px] whitespace-pre-wrap  z-50 text-xl font-bold  text-white">
                 {allMilestonesData[18]?.name}
+                {isMilestoneCompleted(allMilestonesData[18]?.id)
+                  ? "(Completed)"
+                  : ""}
               </span>
             </Link>
           </div>
@@ -750,6 +800,9 @@ export default function DashboardPage() {
 
               <span className=" absolute top-[-8%] left-[80px] max-w-[250px] whitespace-pre-wrap  z-50 text-xl font-bold  text-white">
                 {allMilestonesData[19]?.name}
+                {isMilestoneCompleted(allMilestonesData[19]?.id)
+                  ? "(Completed)"
+                  : ""}
               </span>
             </Link>
           </div>
@@ -776,6 +829,9 @@ export default function DashboardPage() {
 
               <span className=" absolute bottom-[10px] left-[80px] max-w-[250px] whitespace-pre-wrap z-50 text-xl font-bold  text-white">
                 {allMilestonesData[20]?.name}
+                {isMilestoneCompleted(allMilestonesData[20]?.id)
+                  ? "(Completed)"
+                  : ""}
               </span>
             </Link>
           </div>
@@ -802,6 +858,9 @@ export default function DashboardPage() {
 
               <span className=" absolute top-[-8%] left-[80px] max-w-[250px] whitespace-pre-wrap z-50 text-xl font-bold  text-white">
                 {allMilestonesData[0]?.name}
+                {isMilestoneCompleted(allMilestonesData[0]?.id)
+                  ? "(Completed)"
+                  : ""}
               </span>
             </Link>
           </div>
@@ -829,6 +888,9 @@ export default function DashboardPage() {
 
                 <span className=" absolute top-[-14%] shadow-md left-[140px] max-w-[250px] z-50 text-xl font-bold whitespace-nowrap text-white whitespace-pre-wrap">
                   {allMilestonesData[1]?.name}
+                  {isMilestoneCompleted(allMilestonesData[1]?.id)
+                    ? "(Completed)"
+                    : ""}
                 </span>
               </Link>
             </div>
@@ -854,6 +916,9 @@ export default function DashboardPage() {
                 />
                 <span className=" absolute bottom-[10px] left-[130px] max-w-[250px] z-50 text-xl font-bold whitespace-nowrap text-white">
                   {allMilestonesData[1]?.name}
+                  {isMilestoneCompleted(allMilestonesData[1]?.id)
+                    ? "(Completed)"
+                    : ""}
                 </span>
               </div>
             </div>
@@ -882,6 +947,9 @@ export default function DashboardPage() {
 
                 <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
                   {allMilestonesData[2]?.name}
+                  {isMilestoneCompleted(allMilestonesData[2]?.id)
+                    ? "(Completed)"
+                    : ""}
                 </span>
               </Link>
             </div>
