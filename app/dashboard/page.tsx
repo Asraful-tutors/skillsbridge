@@ -289,7 +289,12 @@ export default function DashboardPage() {
       </>
     );
 
-  if (!user) return <>Something went wrong</>;
+  if (!user)
+    return (
+      <>
+        <Loading />
+      </>
+    );
 
   return (
     <section className="bg-[url('/images/dashboard.svg')] bg-cover bg-center bg-repeat w-screen h-screen relative overflow-hidden">

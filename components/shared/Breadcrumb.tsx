@@ -6,7 +6,8 @@ import { motion } from "framer-motion";
 
 export default function Breadcrumb() {
   const params = useParams();
-
+  // @ts-ignore
+  const decodedId = params?.id ? decodeURIComponent(params?.id) : "";
   return (
     <motion.div className="w-full text-black max-w-screen-2xl h-fit rounded-2xl mx-auto mt-[43px]">
       <nav>
@@ -16,7 +17,7 @@ export default function Breadcrumb() {
           </Link>
           <span className="text-sm">&nbsp;&nbsp;/&nbsp;&nbsp;</span>
           <span className="text-sm">MileStone</span>
-          <span className="text-sm">&nbsp;&nbsp;/&nbsp;&nbsp;{params?.id}</span>
+          <span className="text-sm">&nbsp;&nbsp;/&nbsp;&nbsp;{decodedId}</span>
         </ul>
       </nav>
     </motion.div>
