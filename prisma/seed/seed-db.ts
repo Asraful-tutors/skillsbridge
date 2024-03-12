@@ -85,7 +85,7 @@ async function parseAssessmentsData() {
                 text: value,
                 points: scores,
               });
-              SeedDB.Questions.update(question.id, {
+              await SeedDB.Questions.update(question.id, {
                 data: {
                   type: "select",
                   options,
