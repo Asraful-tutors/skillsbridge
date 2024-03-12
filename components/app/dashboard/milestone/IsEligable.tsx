@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 
 interface Skill {
-  skill: {
+  skill?: {
     name: string;
   };
 }
@@ -57,7 +57,7 @@ export default function IsEligable({
               Skills you&apos;ll learn
             </h3>
             <div className="flex flex-row gap-3 flex-wrap">
-              {skillNames?.map((item: Skill, key: number) => (
+              {skillNames?.map((item: any, key: number) => (
                 <Badge
                   key={key}
                   variant={"nonHoverable"}

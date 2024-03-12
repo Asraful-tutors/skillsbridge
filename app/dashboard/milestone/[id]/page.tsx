@@ -51,8 +51,6 @@ export default function MileStonePage() {
     enabled: !!params,
   });
 
-  console.log("milestone", milestone);
-
   if (isLoading || userPathsLoading)
     return (
       <>
@@ -72,10 +70,8 @@ export default function MileStonePage() {
   return (
     <>
       <IsEligable
-        //@ts-ignore
         milestone={milestone?.data}
         skillNames={milestone?.skillNames}
-        userPaths={userPaths}
       />
     </>
   );
