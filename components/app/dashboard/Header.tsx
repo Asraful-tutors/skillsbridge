@@ -37,6 +37,8 @@ export default function Header() {
     setVisible(!visible);
   };
 
+  console.log("user", user);
+
   useOutsideClick(visible, setVisible);
 
   return (
@@ -81,7 +83,7 @@ export default function Header() {
           onClick={handleVisibility}
         >
           <Image
-            src={"/images/user.png"}
+            src={user?.user?.image ? user?.user.image : "/images/user.png"}
             width={40}
             height={40}
             alt="logo"

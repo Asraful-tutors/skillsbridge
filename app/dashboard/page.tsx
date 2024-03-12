@@ -226,21 +226,21 @@ export default function DashboardPage() {
     }));
   };
 
-  useEffect(() => {
-    document.addEventListener("mousemove", handleMouseMove as any);
-    document.addEventListener("mouseup", handleMouseUp);
+  // useEffect(() => {
+  //   document.addEventListener("mousemove", handleMouseMove as any);
+  //   document.addEventListener("mouseup", handleMouseUp);
 
-    document.addEventListener("touchmove", handleMouseMove as any);
-    document.addEventListener("touchend", handleMouseUp);
+  //   document.addEventListener("touchmove", handleMouseMove as any);
+  //   document.addEventListener("touchend", handleMouseUp);
 
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove as any);
-      document.removeEventListener("mouseup", handleMouseUp);
+  //   return () => {
+  //     document.removeEventListener("mousemove", handleMouseMove as any);
+  //     document.removeEventListener("mouseup", handleMouseUp);
 
-      document.removeEventListener("touchmove", handleMouseMove as any);
-      document.removeEventListener("touchend", handleMouseUp);
-    };
-  }, [handleMouseMove, handleMouseUp, divStyle.scale, divStyle.isDragging]);
+  //     document.removeEventListener("touchmove", handleMouseMove as any);
+  //     document.removeEventListener("touchend", handleMouseUp);
+  //   };
+  // }, [handleMouseMove, handleMouseUp, divStyle.scale, divStyle.isDragging]);
 
   const [openPdfDownloader, setOpenDownloader] = useState(false);
 
@@ -784,54 +784,27 @@ export default function DashboardPage() {
         {/* milestone 19 */}
 
         <div className="absolute top-[14rem] left-[255rem]">
-          {isMilestoneCompleted(allMilestonesData[20]?.id) ? (
-            <div
-              className="z-0 relative 
+          <div
+            className="z-0 relative 
          "
+          >
+            <Link
+              href={`/dashboard/milestone/${allMilestonesData[0]?.id}`}
+              className="group relative cursor-pointer"
             >
-              <Link
-                href={`/dashboard/milestone/${allMilestonesData[0]?.id}`}
-                className="group relative cursor-pointer"
-              >
-                <Image
-                  alt="milestone 2"
-                  width={240.638}
-                  height={245.156}
-                  src={"/images/milestone19.png"}
-                  className="w-full h-full z-40"
-                />
+              <Image
+                alt="milestone 2"
+                width={240.638}
+                height={245.156}
+                src={"/images/milestone19.png"}
+                className="w-full h-full z-40"
+              />
 
-                <span className=" absolute top-[-8%] left-[80px] max-w-[250px] whitespace-pre-wrap z-50 text-xl font-bold  text-white">
-                  {allMilestonesData[0]?.name}
-                </span>
-              </Link>
-            </div>
-          ) : (
-            <div className="z-0 relative ">
-              <div
-                onMouseEnter={() => handleMouseAction(2, true)}
-                onMouseLeave={() => handleMouseAction(2, false)}
-                onClick={() => {
-                  setFormattedPathName(allMilestonesData[0]?.id);
-                  // setSelectedData();
-                  setPathId(2);
-                  handleModal();
-                }}
-                className="group relative"
-              >
-                <Image
-                  alt="milestone 2"
-                  width={240.638}
-                  height={245.156}
-                  src={"/images/milestone19.png"}
-                  className="w-full h-full z-40 opacity-50 "
-                />
-                <span className=" absolute top-[-8%] left-[80px] max-w-[250px] whitespace-pre-wrap z-50 text-xl font-bold  text-white">
-                  {allMilestonesData[0]?.name}
-                </span>
-              </div>
-            </div>
-          )}
+              <span className=" absolute top-[-8%] left-[80px] max-w-[250px] whitespace-pre-wrap z-50 text-xl font-bold  text-white">
+                {allMilestonesData[0]?.name}
+              </span>
+            </Link>
+          </div>
         </div>
 
         {/* milestone 20 */}
