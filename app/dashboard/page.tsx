@@ -226,21 +226,21 @@ export default function DashboardPage() {
     }));
   };
 
-  // useEffect(() => {
-  //   document.addEventListener("mousemove", handleMouseMove as any);
-  //   document.addEventListener("mouseup", handleMouseUp);
+  useEffect(() => {
+  document.addEventListener("mousemove", handleMouseMove as any);
+  document.addEventListener("mouseup", handleMouseUp);
 
-  //   document.addEventListener("touchmove", handleMouseMove as any);
-  //   document.addEventListener("touchend", handleMouseUp);
+  document.addEventListener("touchmove", handleMouseMove as any);
+  document.addEventListener("touchend", handleMouseUp);
 
-  //   return () => {
-  //     document.removeEventListener("mousemove", handleMouseMove as any);
-  //     document.removeEventListener("mouseup", handleMouseUp);
+  return () => {
+      document.removeEventListener("mousemove", handleMouseMove as any);
+      document.removeEventListener("mouseup", handleMouseUp);
 
-  //     document.removeEventListener("touchmove", handleMouseMove as any);
-  //     document.removeEventListener("touchend", handleMouseUp);
-  //   };
-  // }, [handleMouseMove, handleMouseUp, divStyle.scale, divStyle.isDragging]);
+      document.removeEventListener("touchmove", handleMouseMove as any);
+      document.removeEventListener("touchend", handleMouseUp);
+    };
+   }, [handleMouseMove, handleMouseUp, divStyle.scale, divStyle.isDragging]);
 
   const [openPdfDownloader, setOpenDownloader] = useState(false);
 
@@ -327,7 +327,7 @@ export default function DashboardPage() {
         />
       )}
       <motion.div
-        className="relative w-[5000.75px] "
+        className="relative w-full"
         style={{
           transform: `scale(${divStyle.scale})`,
           top: `${divStyle.top}px`,
@@ -349,7 +349,7 @@ export default function DashboardPage() {
           "
           >
             <Link
-              href={`/dashboard/milestone/${allMilestonesData[3]?.id}`}
+              href={`/dashboard/milestone/${allMilestonesData[0]?.id}`}
               className="group relative cursor-pointer"
             >
               <Image
@@ -357,12 +357,13 @@ export default function DashboardPage() {
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone1.png"}
-                className="w-[300px] h-[245.156px] z-40 "
+                className="w-[300px] h-[245.156px] z-40"
+                style={{ filter: isMilestoneCompleted(allMilestonesData[0]?.id) ? `hue-rotate(300deg)` : `hue-rotate(0deg)` }}
               />
-              <span className="w-[134px] h-[32px] h-full absolute -bottom-[160px] left-[80px] z-50 text-white font-bold text-xl shadow-sm">
-                {allMilestonesData[3]?.name}{" "}
-                {isMilestoneCompleted(allMilestonesData[3]?.id)
-                  ? "(Completed)"
+              <span className="w-[134px] h-[32px] h-full absolute -bottom-[180px] left-[100px] z-50 text-white font-bold text-2xl shadow-sm">
+                {allMilestonesData[0]?.name}{" "}
+                {isMilestoneCompleted(allMilestonesData[0]?.id)
+                  ? "  (Completed)"
                   : ""}
               </span>
             </Link>
@@ -376,7 +377,7 @@ export default function DashboardPage() {
          "
           >
             <Link
-              href={`/dashboard/milestone/${allMilestonesData[4]?.id}`}
+              href={`/dashboard/milestone/${allMilestonesData[1]?.id}`}
               className="group relative cursor-pointer"
             >
               <Image
@@ -385,11 +386,12 @@ export default function DashboardPage() {
                 height={245.156}
                 src={"/images/milestone2.svg"}
                 className="w-full h-full  z-40"
+                style={{ filter: isMilestoneCompleted(allMilestonesData[1]?.id) ? `hue-rotate(300deg)` : `hue-rotate(0deg)` }}
               />
-              <span className="w-[134px] h-[32px] h-full absolute -bottom-[160px] left-[80px] z-50 text-white font-bold text-xl shadow-sm">
-                {allMilestonesData[4]?.name}
-                {isMilestoneCompleted(allMilestonesData[4]?.id)
-                  ? "(Completed)"
+              <span className="w-[134px] h-[32px] h-full absolute -bottom-[180px] left-[100px] z-50 text-white font-bold text-2xl shadow-sm">
+                {allMilestonesData[1]?.name}
+                {isMilestoneCompleted(allMilestonesData[1]?.id)
+                  ? "  (Completed)"
                   : ""}
               </span>
             </Link>
@@ -403,7 +405,7 @@ export default function DashboardPage() {
             "
           >
             <Link
-              href={`/dashboard/milestone/${allMilestonesData[5]?.id}`}
+              href={`/dashboard/milestone/${allMilestonesData[2]?.id}`}
               className="group relative cursor-pointer"
             >
               <Image
@@ -411,38 +413,40 @@ export default function DashboardPage() {
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone3.svg"}
-                className="w-full h-full z-40 "
+                className="w-full h-full z-40"
+                style={{ filter: isMilestoneCompleted(allMilestonesData[2]?.id) ? `hue-rotate(300deg)` : `hue-rotate(0deg)` }}
               />
-              <span className="w-[134px] h-[32px] h-full absolute -bottom-[160px] left-[80px] z-50 text-white font-bold text-xl shadow-sm">
-                {allMilestonesData[5]?.name}
-                {isMilestoneCompleted(allMilestonesData[5]?.id)
-                  ? "(Completed)"
+              <span className="w-[134px] h-[32px] h-full absolute -bottom-1/3 left-[100px] z-50 text-white font-bold text-2xl shadow-sm">
+                {allMilestonesData[2]?.name}
+                {isMilestoneCompleted(allMilestonesData[2]?.id)
+                  ? "  (Completed)"
                   : ""}
               </span>
             </Link>
           </div>
         </div>
         {/* Milestone 4 */}
-        <div className="absolute top-[500px] left-[680px]">
+        <div className="absolute top-[400px] left-[580px]">
           <div
             className="z-10 relative
-              after:absolute after:content-[url('/images/milestone4_after.svg')] after:top-[90px] after:-right-[260px] after:w-full after:h-full after:object-cover after:object-center"
+              after:absolute after:content-[url('/images/milestone4_after.svg')] after:top-[140px] after:-right-[360px] after:w-full after:h-full after:object-cover after:object-center"
           >
             <Link
-              href={`/dashboard/milestone/${allMilestonesData[6]?.id}`}
+              href={`/dashboard/milestone/${allMilestonesData[3]?.id}`}
               className="group relative cursor-pointer"
             >
               <Image
                 alt="milestone 3"
                 width={240.638}
                 height={245.156}
-                src={"/images/milestone3.svg"}
-                className="w-full h-full z-40 "
+                src={"/images/milestone4.svg"}
+                className="w-full h-full z-40"
+                style={{ filter: isMilestoneCompleted(allMilestonesData[3]?.id) ? `hue-rotate(300deg)` : `hue-rotate(0deg)` }}
               />
-              <span className="w-[134px] h-[32px] h-full absolute -bottom-[160px] left-[80px] z-50 text-white font-bold text-xl shadow-sm">
-                {allMilestonesData[6]?.name}
-                {isMilestoneCompleted(allMilestonesData[6]?.id)
-                  ? "(Completed)"
+              <span className="w-[134px] h-[32px] h-full absolute -bottom-1/2 left-1/2 z-50 text-white font-bold text-2xl shadow-sm">
+                {allMilestonesData[3]?.name}
+                {isMilestoneCompleted(allMilestonesData[3]?.id)
+                  ? "  (Completed)"
                   : ""}
               </span>
             </Link>
@@ -452,7 +456,7 @@ export default function DashboardPage() {
         <div className="absolute -top-[50px] left-[1000px] z-40">
           <div className="">
             <Link
-              href={`/dashboard/milestone/${allMilestonesData[7]?.id}}`}
+              href={`/dashboard/milestone/${allMilestonesData[4]?.id}}`}
               className="group relative cursor-pointer"
             >
               <Image
@@ -460,12 +464,13 @@ export default function DashboardPage() {
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone5.svg"}
-                className="w-full h-full "
+                className="w-full h-full"
+                style={{ filter: isMilestoneCompleted(allMilestonesData[4]?.id) ? `hue-rotate(300deg)` : `hue-rotate(0deg)` }}
               />
-              <span className="w-[134px] h-[32px] h-full absolute -bottom-[160px] left-[80px] z-50 text-white font-bold text-xl shadow-sm">
-                {allMilestonesData[7]?.name}
-                {isMilestoneCompleted(allMilestonesData[7]?.id)
-                  ? "(Completed)"
+              <span className="w-[134px] h-[32px] h-full absolute -bottom-1/2 left-[110px] z-50 text-white font-bold text-2xl shadow-sm">
+                {allMilestonesData[4]?.name}
+                {isMilestoneCompleted(allMilestonesData[4]?.id)
+                  ? " (Completed)"
                   : ""}
               </span>
             </Link>
@@ -478,7 +483,7 @@ export default function DashboardPage() {
              after:absolute after:content-[url('/images/milestone6_after.svg')] after:-top-[115px] after:-right-[125px] after:w-full after:h-full after:object-cover after:object-center"
           >
             <Link
-              href={`/dashboard/milestone/${allMilestonesData[8]?.id}`}
+              href={`/dashboard/milestone/${allMilestonesData[5]?.id}`}
               className="group relative cursor-pointer"
             >
               <Image
@@ -486,12 +491,13 @@ export default function DashboardPage() {
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone6.svg"}
-                className="w-full h-full "
+                className="w-full h-full"
+                style={{ filter: isMilestoneCompleted(allMilestonesData[5]?.id) ? `hue-rotate(300deg)` : `hue-rotate(0deg)` }}
               />
-              <span className="w-full h-full  absolute -bottom-[160px] left-[80px] z-50 text-white font-bold text-xl shadow-sm">
-                {allMilestonesData[8]?.name}
-                {isMilestoneCompleted(allMilestonesData[8]?.id)
-                  ? "(Completed)"
+              <span className="w-[134px] h-[32px] h-full absolute -bottom-1/2 left-1/2 z-50 text-white font-bold text-2xl shadow-sm">
+                {allMilestonesData[5]?.name}
+                {isMilestoneCompleted(allMilestonesData[5]?.id)
+                  ? "  (Completed)"
                   : ""}
               </span>
             </Link>
@@ -504,7 +510,7 @@ export default function DashboardPage() {
             "
           >
             <Link
-              href={`/dashboard/milestone/${allMilestonesData[9]?.id}`}
+              href={`/dashboard/milestone/${allMilestonesData[6]?.id}`}
               className="group relative cursor-pointer"
             >
               <Image
@@ -512,474 +518,86 @@ export default function DashboardPage() {
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone7.svg"}
-                className="min-w-[240.638px] min-h-[245.156px] "
+                className="min-w-[240.638px] min-h-[245.156px]"
+                style={{ filter: isMilestoneCompleted(allMilestonesData[6]?.id) ? `hue-rotate(300deg)` : `hue-rotate(0deg)` }}
               />
-              <span className="w-full h-full  absolute -bottom-[160px] left-[80px] z-50 text-white font-bold text-xl shadow-sm">
-                {allMilestonesData[9]?.name}
-                {isMilestoneCompleted(allMilestonesData[9]?.id)
-                  ? "(Completed)"
+              <span className="w-[134px] h-[32px] h-full absolute -bottom-[180px] left-[80px] z-50 text-white font-bold text-2xl shadow-sm">
+                {allMilestonesData[6]?.name}
+                {isMilestoneCompleted(allMilestonesData[6]?.id)
+                  ? "  (Completed)"
                   : ""}
               </span>
             </Link>
           </div>
         </div>
 
-        {/* milestone 8 */}
-
-        <div className="absolute top-[19rem] left-[91rem]">
+        {allMilestonesData.slice(7).map((milestone, index) => (
           <div
-            className="z-0 relative  after:object-cover after:object-center
-         "
+          className={`absolute`}
+          style={{ 
+            left: 1200 + (300 * (index % 4 === 3 ? index + 0.5 : index + 1)),
+            top: index % 4 === 0 ? 0
+             : index % 4 === 1 ? 420 
+             : index % 4 === 2 ? 700 
+             : 190
+          }}
           >
-            <Link
-              href={`/dashboard/milestone/${allMilestonesData[10]?.id}`}
-              className="group relative cursor-pointer"
-            >
-              <Image
-                alt="milestone 2"
-                width={240.638}
-                height={245.156}
-                src={"/images/milestone8.png"}
-                className="w-full h-full z-40  rotate-[-39deg]"
-              />
-
-              <span className="w-full h-full  absolute -bottom-[160px] left-[80px] z-50 text-white font-bold text-xl shadow-sm">
-                {allMilestonesData[10]?.name}
-                {isMilestoneCompleted(allMilestonesData[10]?.id)
-                  ? "(Completed)"
-                  : ""}
-              </span>
-            </Link>
-          </div>
-        </div>
-        {/* milestone 9 */}
-
-        <div className="absolute top-[15rem] left-[106rem]">
-          <div
-            className="z-0 relative  after:object-cover after:object-center
-         "
-          >
-            <Link
-              href={`/dashboard/milestone/${allMilestonesData[11]?.id}`}
-              className="group relative cursor-pointer"
-            >
-              <Image
-                alt="milestone 2"
-                width={240.638}
-                height={245.156}
-                src={"/images/milestone19.png"}
-                className="w-full h-full z-40 scale-[1.05] rotate-[-25deg]"
-              />
-
-              <span className=" absolute top-[10px] left-[130px] max-w-[250px] whitespace-pre-wrap z-50 text-xl font-bold whitespace-nowrap text-white">
-                {allMilestonesData[11]?.name}
-                {isMilestoneCompleted(allMilestonesData[11]?.id)
-                  ? "(Completed)"
-                  : ""}
-              </span>
-            </Link>
-          </div>
-        </div>
-        {/* milestone 10 */}
-
-        <div className="absolute top-[14rem] left-[121rem]">
-          <div
-            className="z-0 relative  after:object-cover after:object-center
-         "
-          >
-            <Link
-              href={`/dashboard/milestone/${allMilestonesData[12]?.id}`}
-              className="group relative cursor-pointer"
-            >
-              <Image
-                alt="milestone 2"
-                width={240.638}
-                height={245.156}
-                src={"/images/milestone19.png"}
-                className="w-full h-full z-40"
-              />
-
-              <span className=" absolute bottom-[4%] left-[80px] z-50 text-xl font-bold max-w-[250px] whitespace-pre-wrap text-white">
-                {allMilestonesData[12]?.name}
-                {isMilestoneCompleted(allMilestonesData[12]?.id)
-                  ? "(Completed)"
-                  : ""}
-              </span>
-            </Link>
-          </div>
-        </div>
-        {/* milestone 11 */}
-
-        <div className="absolute top-[14rem] left-[136rem]">
-          <div
-            className="z-0 relative  after:object-cover after:object-center
-         "
-          >
-            <Link
-              href={`/dashboard/milestone/${allMilestonesData[13]?.id}`}
-              className="group relative cursor-pointer"
-            >
-              <Image
-                alt="milestone 2"
-                width={240.638}
-                height={245.156}
-                src={"/images/milestone19.png"}
-                className="w-full h-full z-40"
-              />
-
-              <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
-                {allMilestonesData[13]?.name}
-                {isMilestoneCompleted(allMilestonesData[13]?.id)
-                  ? "(Completed)"
-                  : ""}
-              </span>
-            </Link>
-          </div>
-        </div>
-        {/* milestone 12 */}
-
-        <div className="absolute top-[14rem] left-[150rem]">
-          <div
-            className="z-0 relative  after:object-cover after:object-center
-         "
-          >
-            <Link
-              href={`/dashboard/milestone/${allMilestonesData[14]?.id}`}
-              className="group relative cursor-pointer"
-            >
-              <Image
-                alt="milestone 2"
-                width={240.638}
-                height={245.156}
-                src={"/images/milestone19.png"}
-                className="w-full h-full z-40"
-              />
-
-              <span className=" absolute bottom-[10px] left-[100px] z-50 text-xl font-bold max-w-[250px] whitespace-pre-wrap text-white">
-                {allMilestonesData[14]?.name}
-                {isMilestoneCompleted(allMilestonesData[14]?.id)
-                  ? "(Completed)"
-                  : ""}
-              </span>
-            </Link>
-          </div>
-        </div>
-
-        {/* milestone 13 */}
-
-        <div className="absolute top-[14rem] left-[166rem]">
-          <div
-            className="z-0 relative 
-         "
-          >
-            <Link
-              href={`/dashboard/milestone/${allMilestonesData[15]?.id}`}
-              className="group relative cursor-pointer"
-            >
-              <Image
-                alt="milestone 2"
-                width={240.638}
-                height={245.156}
-                src={"/images/milestone19.png"}
-                className="w-full h-full z-40"
-              />
-
-              <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold max-w-[250px] whitespace-pre-wrap text-white">
-                {allMilestonesData[15]?.name}
-                {isMilestoneCompleted(allMilestonesData[15]?.id)
-                  ? "(Completed)"
-                  : ""}
-              </span>
-            </Link>
-          </div>
-        </div>
-        {/* milestone 14 */}
-
-        <div className="absolute top-[14rem] left-[179rem]">
-          <div
-            className="z-0 relative 
-         "
-          >
-            <Link
-              href={`/dashboard/milestone/${allMilestonesData[16]?.id}`}
-              className="group relative cursor-pointer"
-            >
-              <Image
-                alt="milestone 2"
-                width={240.638}
-                height={245.156}
-                src={"/images/milestone19.png"}
-                className="w-full h-full z-40"
-              />
-
-              <span className=" absolute top-[-8%] left-[130px]  z-50 text-xl font-bold max-w-[250px] whitespace-pre-wrap text-white">
-                {allMilestonesData[16]?.name}
-                {isMilestoneCompleted(allMilestonesData[16]?.id)
-                  ? "(Completed)"
-                  : ""}
-              </span>
-            </Link>
-          </div>
-        </div>
-
-        {/* milestone 15 */}
-
-        <div className="absolute top-[14rem] left-[195rem]">
-          <div
-            className="z-0 relative 
-         "
-          >
-            <Link
-              href={`/dashboard/milestone/${allMilestonesData[17]?.id}`}
-              className="group relative cursor-pointer"
-            >
-              <Image
-                alt="milestone 2"
-                width={240.638}
-                height={245.156}
-                src={"/images/milestone19.png"}
-                className="w-full h-full z-40"
-              />
-
-              <span className=" absolute top-[-8%] left-[130px] max-w-[250px] whitespace-pre-wrap  z-50 text-xl font-bold text-white">
-                {allMilestonesData[17]?.name}
-                {isMilestoneCompleted(allMilestonesData[17]?.id)
-                  ? "(Completed)"
-                  : ""}
-              </span>
-            </Link>
-          </div>
-        </div>
-
-        {/* milestone 16 */}
-
-        <div className="absolute top-[14rem] left-[210rem]">
-          <div
-            className="z-0 relative 
-         "
-          >
-            <Link
-              href={`/dashboard/milestone/${allMilestonesData[18]?.id}`}
-              className="group relative cursor-pointer"
-            >
-              <Image
-                alt="milestone 2"
-                width={240.638}
-                height={245.156}
-                src={"/images/milestone19.png"}
-                className="w-full h-full z-40"
-              />
-
-              <span className=" absolute bottom-[4%] left-[80px] max-w-[250px] whitespace-pre-wrap  z-50 text-xl font-bold  text-white">
-                {allMilestonesData[18]?.name}
-                {isMilestoneCompleted(allMilestonesData[18]?.id)
-                  ? "(Completed)"
-                  : ""}
-              </span>
-            </Link>
-          </div>
-        </div>
-        {/* milestone 17 */}
-
-        <div className="absolute top-[14rem] left-[225rem]">
-          <div
-            className="z-0 relative 
-         "
-          >
-            <Link
-              href={`/dashboard/milestone/${allMilestonesData[19]?.id}`}
-              className="group relative cursor-pointer"
-            >
-              <Image
-                alt="milestone 2"
-                width={240.638}
-                height={245.156}
-                src={"/images/milestone19.png"}
-                className="w-full h-full z-40"
-              />
-
-              <span className=" absolute top-[-8%] left-[80px] max-w-[250px] whitespace-pre-wrap  z-50 text-xl font-bold  text-white">
-                {allMilestonesData[19]?.name}
-                {isMilestoneCompleted(allMilestonesData[19]?.id)
-                  ? "(Completed)"
-                  : ""}
-              </span>
-            </Link>
-          </div>
-        </div>
-
-        {/* milestone 18 */}
-
-        <div className="absolute top-[14rem] left-[240rem]">
-          <div
-            className="z-0 relative 
-         "
-          >
-            <Link
-              href={`/dashboard/milestone/${allMilestonesData[20]?.id}`}
-              className="group relative cursor-pointer"
-            >
-              <Image
-                alt="milestone 2"
-                width={240.638}
-                height={245.156}
-                src={"/images/milestone19.png"}
-                className="w-full h-full z-40"
-              />
-
-              <span className=" absolute bottom-[10px] left-[80px] max-w-[250px] whitespace-pre-wrap z-50 text-xl font-bold  text-white">
-                {allMilestonesData[20]?.name}
-                {isMilestoneCompleted(allMilestonesData[20]?.id)
-                  ? "(Completed)"
-                  : ""}
-              </span>
-            </Link>
-          </div>
-        </div>
-
-        {/* milestone 19 */}
-
-        <div className="absolute top-[14rem] left-[255rem]">
-          <div
-            className="z-0 relative 
-         "
-          >
-            <Link
-              href={`/dashboard/milestone/${allMilestonesData[0]?.id}`}
-              className="group relative cursor-pointer"
-            >
-              <Image
-                alt="milestone 2"
-                width={240.638}
-                height={245.156}
-                src={"/images/milestone19.png"}
-                className="w-full h-full z-40"
-              />
-
-              <span className=" absolute top-[-8%] left-[80px] max-w-[250px] whitespace-pre-wrap z-50 text-xl font-bold  text-white">
-                {allMilestonesData[0]?.name}
-                {isMilestoneCompleted(allMilestonesData[0]?.id)
-                  ? "(Completed)"
-                  : ""}
-              </span>
-            </Link>
-          </div>
-        </div>
-
-        {/* milestone 20 */}
-
-        <div className="absolute top-[14rem] left-[270rem]">
-          {isMilestoneCompleted(allMilestonesData[0]?.id) ? (
             <div
-              className="z-0 relative 
-         "
+              key={index}
+              className={`relative ${
+                index % 4 === 0 ? (index === 0 ? "before:absolute before:content-[url('/images/milestone7_before.svg')] before:rotate-[130deg] before:top-[50px] before:-left-[220px] before:w-full before:h-full before:object-cover before:object-center after:absolute after:content-[url('/images/milestone7_before.svg')] after:top-[180px] after:-right-[179px] after:w-full after:h-full after:object-cover after:object-center" : "before:absolute before:content-[url('/images/milestone4_after.svg')] before:rotate-2 before:-top-[40px] before:-left-[190px] before:rotate-[160deg] before:w-full before:h-full before:object-cover before:object-center after:absolute after:content-[url('/images/milestone3_before.svg')] after:top-[190px] after:-left-[220px] after:rotate-[20deg] after:scale-110 after:w-full after:h-full after:object-cover after:object-center")
+                : index % 4 === 1 ? (index === 1 ? "before:absolute before:content-[url('/images/milestone4_after.svg')] before:top-[50px] before:-left-[320px] before:w-full before:h-full before:object-cover before:object-center" : "before:absolute before:content-[url('/images/milestone3_before.svg')] before:rotate-2 before:top-[10px] before:-left-[300px] before:rotate-[50deg] before:scale-110 before:w-full before:h-full before:object-cover before:object-center after:absolute after:content-[url('/images/milestone4_after.svg')] after:-top-[180px] after:-left-[40px] after:-rotate-[110deg] after:w-full after:h-full after:object-cover after:object-center")
+                : index % 4 === 2 ? "before:absolute before:content-[url('/images/milestone1_before.svg')] before:-top-[100px] before:-left-[200px] before:rotate-[50deg] before:w-full before:h-full before:object-cover before:object-center"
+                : "before:absolute before:content-[url('/images/milestone4_after.svg')] before:rotate-2 before:-top-[20px] before:-left-[240px] before:rotate-[160deg] before:w-full before:h-full before:object-cover before:object-center after:absolute after:content-[url('/images/milestone3_before.svg')] after:-top-[80px] after:-left-[190px] after:rotate-[90deg] after:w-full after:h-full after:object-cover after:object-center"
+              }`}
             >
               <Link
-                href={`/dashboard/milestone/${allMilestonesData[1]?.id}`}
-                className="group relative cursor-pointer"
+                href={
+                  index <= 12
+                    ? `/dashboard/milestone/${allMilestonesData[index + 7]?.id}`
+                    : (isMilestoneCompleted(allMilestonesData[index + 6])
+                        ? `/dashboard/milestone/${allMilestonesData[index + 7]?.id}`
+                        : "#")
+                }
+                className={`group relative cursor-pointer z-50 ${
+                  index <= 12
+                    ? ''
+                    : (isMilestoneCompleted(allMilestonesData[index + 6])
+                        ? ''
+                        : 'sepia')
+                }`}
+                onClick={
+                  index <= 12
+                    ? undefined
+                    : (isMilestoneCompleted(allMilestonesData[index + 6])
+                        ? undefined
+                        : (event) => {
+                          event.preventDefault();
+                          setFormattedPathName(allMilestonesData[index + 7]?.id);
+                          // setSelectedData();
+                          // setPathId();
+                          handleModal();
+                        })
+                }
               >
                 <Image
-                  alt="milestone 2"
+                  alt={`milestone ${index}`}
                   width={240.638}
                   height={245.156}
-                  src={"/images/milestone19.png"}
-                  className="w-full h-full z-40"
+                  src={`/images/milestone${((index % 6) + 2)}.svg`}
+                  className={`min-w-[240.638px] min-h-[245.156px]`}
+                  style={{ filter: isMilestoneCompleted(allMilestonesData[index + 7]?.id) ? `hue-rotate(330deg)` : `hue-rotate(0deg)` }}
                 />
-
-                <span className=" absolute top-[-14%] shadow-md left-[140px] max-w-[250px] z-50 text-xl font-bold whitespace-nowrap text-white whitespace-pre-wrap">
-                  {allMilestonesData[1]?.name}
-                  {isMilestoneCompleted(allMilestonesData[1]?.id)
-                    ? "(Completed)"
+                <span className="w-[134px] h-[32px] h-full absolute -bottom-1/2 left-1/4 z-50 text-white font-bold text-2xl shadow-sm">
+                  {allMilestonesData[index + 7]?.name}
+                  {isMilestoneCompleted(allMilestonesData[index + 7]?.id)
+                    ? "  (Completed)"
                     : ""}
                 </span>
               </Link>
             </div>
-          ) : (
-            <div className="z-0 relative ">
-              <div
-                onMouseEnter={() => handleMouseAction(2, true)}
-                onMouseLeave={() => handleMouseAction(2, false)}
-                onClick={() => {
-                  setFormattedPathName(allMilestonesData[1]?.id);
-                  // setSelectedData();
-                  setPathId(2);
-                  handleModal();
-                }}
-                className="group relative"
-              >
-                <Image
-                  alt="milestone 2"
-                  width={240.638}
-                  height={245.156}
-                  src={"/images/milestone19.png"}
-                  className="w-full h-full z-40 opacity-50 "
-                />
-                <span className=" absolute bottom-[10px] left-[130px] max-w-[250px] z-50 text-xl font-bold whitespace-nowrap text-white">
-                  {allMilestonesData[1]?.name}
-                  {isMilestoneCompleted(allMilestonesData[1]?.id)
-                    ? "(Completed)"
-                    : ""}
-                </span>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* milestone 21 */}
-
-        <div className="absolute top-[14rem] left-[289rem]">
-          {isMilestoneCompleted(allMilestonesData[1]?.id) ? (
-            <div
-              className="z-0 relative 
-         "
-            >
-              <Link
-                href={`/dashboard/milestone/${allMilestonesData[2]?.id}`}
-                className="group relative cursor-pointer"
-              >
-                <Image
-                  alt="milestone 2"
-                  width={240.638}
-                  height={245.156}
-                  src={"/images/milestone19.png"}
-                  className="w-full h-full z-40"
-                />
-
-                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
-                  {allMilestonesData[2]?.name}
-                  {isMilestoneCompleted(allMilestonesData[2]?.id)
-                    ? "(Completed)"
-                    : ""}
-                </span>
-              </Link>
-            </div>
-          ) : (
-            <div className="z-0 relative ">
-              <div
-                onMouseEnter={() => handleMouseAction(2, true)}
-                onMouseLeave={() => handleMouseAction(2, false)}
-                onClick={() => {
-                  setFormattedPathName(allMilestonesData[2]?.id);
-                  // setSelectedData();
-                  setPathId(2);
-                  handleModal();
-                }}
-                className="group relative"
-              >
-                <Image
-                  alt="milestone 2"
-                  width={240.638}
-                  height={245.156}
-                  src={"/images/milestone19.png"}
-                  className="w-full h-full z-40 opacity-50 "
-                />
-                <span className=" absolute top-[10px] left-[130px] z-50 text-xl font-bold whitespace-nowrap text-white">
-                  {allMilestonesData[2]?.name}
-                </span>
-              </div>
-            </div>
-          )}
-        </div>
+          </div>
+        ))}
       </motion.div>
     </section>
   );
