@@ -589,7 +589,7 @@ export default function DashboardPage() {
                   height={245.156}
                   src={`/images/milestone${((index % 6) + 2)}.svg`}
                   className={`min-w-[240.638px] min-h-[245.156px]`}
-                  style={{ filter: isMilestoneCompleted(allMilestonesData[index + 7]?.id) ? `saturate(10)` : `saturate(1)` }}
+                  style={{ filter: isMilestoneCompleted(allMilestonesData[index + 7]?.id) ? `saturate(6)` : `saturate(1)` }}
                 />
                 <span className="w-[134px] h-[32px] h-full absolute -bottom-1/2 left-1/4 z-50 text-white font-bold text-2xl shadow-sm">
                   {allMilestonesData[index + 7]?.name}
