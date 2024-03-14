@@ -19,16 +19,19 @@ export const getFilteredPaths = async (pathId: number) => {
 // get hard skills based on selected path
 
 export const getHardSkillsForPath = async (pathId: number) => {
-  const hardSkills = await prisma.skill.findMany({
+  const hardSkills = await prisma.path.findFirst({
     where: {
-      paths: {
-        every: {
-          id: pathId,
+      id: pathId,
+    },
+    include: {
+      skills: {
+        where: {
+          type: "Hard",
         },
       },
     },
   });
-  return hardSkills || [];
+  return hardSkills?.skills || [];
 };
 
 // get soft skills based on selected path
@@ -39,7 +42,6 @@ export const getSoftSkillsForPath = async () => {
       type: "Soft",
     },
   });
-  console.log("soft", softSkills);
   return softSkills || [];
 };
 

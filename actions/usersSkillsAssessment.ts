@@ -25,6 +25,7 @@ export const upsertHardSkills = async (
       },
     });
   });
+
   await Promise.all(upsertPromises);
 };
 
@@ -41,7 +42,7 @@ export const upsertSoftSkills = async (
         },
       },
       update: {
-        selfScore,
+        selfScore: selfScore * 10,
       },
       create: {
         userId,
@@ -51,5 +52,6 @@ export const upsertSoftSkills = async (
       },
     });
   });
+
   await Promise.all(upsertPromises);
 };
