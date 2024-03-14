@@ -1,13 +1,14 @@
 // @ts-nocheck
 
 import Image from "next/image";
-import React, { useState, useRef, RefObject } from "react";
+import React, { useState, useRef, RefObject, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import UserBoard from "@/components/app/dashboard/UserBoard";
 import useOutsideClick from "@/components/hooks/useOutsideClick";
 import { useQuery } from "@tanstack/react-query";
 import { getCurrentUser } from "@/lib/backend/user";
 import useUserPaths from "@/components/hooks/useUserPaths";
+import PdfView from "@/components/shared/PdfView";
 
 export default function Header() {
   const [visible, setVisible] = useState(false);
@@ -33,6 +34,72 @@ export default function Header() {
     user as any
   );
 
+  const [allMilestonesData, setAllMilestonesData] = useState([]);
+
+  const {
+    data: allMilestones,
+    isLoading: isLoadingAllMilestones,
+    isError: isErrorAllMilestones,
+  } = useQuery({
+    queryKey: ["getAllMilestones", userPaths],
+    // @ts-ignore
+    queryFn: async () => {
+      // Check if userPaths is available
+      if (!userPaths) {
+        return []; // or any default value that makes sense for your application
+      }
+
+      // Ensure that getAllMilestones returns data
+      const data = await getAllMilestones(userPaths.pathId);
+      setAllMilestonesData(data);
+      // Return the data to satisfy useQuery expectations
+      return data;
+    },
+    enabled: !!user,
+  });
+
+  const {
+    data: completedMilestones,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["completedMilestones"],
+    // @ts-ignore
+    queryFn: async () => {
+      const data = await getCompletedMilestones(user.id);
+      setCompletedMilestoesData(data);
+      return data || [];
+    },
+    enabled: !!user,
+  });
+
+  const [openPdf, setOpenPdf] = useState(false);
+
+  const [milestoneCompletion, setMilestoneCompletion] = useState(
+    Array(20).fill(false)
+  ); // Initialize an array of 20 elements with false
+
+  useEffect(() => {
+    // Call the isMilestoneCompleted function for each milestone
+    const newCompletionStatus = allMilestonesData.map(
+      (milestone, index) =>
+        isMilestoneCompleted(milestone.id) || milestoneCompletion[index]
+    );
+
+    setMilestoneCompletion(newCompletionStatus);
+  }, [allMilestonesData]);
+
+  const [showDownload, setShowDownload] = useState(false);
+
+  useEffect(() => {
+    if (completedMilestones?.length >= 18) {
+      const matcher = localStorage.getItem("hasCompletedMilestones");
+      if (matcher == "aX76fQ93z") {
+        setShowDownload(true);
+      }
+    }
+  }, [completedMilestones]);
+
   const handleVisibility = () => {
     setVisible(!visible);
   };
@@ -42,6 +109,7 @@ export default function Header() {
   return (
     <nav className="fixed top-0 right-0 flex items-center justify-between w-full z-[100]">
       {/* left */}
+      <PdfView open={openPdf} setOpen={setOpenPdf} />
       <section className="clip-left bg-white_background max-w-[597px] h-[90px] px-5 md:px-10 py-[13px] flex items-center justify-start gap-5 md:gap-10 w-full">
         <Image
           src={"/logo/logo.svg"}
@@ -62,20 +130,29 @@ export default function Header() {
 
       {/* right */}
       <section className="clip-right bg-white_background max-w-[597px] h-[90px] px-5 md:px-10 py-[13px] flex items-center justify-end w-full gap-5 md:gap-10">
-        <Button className="w-10 h-10 bg-[#E1E1E1] p-2 rounded-sm hover:bg-[#E1E1E1] hover:opacity-70 hidden md:block">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
+        {showDownload ? (
+          <Button
+            onClick={() => setOpenPdf(true)}
+            className=" bg-Moderate_violet  items-center gap-2 rounded-md text-sm overflow-hidden p-2 flex"
           >
-            <path
-              d="M21.5303 14.4697L19.5 12.4395V9.75C19.4977 7.89138 18.8063 6.09964 17.5595 4.72124C16.3127 3.34284 14.5991 2.4757 12.75 2.2875V0.75H11.25V2.2875C9.40093 2.4757 7.68732 3.34284 6.44053 4.72124C5.19373 6.09964 4.50233 7.89138 4.5 9.75V12.4395L2.46975 14.4697C2.32909 14.6104 2.25004 14.8011 2.25 15V17.25C2.25 17.4489 2.32902 17.6397 2.46967 17.7803C2.61032 17.921 2.80109 18 3 18H8.25V18.75C8.25 19.7446 8.64509 20.6984 9.34835 21.4016C10.0516 22.1049 11.0054 22.5 12 22.5C12.9946 22.5 13.9484 22.1049 14.6517 21.4016C15.3549 20.6984 15.75 19.7446 15.75 18.75V18H21C21.1989 18 21.3897 17.921 21.5303 17.7803C21.671 17.6397 21.75 17.4489 21.75 17.25V15C21.75 14.8011 21.6709 14.6104 21.5303 14.4697ZM14.25 18.75C14.25 19.3467 14.0129 19.919 13.591 20.341C13.169 20.7629 12.5967 21 12 21C11.4033 21 10.831 20.7629 10.409 20.341C9.98705 19.919 9.75 19.3467 9.75 18.75V18H14.25V18.75Z"
-              fill="#6767D2"
-            />
-          </svg>
-        </Button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-4 h-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M7.5 7.5h-.75A2.25 2.25 0 0 0 4.5 9.75v7.5a2.25 2.25 0 0 0 2.25 2.25h7.5a2.25 2.25 0 0 0 2.25-2.25v-7.5a2.25 2.25 0 0 0-2.25-2.25h-.75m-6 3.75 3 3m0 0 3-3m-3 3V1.5m6 9h.75a2.25 2.25 0 0 1 2.25 2.25v7.5a2.25 2.25 0 0 1-2.25 2.25h-7.5a2.25 2.25 0 0 1-2.25-2.25v-.75"
+              />
+            </svg>
+            Download
+          </Button>
+        ) : null}
+
         <Button
           className="flex items-center h-[64px] bg-[#13A098] rounded-full"
           onClick={handleVisibility}

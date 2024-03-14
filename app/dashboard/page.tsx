@@ -17,7 +17,7 @@ import { setUserData } from "@/lib/store/user/userSlice";
 import Link from "next/link";
 import useUserPaths from "@/components/hooks/useUserPaths";
 import Loading from "../loading";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import useUserPathSkills from "@/components/hooks/useUserPathSkills";
 import {
   getDashboardSoftSkills,
@@ -31,6 +31,7 @@ import {
 } from "@/lib/backend/mileStoneCourses";
 import PdfDownloader from "@/components/shared/PdfDownloader";
 import SizingOverlay from "@/components/app/dashboard/SizingOverlay";
+import PdfView from "@/components/shared/PdfView";
 
 export default function DashboardPage() {
   const dispatch = useAppDispatch();
@@ -105,6 +106,7 @@ export default function DashboardPage() {
     data: completedMilestones,
     isLoading,
     isError,
+    refetch,
   } = useQuery({
     queryKey: ["completedMilestones"],
     // @ts-ignore
@@ -227,20 +229,20 @@ export default function DashboardPage() {
   };
 
   useEffect(() => {
-  document.addEventListener("mousemove", handleMouseMove as any);
-  document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("mousemove", handleMouseMove as any);
+    document.addEventListener("mouseup", handleMouseUp);
 
-  document.addEventListener("touchmove", handleMouseMove as any);
-  document.addEventListener("touchend", handleMouseUp);
+    document.addEventListener("touchmove", handleMouseMove as any);
+    document.addEventListener("touchend", handleMouseUp);
 
-  return () => {
+    return () => {
       document.removeEventListener("mousemove", handleMouseMove as any);
       document.removeEventListener("mouseup", handleMouseUp);
 
       document.removeEventListener("touchmove", handleMouseMove as any);
       document.removeEventListener("touchend", handleMouseUp);
     };
-   }, [handleMouseMove, handleMouseUp, divStyle.scale, divStyle.isDragging]);
+  }, [handleMouseMove, handleMouseUp, divStyle.scale, divStyle.isDragging]);
 
   const [openPdfDownloader, setOpenDownloader] = useState(false);
 
@@ -265,6 +267,9 @@ export default function DashboardPage() {
     Array(20).fill(false)
   ); // Initialize an array of 20 elements with false
 
+  const pathname = usePathname();
+  const router = useRouter();
+
   useEffect(() => {
     // Call the isMilestoneCompleted function for each milestone
     const newCompletionStatus = allMilestonesData.map(
@@ -273,17 +278,18 @@ export default function DashboardPage() {
     );
 
     setMilestoneCompletion(newCompletionStatus);
-  }, [allMilestonesData, completedMilestones]);
+  }, [allMilestonesData, pathname]);
 
   useEffect(() => {
     if (completedMilestones?.length == 2) {
-      setOpenDownloader(true);
+      const matcher = localStorage.getItem("hasCompletedMilestones");
+      if (matcher == "aX76fQ93z") {
+        setOpenDownloader(false);
+      } else {
+        setOpenDownloader(true);
+      }
     }
-  }, [completedMilestones]);
-
-  console.log(allMilestonesData)
-
-  console.log("isMilestoneCompleted", isMilestoneCompleted);
+  }, [completedMilestones, pathname]);
 
   if (
     userPathsLoading ||
@@ -310,6 +316,7 @@ export default function DashboardPage() {
   return (
     <section className="bg-[url('/images/dashboard.svg')]   bg-cover bg-center bg-repeat w-screen h-screen relative overflow-hidden">
       <Header />
+
       <PdfDownloader open={openPdfDownloader} setOpen={setOpenDownloader} />
       <SizingOverlay props={handleDivStyle} />
       <SkillsBoard
@@ -360,7 +367,11 @@ export default function DashboardPage() {
                 height={245.156}
                 src={"/images/milestone1.png"}
                 className="w-[300px] h-[245.156px] z-40"
-                style={{ filter: isMilestoneCompleted(allMilestonesData[0]?.id) ? `hue-rotate(300deg)` : `hue-rotate(0deg)` }}
+                style={{
+                  filter: isMilestoneCompleted(allMilestonesData[0]?.id)
+                    ? `hue-rotate(300deg)`
+                    : `hue-rotate(0deg)`,
+                }}
               />
               <span className="w-[134px] h-[32px] h-full absolute -bottom-[180px] left-[100px] z-50 text-white font-bold text-2xl shadow-sm">
                 {allMilestonesData[0]?.name}{" "}
@@ -388,7 +399,11 @@ export default function DashboardPage() {
                 height={245.156}
                 src={"/images/milestone2.svg"}
                 className="w-full h-full  z-40"
-                style={{ filter: isMilestoneCompleted(allMilestonesData[1]?.id) ? `hue-rotate(300deg)` : `hue-rotate(0deg)` }}
+                style={{
+                  filter: isMilestoneCompleted(allMilestonesData[1]?.id)
+                    ? `hue-rotate(300deg)`
+                    : `hue-rotate(0deg)`,
+                }}
               />
               <span className="w-[134px] h-[32px] h-full absolute -bottom-[180px] left-[100px] z-50 text-white font-bold text-2xl shadow-sm">
                 {allMilestonesData[1]?.name}
@@ -416,7 +431,11 @@ export default function DashboardPage() {
                 height={245.156}
                 src={"/images/milestone3.svg"}
                 className="w-full h-full z-40"
-                style={{ filter: isMilestoneCompleted(allMilestonesData[2]?.id) ? `hue-rotate(300deg)` : `hue-rotate(0deg)` }}
+                style={{
+                  filter: isMilestoneCompleted(allMilestonesData[2]?.id)
+                    ? `hue-rotate(300deg)`
+                    : `hue-rotate(0deg)`,
+                }}
               />
               <span className="w-[134px] h-[32px] h-full absolute -bottom-1/3 left-[100px] z-50 text-white font-bold text-2xl shadow-sm">
                 {allMilestonesData[2]?.name}
@@ -443,7 +462,11 @@ export default function DashboardPage() {
                 height={245.156}
                 src={"/images/milestone4.svg"}
                 className="w-full h-full z-40"
-                style={{ filter: isMilestoneCompleted(allMilestonesData[3]?.id) ? `hue-rotate(300deg)` : `hue-rotate(0deg)` }}
+                style={{
+                  filter: isMilestoneCompleted(allMilestonesData[3]?.id)
+                    ? `hue-rotate(300deg)`
+                    : `hue-rotate(0deg)`,
+                }}
               />
               <span className="w-[134px] h-[32px] h-full absolute -bottom-1/2 left-1/2 z-50 text-white font-bold text-2xl shadow-sm">
                 {allMilestonesData[3]?.name}
@@ -467,7 +490,11 @@ export default function DashboardPage() {
                 height={245.156}
                 src={"/images/milestone5.svg"}
                 className="w-full h-full"
-                style={{ filter: isMilestoneCompleted(allMilestonesData[4]?.id) ? `hue-rotate(300deg)` : `hue-rotate(0deg)` }}
+                style={{
+                  filter: isMilestoneCompleted(allMilestonesData[4]?.id)
+                    ? `hue-rotate(300deg)`
+                    : `hue-rotate(0deg)`,
+                }}
               />
               <span className="w-[134px] h-[32px] h-full absolute -bottom-1/2 left-[110px] z-50 text-white font-bold text-2xl shadow-sm">
                 {allMilestonesData[4]?.name}
@@ -494,7 +521,11 @@ export default function DashboardPage() {
                 height={245.156}
                 src={"/images/milestone6.svg"}
                 className="w-full h-full"
-                style={{ filter: isMilestoneCompleted(allMilestonesData[5]?.id) ? `hue-rotate(300deg)` : `hue-rotate(0deg)` }}
+                style={{
+                  filter: isMilestoneCompleted(allMilestonesData[5]?.id)
+                    ? `hue-rotate(300deg)`
+                    : `hue-rotate(0deg)`,
+                }}
               />
               <span className="w-[134px] h-[32px] h-full absolute -bottom-1/2 left-1/2 z-50 text-white font-bold text-2xl shadow-sm">
                 {allMilestonesData[5]?.name}
@@ -521,7 +552,11 @@ export default function DashboardPage() {
                 height={245.156}
                 src={"/images/milestone7.svg"}
                 className="min-w-[240.638px] min-h-[245.156px]"
-                style={{ filter: isMilestoneCompleted(allMilestonesData[6]?.id) ? `hue-rotate(300deg)` : `hue-rotate(0deg)` }}
+                style={{
+                  filter: isMilestoneCompleted(allMilestonesData[6]?.id)
+                    ? `hue-rotate(300deg)`
+                    : `hue-rotate(0deg)`,
+                }}
               />
               <span className="w-[134px] h-[32px] h-full absolute -bottom-[180px] left-[80px] z-50 text-white font-bold text-2xl shadow-sm">
                 {allMilestonesData[6]?.name}
@@ -533,63 +568,80 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {allMilestonesData.slice(7).map((milestone, index) => (
+        {allMilestonesData?.slice(7).map((milestone, index) => (
           <div
-          className={`absolute`}
-          style={{ 
-            left: 1200 + (300 * (index % 4 === 3 ? index + 0.5 : index + 1)),
-            top: index % 4 === 0 ? 0
-             : index % 4 === 1 ? 420 
-             : index % 4 === 2 ? 700 
-             : 190
-          }}
+            key={index}
+            className={`absolute z-30`}
+            style={{
+              left: 1200 + 300 * (index % 4 === 3 ? index + 0.5 : index + 1),
+              top:
+                index % 4 === 0
+                  ? 0
+                  : index % 4 === 1
+                  ? 420
+                  : index % 4 === 2
+                  ? 700
+                  : 190,
+            }}
           >
-            {console.log(index)}
             <div
               key={index}
               className={`relative ${
-                index % 4 === 0 ? (index === 0 ? "before:absolute before:content-[url('/images/milestone7_before.svg')] before:rotate-[130deg] before:top-[50px] before:-left-[220px] before:w-full before:h-full before:object-cover before:object-center after:absolute after:content-[url('/images/milestone7_before.svg')] after:top-[180px] after:-right-[179px] after:w-full after:h-full after:object-cover after:object-center" : "before:absolute before:content-[url('/images/milestone4_after.svg')] before:rotate-2 before:-top-[40px] before:-left-[190px] before:rotate-[160deg] before:w-full before:h-full before:object-cover before:object-center after:absolute after:content-[url('/images/milestone3_before.svg')] after:top-[190px] after:-left-[220px] after:rotate-[20deg] after:scale-110 after:w-full after:h-full after:object-cover after:object-center")
-                : index % 4 === 1 ? (index === 1 ? "before:absolute before:content-[url('/images/milestone4_after.svg')] before:top-[50px] before:-left-[320px] before:w-full before:h-full before:object-cover before:object-center" : "before:absolute before:content-[url('/images/milestone3_before.svg')] before:rotate-2 before:top-[10px] before:-left-[300px] before:rotate-[50deg] before:scale-110 before:w-full before:h-full before:object-cover before:object-center after:absolute after:content-[url('/images/milestone4_after.svg')] after:-top-[180px] after:-left-[40px] after:-rotate-[110deg] after:w-full after:h-full after:object-cover after:object-center")
-                : index % 4 === 2 ? "before:absolute before:content-[url('/images/milestone1_before.svg')] before:-top-[100px] before:-left-[200px] before:rotate-[50deg] before:w-full before:h-full before:object-cover before:object-center"
-                : "before:absolute before:content-[url('/images/milestone4_after.svg')] before:rotate-2 before:-top-[20px] before:-left-[240px] before:rotate-[160deg] before:w-full before:h-full before:object-cover before:object-center after:absolute after:content-[url('/images/milestone3_before.svg')] after:-top-[80px] after:-left-[190px] after:rotate-[90deg] after:w-full after:h-full after:object-cover after:object-center"
+                index % 4 === 0
+                  ? index === 0
+                    ? "before:absolute before:content-[url('/images/milestone7_before.svg')] before:rotate-[130deg] before:top-[50px] before:-left-[220px] before:w-full before:h-full before:object-cover before:object-center after:absolute after:content-[url('/images/milestone7_before.svg')] after:top-[180px] after:-right-[179px] after:w-full after:h-full after:object-cover after:object-center"
+                    : "before:absolute before:content-[url('/images/milestone4_after.svg')] before:rotate-2 before:-top-[40px] before:-left-[190px] before:rotate-[160deg] before:w-full before:h-full before:object-cover before:object-center after:absolute after:content-[url('/images/milestone3_before.svg')] after:top-[190px] after:-left-[220px] after:rotate-[20deg] after:scale-110 after:w-full after:h-full after:object-cover after:object-center"
+                  : index % 4 === 1
+                  ? index === 1
+                    ? "before:absolute before:content-[url('/images/milestone4_after.svg')] before:top-[50px] before:-left-[320px] before:w-full before:h-full before:object-cover before:object-center"
+                    : "before:absolute before:content-[url('/images/milestone3_before.svg')] before:rotate-2 before:top-[10px] before:-left-[300px] before:rotate-[50deg] before:scale-110 before:w-full before:h-full before:object-cover before:object-center after:absolute after:content-[url('/images/milestone4_after.svg')] after:-top-[180px] after:-left-[40px] after:-rotate-[110deg] after:w-full after:h-full after:object-cover after:object-center"
+                  : index % 4 === 2
+                  ? "before:absolute before:content-[url('/images/milestone1_before.svg')] before:-top-[100px] before:-left-[200px] before:rotate-[50deg] before:w-full before:h-full before:object-cover before:object-center"
+                  : "before:absolute before:content-[url('/images/milestone4_after.svg')] before:rotate-2 before:-top-[20px] before:-left-[240px] before:rotate-[160deg] before:w-full before:h-full before:object-cover before:object-center after:absolute after:content-[url('/images/milestone3_before.svg')] after:-top-[80px] after:-left-[190px] after:rotate-[90deg] after:w-full after:h-full after:object-cover after:object-center"
               }`}
             >
               <Link
                 href={
                   index <= 11
                     ? `/dashboard/milestone/${allMilestonesData[index + 7]?.id}`
-                    : (isMilestoneCompleted(allMilestonesData[index + 6]?.id)
-                        ? `/dashboard/milestone/${allMilestonesData[index + 7]?.id}`
-                        : "#")
+                    : isMilestoneCompleted(allMilestonesData[index + 6]?.id)
+                    ? `/dashboard/milestone/${allMilestonesData[index + 7]?.id}`
+                    : "#"
                 }
                 className={`group relative cursor-pointer z-50 ${
                   index <= 11
-                    ? ''
-                    : (isMilestoneCompleted(allMilestonesData[index + 6]?.id)
-                        ? ''
-                        : 'sepia')
+                    ? ""
+                    : isMilestoneCompleted(allMilestonesData[index + 6]?.id)
+                    ? ""
+                    : "sepia"
                 }`}
                 onClick={
                   index <= 11
                     ? undefined
-                    : (isMilestoneCompleted(allMilestonesData[index + 6]?.id)
-                        ? undefined
-                        : (event) => {
-                          event.preventDefault();
-                          setFormattedPathName(allMilestonesData[index + 7]?.id);
-                          // setSelectedData();
-                          // setPathId();
-                          handleModal();
-                        })
+                    : isMilestoneCompleted(allMilestonesData[index + 6]?.id)
+                    ? undefined
+                    : (event) => {
+                        event.preventDefault();
+                        setFormattedPathName(allMilestonesData[index + 7]?.id);
+                        // setSelectedData();
+                        // setPathId();
+                        handleModal();
+                      }
                 }
               >
                 <Image
                   alt={`milestone ${index}`}
                   width={240.638}
                   height={245.156}
-                  src={`/images/milestone${((index % 6) + 2)}.svg`}
+                  src={`/images/milestone${(index % 6) + 2}.svg`}
                   className={`min-w-[240.638px] min-h-[245.156px]`}
-                  style={{ filter: isMilestoneCompleted(allMilestonesData[index + 7]?.id) ? `saturate(6)` : `saturate(1)` }}
+                  style={{
+                    filter: isMilestoneCompleted(
+                      allMilestonesData[index + 7]?.id
+                    )
+                      ? `hue-rotate(300deg)`
+                      : `saturate(1)`,
+                  }}
                 />
                 <span className="w-[134px] h-[32px] h-full absolute -bottom-1/2 left-1/4 z-50 text-white font-bold text-2xl shadow-sm">
                   {allMilestonesData[index + 7]?.name}

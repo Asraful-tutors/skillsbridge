@@ -57,7 +57,9 @@ export default function PdfDownloader({
     e.preventDefault();
 
     if ("aX76fQ93z" === code) {
-      setOpenPdf(true);
+      // setOpenPdf(true);
+      localStorage.setItem("hasCompletedMilestones", "aX76fQ93z");
+      setOpen(false);
     } else {
       console.error("Invalid code");
       setError(true);
@@ -69,7 +71,6 @@ export default function PdfDownloader({
 
   return (
     <>
-      <PdfView open={openPdf} setOpen={setOpenPdf} />
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader className="flex flex-col gap-2">
