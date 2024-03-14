@@ -34,7 +34,7 @@ export default function SkillsBoard({
             animate={{ height: "auto" }}
             exit={{ height: 0 }}
             transition={{ duration: 0.1, ease: "easeInOut" }}
-            className="fixed z-50 right-2 sm:right-5 top-[160px] sm:top-44 w-[467px] h-auto bg-white_background p-5 rounded-lg flex flex-col gap-5 overflow-hidden max-h-[400px] max-w-xs sm:max-w-lg overflow-y-scroll"
+            className="fixed z-[70] right-2 sm:right-5 top-[160px] sm:top-44 w-[467px] h-auto bg-white_background p-5 rounded-lg flex flex-col gap-5 overflow-hidden max-h-[400px] max-w-xs sm:max-w-lg overflow-y-scroll"
           >
             <h3 className="header text-2xl text-start">Your skills</h3>
             <SkillsAccordion
