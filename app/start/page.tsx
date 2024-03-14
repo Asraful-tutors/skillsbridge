@@ -17,8 +17,6 @@ function StartPage() {
     queryFn: () => getFullFilledQuestions(),
   });
 
-  console.log("data", isLoading, data);
-
   const handleNext = () => {
     setCurrentStep((prev) => prev + 1);
   };

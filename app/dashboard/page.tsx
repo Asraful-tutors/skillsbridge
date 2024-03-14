@@ -280,16 +280,22 @@ export default function DashboardPage() {
     setMilestoneCompletion(newCompletionStatus);
   }, [allMilestonesData, pathname]);
 
+  let matcher = null;
+
+  if (typeof window !== "undefined") {
+    matcher = window.localStorage.getItem("hasCompletedMilestones");
+  }
+
   useEffect(() => {
-    if (completedMilestones?.length == 2) {
-      const matcher = localStorage.getItem("hasCompletedMilestones");
+    if (completedMilestones?.length >= 2) {
       if (matcher == "aX76fQ93z") {
+        console.log("matches");
         setOpenDownloader(false);
       } else {
         setOpenDownloader(true);
       }
     }
-  }, [completedMilestones, pathname]);
+  }, [completedMilestones, pathname, matcher]);
 
   if (
     userPathsLoading ||
@@ -369,8 +375,8 @@ export default function DashboardPage() {
                 className="w-[300px] h-[245.156px] z-40"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[0]?.id)
-                    ? `hue-rotate(300deg)`
-                    : `hue-rotate(0deg)`,
+                    ? `saturate(4)`
+                    : `saturate(1)`,
                 }}
               />
               <span className="w-[134px] h-[32px] h-full absolute -bottom-[180px] left-[100px] z-50 text-white font-bold text-2xl shadow-sm">
@@ -401,8 +407,8 @@ export default function DashboardPage() {
                 className="w-full h-full  z-40"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[1]?.id)
-                    ? `hue-rotate(300deg)`
-                    : `hue-rotate(0deg)`,
+                    ? `saturate(4)`
+                    : `saturate(1)`,
                 }}
               />
               <span className="w-[134px] h-[32px] h-full absolute -bottom-[180px] left-[100px] z-50 text-white font-bold text-2xl shadow-sm">
@@ -433,8 +439,8 @@ export default function DashboardPage() {
                 className="w-full h-full z-40"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[2]?.id)
-                    ? `hue-rotate(300deg)`
-                    : `hue-rotate(0deg)`,
+                    ? `saturate(4)`
+                    : `saturate(1)`,
                 }}
               />
               <span className="w-[134px] h-[32px] h-full absolute -bottom-1/3 left-[100px] z-50 text-white font-bold text-2xl shadow-sm">
@@ -464,8 +470,8 @@ export default function DashboardPage() {
                 className="w-full h-full z-40"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[3]?.id)
-                    ? `hue-rotate(300deg)`
-                    : `hue-rotate(0deg)`,
+                    ? `saturate(4)`
+                    : `saturate(1)`,
                 }}
               />
               <span className="w-[134px] h-[32px] h-full absolute -bottom-1/2 left-1/2 z-50 text-white font-bold text-2xl shadow-sm">
@@ -492,8 +498,8 @@ export default function DashboardPage() {
                 className="w-full h-full"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[4]?.id)
-                    ? `hue-rotate(300deg)`
-                    : `hue-rotate(0deg)`,
+                    ? `saturate(4)`
+                    : `saturate(1)`,
                 }}
               />
               <span className="w-[134px] h-[32px] h-full absolute -bottom-1/2 left-[110px] z-50 text-white font-bold text-2xl shadow-sm">
@@ -523,8 +529,8 @@ export default function DashboardPage() {
                 className="w-full h-full"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[5]?.id)
-                    ? `hue-rotate(300deg)`
-                    : `hue-rotate(0deg)`,
+                    ? `saturate(4)`
+                    : `saturate(1)`,
                 }}
               />
               <span className="w-[134px] h-[32px] h-full absolute -bottom-1/2 left-1/2 z-50 text-white font-bold text-2xl shadow-sm">
@@ -554,8 +560,8 @@ export default function DashboardPage() {
                 className="min-w-[240.638px] min-h-[245.156px]"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[6]?.id)
-                    ? `hue-rotate(300deg)`
-                    : `hue-rotate(0deg)`,
+                    ? `saturate(4)`
+                    : `saturate(1)`,
                 }}
               />
               <span className="w-[134px] h-[32px] h-full absolute -bottom-[180px] left-[80px] z-50 text-white font-bold text-2xl shadow-sm">
@@ -639,7 +645,7 @@ export default function DashboardPage() {
                     filter: isMilestoneCompleted(
                       allMilestonesData[index + 7]?.id
                     )
-                      ? `hue-rotate(300deg)`
+                      ? `saturate(4)`
                       : `saturate(1)`,
                   }}
                 />
