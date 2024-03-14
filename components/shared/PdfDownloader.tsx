@@ -92,8 +92,8 @@ export default function PdfDownloader({
                   Find your passcode at the end of the survey
                 </li>
                 <li className="ml-4">
-                  Come back here and enter your passcode below to download your
-                  certificate!
+                  Come back here and enter your passcode below and completed all
+                  the milestones to download your certificate!
                 </li>
               </ol>
               [Submit & Download]
