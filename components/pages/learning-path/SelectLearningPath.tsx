@@ -45,7 +45,6 @@ export default function SelectLearningPath({
   };
 
   const handlePathClick = (path: LearningPath) => {
-    console.log("path", path);
     setSelectedPath((prevPath) => (prevPath?.id === path.id ? null : path));
   };
 

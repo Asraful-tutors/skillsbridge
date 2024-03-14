@@ -112,7 +112,6 @@ export async function mileStoneAssessment(points: any[]) {
         ? parseFloat(totalPoints)
         : existingScore + parseFloat(totalPoints);
 
-      console.log("updatedScore", existingScore, updatedScore);
       await prisma.userSkill.update({
         where: {
           userId_skillId: {
