@@ -66,7 +66,7 @@ const SkillsOverview = ({ data, disableAnimation }: ChartData) => {
                     {entry.score ?? 0}
                   </div>
                 ) : null}
-                {entry.selfScore * 10 === innerIndex + 1 && (
+                {entry.selfScore === innerIndex + 1 && (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="18"

@@ -43,7 +43,7 @@ const ChartComponent = ({ data, disableAnimation }: ChartData) => {
                   } ${innerIndex === 99 ? "rounded-r-full" : ""}`}
                 ></motion.div>
 
-                {entry.selfScore * 10 === innerIndex + 1 && (
+                {entry.selfScore === innerIndex + 1 && (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="18"
