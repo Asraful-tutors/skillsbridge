@@ -57,7 +57,9 @@ export default function PdfDownloader({
     e.preventDefault();
 
     if ("aX76fQ93z" === code) {
-      setOpenPdf(true);
+      // setOpenPdf(true);
+      localStorage.setItem("hasCompletedMilestones", "aX76fQ93z");
+      setOpen(false);
     } else {
       console.error("Invalid code");
       setError(true);
@@ -69,7 +71,6 @@ export default function PdfDownloader({
 
   return (
     <>
-      <PdfView open={openPdf} setOpen={setOpenPdf} />
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader className="flex flex-col gap-2">
@@ -91,8 +92,8 @@ export default function PdfDownloader({
                   Find your passcode at the end of the survey
                 </li>
                 <li className="ml-4">
-                  Come back here and enter your passcode below to download your
-                  certificate!
+                  Come back here and enter your passcode below and completed all
+                  the milestones to download your certificate!
                 </li>
               </ol>
               [Submit & Download]

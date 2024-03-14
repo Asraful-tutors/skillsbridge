@@ -82,7 +82,7 @@ export default function SignUp({}: SignUpProps) {
             height={48}
             className="w-[130px] object-cover object-center"
           />
-          <h1 className="header">Welcome to Skillbridge</h1>
+          <h1 className="header">Welcome to Skillsbridge</h1>
           <p className="desc max-w-[449px] mx-auto -mt-1">
             Elevate your potential in the games industry! Here, you&apos;ll find
             the right resources and advice to make your journey rewarding and
@@ -104,6 +104,11 @@ export default function SignUp({}: SignUpProps) {
             <p className="desc">
               Ready to level up? Let&apos;s navigate the journey to your dream
               job together.
+              <br />
+              <span className="font-medium">
+                NOTE: You won&apos;t be able to change your name later, so use
+                the one you want to appear on your Completion Certificate!
+              </span>
             </p>
           </div>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -114,6 +119,7 @@ export default function SignUp({}: SignUpProps) {
                 className="input "
                 {...form.register("firstName")}
                 disabled={isPending}
+                required
               />
 
               <Input
@@ -122,6 +128,7 @@ export default function SignUp({}: SignUpProps) {
                 className="input"
                 {...form.register("lastName")}
                 disabled={isPending}
+                required
               />
             </div>
             <div className="flex flex-col gap-4">
@@ -130,18 +137,20 @@ export default function SignUp({}: SignUpProps) {
                 placeholder="Email Address"
                 {...form.register("email")}
                 disabled={isPending}
+                required
               />
-              {errors.email && (
+              {/* {errors.email && (
                 <div className="p-4 py-3 bg-red-500/10 text-red-500 rounded-md w-full">
                   Email is required
                 </div>
-              )}
+              )} */}
             </div>
             <Input
               type="password"
               placeholder="******"
               {...form.register("password")}
               disabled={isPending}
+              required
             />
             <p className="desc text-center">
               By creating an account, you are agreeing to our{" "}

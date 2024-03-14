@@ -284,7 +284,7 @@ export const getAllMilestones = async (pathid: number) => {
     },
   });
 
-  const updatedData = [...getRequiredMilestones, ...milestones];
+  const updatedData = [...milestones, ...getRequiredMilestones];
 
   return updatedData || [];
 };

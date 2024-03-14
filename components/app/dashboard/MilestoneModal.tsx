@@ -72,8 +72,6 @@ export default function MilestoneModal({
     );
   }
 
-  console.log("mileStoneData", mileStoneData);
-
   if (isError || skillNameError) {
     return "Something went wrong";
   }

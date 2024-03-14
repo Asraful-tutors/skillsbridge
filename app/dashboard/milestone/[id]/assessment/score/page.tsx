@@ -11,13 +11,15 @@ import useUserPaths from "@/components/hooks/useUserPaths";
 import useUserPathSkills from "@/components/hooks/useUserPathSkills";
 import Loading from "@/app/loading";
 import Link from "next/link";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { markCompletedMilestones } from "@/lib/backend/score";
 import { toast } from "sonner";
+import { getCompletedMilestones } from "@/lib/backend/user";
 
 export default function ScorePage() {
   // Temporary data to display the content properly until the backend is ready
   const router = useRouter();
+  const queryClient = useQueryClient();
   const params = useParams();
   const searchParams = useSearchParams();
   const user = useAppSelector((state) => state.user.userData);
@@ -32,7 +34,7 @@ export default function ScorePage() {
     mutationFn: () => markCompletedMilestones(params?.id),
 
     onSuccess: () => {
-      // queryClient.invalidateQueries('your-query-key');
+      queryClient.invalidateQueries({ queryKey: ["completedMilestones"] });
       toast.success(`Milestone completed successfully`);
       router.push("/dashboard");
     },

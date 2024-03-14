@@ -13,6 +13,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function TunetPasswordPrompt({
   open,
@@ -23,12 +24,14 @@ export default function TunetPasswordPrompt({
 }) {
   const [error, setError] = useState(false);
   const [code, setCode] = useState("");
+  const router = useRouter();
   const handlePasswordAccept = (e: any) => {
     e.preventDefault();
     if (process.env.NEXT_PUBLIC_ACCESS_PASSWORD === code) {
       localStorage.setItem("code", process.env.NEXT_PUBLIC_ACCESS_PASSWORD);
 
       setOpen(false);
+      router.push("/dashboard");
     } else {
       console.error("Invalid code");
       setError(true);
