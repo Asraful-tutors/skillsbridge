@@ -11,6 +11,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function UserAvatar({ userData }: { userData: any }) {
+  const handleClear = () => {
+    // localStorage.removeItem("code");
+    // localStorage.removeItem("userData");
+    // localStorage.removeItem("hasCompletedMilestones");
+    // localStorage.removeItem("cookiePolicyAccepted");
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="cursor-pointer">
@@ -44,7 +50,12 @@ export default function UserAvatar({ userData }: { userData: any }) {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator /> */}
-        <DropdownMenuItem onClick={() => logOut()}>
+        <DropdownMenuItem
+          onClick={() => {
+            logOut();
+            handleClear();
+          }}
+        >
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>

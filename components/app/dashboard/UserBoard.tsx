@@ -12,6 +12,12 @@ interface UserBoardProps {
 }
 
 export default function UserBoard({ visible }: UserBoardProps) {
+  const handleClear = () => {
+    // localStorage.removeItem("code");
+    // localStorage.removeItem("userData");
+    // localStorage.removeItem("hasCompletedMilestones");
+    // localStorage.removeItem("cookiePolicyAccepted");
+  };
   return (
     <AnimatePresence>
       {visible && (
@@ -46,7 +52,10 @@ export default function UserBoard({ visible }: UserBoardProps) {
               </Link>
             </Button>
             <Button
-              onClick={() => logOut()}
+              onClick={() => {
+                logOut();
+                handleClear();
+              }}
               className="rounded-[8px] flex items-center gap-5 bg-[#EBEBEB] text-black w-[355px] text-base font-bold p-4 justify-start hover:bg-[#EBEBEB] hover:opacity-70"
             >
               <Image
