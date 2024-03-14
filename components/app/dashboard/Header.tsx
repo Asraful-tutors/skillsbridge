@@ -40,7 +40,7 @@ export default function Header() {
   useOutsideClick(visible, setVisible);
 
   return (
-    <nav className="fixed top-0 right-0 flex items-center justify-between w-full z-[70]">
+    <nav className="fixed top-0 right-0 flex items-center justify-between w-full z-[100]">
       {/* left */}
       <section className="clip-left bg-white_background max-w-[597px] h-[90px] px-5 md:px-10 py-[13px] flex items-center justify-start gap-5 md:gap-10 w-full">
         <Image

@@ -281,6 +281,8 @@ export default function DashboardPage() {
     }
   }, [completedMilestones]);
 
+  console.log(allMilestonesData)
+
   console.log("isMilestoneCompleted", isMilestoneCompleted);
 
   if (
@@ -542,6 +544,7 @@ export default function DashboardPage() {
              : 190
           }}
           >
+            {console.log(index)}
             <div
               key={index}
               className={`relative ${
@@ -553,23 +556,23 @@ export default function DashboardPage() {
             >
               <Link
                 href={
-                  index <= 12
+                  index <= 11
                     ? `/dashboard/milestone/${allMilestonesData[index + 7]?.id}`
-                    : (isMilestoneCompleted(allMilestonesData[index + 6])
+                    : (isMilestoneCompleted(allMilestonesData[index + 6]?.id)
                         ? `/dashboard/milestone/${allMilestonesData[index + 7]?.id}`
                         : "#")
                 }
                 className={`group relative cursor-pointer z-50 ${
-                  index <= 12
+                  index <= 11
                     ? ''
-                    : (isMilestoneCompleted(allMilestonesData[index + 6])
+                    : (isMilestoneCompleted(allMilestonesData[index + 6]?.id)
                         ? ''
                         : 'sepia')
                 }`}
                 onClick={
-                  index <= 12
+                  index <= 11
                     ? undefined
-                    : (isMilestoneCompleted(allMilestonesData[index + 6])
+                    : (isMilestoneCompleted(allMilestonesData[index + 6]?.id)
                         ? undefined
                         : (event) => {
                           event.preventDefault();
@@ -586,7 +589,7 @@ export default function DashboardPage() {
                   height={245.156}
                   src={`/images/milestone${((index % 6) + 2)}.svg`}
                   className={`min-w-[240.638px] min-h-[245.156px]`}
-                  style={{ filter: isMilestoneCompleted(allMilestonesData[index + 7]?.id) ? `hue-rotate(330deg)` : `hue-rotate(0deg)` }}
+                  style={{ filter: isMilestoneCompleted(allMilestonesData[index + 7]?.id) ? `saturate(10)` : `saturate(1)` }}
                 />
                 <span className="w-[134px] h-[32px] h-full absolute -bottom-1/2 left-1/4 z-50 text-white font-bold text-2xl shadow-sm">
                   {allMilestonesData[index + 7]?.name}

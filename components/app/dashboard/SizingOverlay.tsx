@@ -42,7 +42,7 @@ export default function SizingOverlay({ props }: any) {
   };
 
   return (
-    <div className="fixed bottom-5 right-5 z-[60]">
+    <div className="fixed bottom-5 right-5 z-[90]">
       <div className='flex flex-col justify-center items-center mb-1'>
         <Button 
         onClick={() => handleMove("up")}
