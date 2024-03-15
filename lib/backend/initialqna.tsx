@@ -111,7 +111,6 @@ export async function mileStoneAssessment(points: any[]) {
       const updatedScore = isNaN(existingScore)
         ? parseFloat(totalPoints)
         : existingScore + parseFloat(totalPoints);
-
       await prisma.userSkill.update({
         where: {
           userId_skillId: {

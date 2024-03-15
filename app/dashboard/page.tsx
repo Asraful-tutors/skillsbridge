@@ -32,6 +32,7 @@ import {
 import PdfDownloader from "@/components/shared/PdfDownloader";
 import SizingOverlay from "@/components/app/dashboard/SizingOverlay";
 import PdfView from "@/components/shared/PdfView";
+import { toast } from "sonner";
 
 export default function DashboardPage() {
   const dispatch = useAppDispatch();
@@ -41,7 +42,8 @@ export default function DashboardPage() {
     typeof window !== "undefined" ? localStorage.getItem("userData") : null;
   const parsedEmail = userEmail ? JSON.parse(userEmail) : null;
   const email = parsedEmail ? parsedEmail.email : null;
-
+  const pathname = usePathname();
+  const router = useRouter();
   const [user, setUser] = useState(null);
 
   const [allMilestonesData, setAllMilestonesData] = useState([]);
@@ -108,7 +110,7 @@ export default function DashboardPage() {
     isError,
     refetch,
   } = useQuery({
-    queryKey: ["completedMilestones"],
+    queryKey: ["completedMilestones", pathname],
     // @ts-ignore
     queryFn: async () => {
       const data = await getCompletedMilestones(user.id);
@@ -245,6 +247,8 @@ export default function DashboardPage() {
   }, [handleMouseMove, handleMouseUp, divStyle.scale, divStyle.isDragging]);
 
   const [openPdfDownloader, setOpenDownloader] = useState(false);
+  const [loading, setLoading] = useState(false);
+  // useEffect hook to run whenever completedMilestones or allMilestonesData change
 
   function isMilestoneCompleted(milestoneId: number) {
     return (
@@ -267,19 +271,6 @@ export default function DashboardPage() {
     Array(20).fill(false)
   ); // Initialize an array of 20 elements with false
 
-  const pathname = usePathname();
-  const router = useRouter();
-
-  useEffect(() => {
-    // Call the isMilestoneCompleted function for each milestone
-    const newCompletionStatus = allMilestonesData.map(
-      (milestone, index) =>
-        isMilestoneCompleted(milestone.id) || milestoneCompletion[index]
-    );
-
-    setMilestoneCompletion(newCompletionStatus);
-  }, [allMilestonesData, pathname]);
-
   let matcher = null;
 
   if (typeof window !== "undefined") {
@@ -289,7 +280,6 @@ export default function DashboardPage() {
   useEffect(() => {
     if (completedMilestones?.length >= 2) {
       if (matcher == "aX76fQ93z") {
-        console.log("matches");
         setOpenDownloader(false);
       } else {
         setOpenDownloader(true);
@@ -312,7 +302,7 @@ export default function DashboardPage() {
       </>
     );
 
-  if (!user)
+  if (!user || !allMilestones)
     return (
       <>
         <Loading />
