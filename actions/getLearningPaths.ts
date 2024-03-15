@@ -72,21 +72,15 @@ export const getUserSelectedPathSkills = async () => {
   // Get the user ID from the session
   const userId = session.user.id;
 
-  console.log("userId", userId);
   const cards = await prisma.userSkill.findMany({
     where: {
       userId: userId,
-      skill: {
-        type: "Hard",
-      },
     },
   });
 
-  const filteredData = cards?.filter(
-    (selfScore) => selfScore.selfScore !== 0 || selfScore.selfScore !== null
-  );
+  const sortedCards = cards.sort((a, b) => b.skillId - a.skillId);
 
-  return filteredData || [];
+  return sortedCards || [];
 };
 
 export const updateUsersLearningPaths = async (

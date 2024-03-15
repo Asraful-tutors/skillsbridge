@@ -4,6 +4,7 @@ import MotionLayout from "@/components/layout/MotionLayout";
 
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "SkillsBridge",
@@ -21,6 +22,7 @@ export default async function RootLayout({
       <html lang="en">
         <MotionLayout>
           <body>{children}</body>
+          <Toaster />
         </MotionLayout>
       </html>
     </StoreProvider>

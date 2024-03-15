@@ -96,7 +96,6 @@ export default function PdfDownloader({
                   the milestones to download your certificate!
                 </li>
               </ol>
-              [Submit & Download]
             </DialogDescription>
           </DialogHeader>
           <form
