@@ -14,6 +14,7 @@ import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { redirectUser } from "@/lib/backend/user";
 
 export default function TunetPasswordPrompt({
   open,
@@ -31,6 +32,7 @@ export default function TunetPasswordPrompt({
       localStorage.setItem("code", process.env.NEXT_PUBLIC_ACCESS_PASSWORD);
 
       setOpen(false);
+      redirectUser();
       router.push("/dashboard");
     } else {
       console.error("Invalid code");

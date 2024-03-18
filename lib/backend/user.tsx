@@ -173,3 +173,37 @@ export const getCompletedMilestones = async (id: any) => {
 
   return milestones;
 };
+
+// redirect user if they have completed the initial assessment
+
+export const redirectUser = async () => {
+  const session = await auth();
+  if (!session) return null;
+
+  const redirect = await prisma.user.update({
+    where: {
+      id: session.user.id,
+    },
+    data: {
+      enableRedirect: true,
+    },
+  });
+
+  return { message: "Updated successfully" };
+};
+
+export const disableRedirectUser = async () => {
+  const session = await auth();
+  if (!session) return null;
+
+  const redirect = await prisma.user.update({
+    where: {
+      id: session.user.id,
+    },
+    data: {
+      enableRedirect: false,
+    },
+  });
+
+  return { message: "Updated successfully" };
+};

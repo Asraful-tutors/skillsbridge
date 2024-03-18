@@ -23,6 +23,15 @@ export default function UserProfileCard({ link }: { link?: string }) {
   );
 
   useEffect(() => {
+    try {
+      localStorage.setItem("__test__", "test"); // Try to set an item in localStorage
+      localStorage.removeItem("__test__"); // Remove the test item
+    } catch (e) {
+      // localStorage is not available
+      alert("Local storage is disabled. Please enable it to use this website.");
+      return;
+    }
+
     // Check if the password is stored in localStorage
     const storedPassword = localStorage.getItem("code");
     if (
