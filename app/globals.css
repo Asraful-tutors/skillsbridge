@@ -77,10 +77,10 @@
   }
 
   .header {
-    @apply text-center text-[#181818] font-bold leading-[150%] text-[28px];
+    @apply text-center text-[#181818] font-bold leading-[150%] text-[28px] max-lg:text-2xl;
   }
   .desc {
-    @apply text-center text-base font-normal leading-[150%] text-[#434341];
+    @apply text-center text-base font-normal leading-[150%] text-[#434341] max-lg:text-sm;
   }
 }
 
@@ -100,9 +100,14 @@
   border-radius: 16px;
 }
 
-.clip-left {
-  clip-path: polygon(0 0, 100% 0%, 80% 100%, 0% 100%);
+@media screen and (min-width: 756px) {
+  .clip-left {
+    clip-path: polygon(0 0, 100% 0%, 80% 100%, 0% 100%);
+  }
 }
-.clip-right {
-  clip-path: polygon(0 0, 100% 0%, 100% 100%, 20% 100%);
+
+@media screen and (min-width: 756px) {
+  .clip-right {
+    clip-path: polygon(0 0, 100% 0%, 100% 100%, 20% 100%);
+  }
 }

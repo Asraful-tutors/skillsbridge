@@ -18,7 +18,7 @@ export default async function StartLayout({
   return (
     <div className="flex flex-col min-h-screen ">
       <Header user={user} />
-      <main className="flex-1 h-full bg-[#F0F1F5]">{children}</main>
+      <main className="flex-1 h-full bg-[#F0F1F5] px-4">{children}</main>
     </div>
   );
 }

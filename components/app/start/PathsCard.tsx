@@ -66,7 +66,7 @@ export default function PathsCard({
       whileHover={{ scale: 1.05 }}
       className="w-48 h-48 rounded-2xl  cursor-pointer bg-light_gray hover:bg-[#9d64d6] shadow py-7 flex flex-col justify-center items-center gap-3"
     >
-      <div className=" w-[88px] bg-[#C7C7C7] rounded-sm">
+      <div className="w-[88px] bg-[#C7C7C7] rounded-sm">
         <Image
           src={icon || "/images/game-artist.svg"}
           alt={name}

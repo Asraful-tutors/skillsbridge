@@ -25,22 +25,24 @@ export default function IsEligable({
   const params = useParams();
 
   return (
-    <motion.div className="w-full text-black max-w-screen-2xl h-full my-8 rounded-2xl mx-auto grid grid-cols-1 xl:grid-cols-2 gap-12 py-[77px] xl:pr-0 px-12 bg-white_background">
+    <motion.div className="w-full text-black max-w-screen-2xl h-full my-8 rounded-2xl mx-auto grid grid-cols-1 xl:grid-cols-2 gap-12 py-6 lg:py-[77px] xl:pr-0 px-12 bg-white_background">
       <div className="">
         <Breadcrumb />
-        <h1 className="text-[40px] font-bold mb-[18px]">{milestone?.name}</h1>
+        <h1 className="text-2xl lg:text-[40px] font-bold mb-[18px] max-lg:mt-4">
+          {milestone?.name}
+        </h1>
         <Image
           src={"/images/gamer.svg"}
           alt={"gamer"}
           width={604}
           height={555}
-          className="w-[604px] h-[555px] object-center object-cover xl:hidden justify-self-start mb-8"
+          className="w-full lg:w-[604px] aspect-video lg:h-[555px] object-center object-cover xl:hidden justify-self-start mb-8"
         />
         <div className="flex flex-col mb-8">
-          <h2 className="text-xl font-semibold mb-1.5 text-subheading">
+          <h2 className="text-lg lg:text-xl font-semibold mb-1.5 text-subheading">
             Overview
           </h2>
-          <p className="text-base opacity-50">
+          <p className="text-sm lg:text-base opacity-50">
             {milestone?.description || (
               <span>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -77,11 +79,11 @@ export default function IsEligable({
             </div>
           </div>
         )}
-        <div className="flex flex-row gap-[42px] mx-auto flex-wrap">
+        <div className="flex flex-row gap-5 lg:gap-[42px] mx-auto flex-wrap">
           <Button
             asChild
             variant={"violate"}
-            className="w-full md:max-w-[284px]"
+            className="w-full md:max-w-[284px] max-lg:py-3"
           >
             <a href={milestone?.link || "#"} target="_blank">
               Go to course
@@ -90,7 +92,7 @@ export default function IsEligable({
           <Button
             asChild
             variant={"violate"}
-            className="w-full md:max-w-[284px]"
+            className="w-full md:max-w-[284px] max-lg:py-3"
           >
             <Link href={`/dashboard/milestone/${params?.id}/assessment`}>
               Take Assessments
@@ -103,7 +105,7 @@ export default function IsEligable({
         alt={"gamer"}
         width={604}
         height={555}
-        className="w-[604px] h-[555px] object-center object-cover hidden xl:block justify-self-end my-auto"
+        className="w-[604px] aspect-square object-center object-cover hidden xl:block justify-self-end my-auto"
       />
     </motion.div>
   );
