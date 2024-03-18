@@ -30,11 +30,11 @@ export function SkillCard({ skill }: CardProps) {
   if (isError) return "Something went wrong";
 
   return (
-    <div className="bg-[#F0F1F5] overflow-hidden w-fit rounded-[20px] px-[30px] py-5 justify-self-center">
-      <h3 className="text-xl font-semibold text-[#4D4D9B] mb-[60px]">
+    <div className="bg-[#F0F1F5] overflow-hidden w-[350px] sm:w-fit rounded-[20px] px-[30px] py-5 justify-self-center">
+      <h3 className="text-xl font-semibold text-[#4D4D9B] mb-[40px] sm:mb-[60px]">
         {data.name}
       </h3>
-      <div className="flex flex-row mb-5">
+      <div className="flex flex-row mb-5 scale-75 sm:scale-100 -ml-[40px] sm:ml-0">
         {Array.from({ length: 100 }).map((value, innerIndex) => {
           return (
             <div
@@ -59,7 +59,7 @@ export function SkillCard({ skill }: CardProps) {
                       ? "#14AE5C"
                       : "#D9D9D9",
                 }}
-                className={`cursor-pointer w-[5.5px] h-[8px] border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
+                className={`cursor-pointer w-[4px] h-[8px] border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
                   innerIndex === 0 ? "rounded-l-full" : ""
                 } ${innerIndex === 99 ? "rounded-r-full" : ""}`}
               ></motion.div>
@@ -100,7 +100,7 @@ export function SkillCard({ skill }: CardProps) {
         })}
         {/* Display the last index */}
         <div className="flex flex-col items-center relative">
-          <span className="text-xs text-gray-500 absolute -bottom-5 left-0">
+          <span className="text-xs text-gray-500 absolute -bottom-5 -left-2 sm:left-0">
             100
           </span>
         </div>

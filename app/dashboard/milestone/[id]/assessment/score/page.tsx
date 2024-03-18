@@ -65,7 +65,7 @@ export default function ScorePage() {
       <div className="border-b-[1px] border-[#B1ABAB] w-full">
         <h1 className="text-2xl font-bold m-6">Scorecard</h1>
       </div>
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-10 xl:mx-[50px]">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:mx-[50px]">
         {userSkills &&
           userSkills
             .filter((self) => self.selfScore !== null)

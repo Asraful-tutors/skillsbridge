@@ -43,7 +43,7 @@ export default function TunetPasswordPrompt({
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] rounded-[16px]">
           <DialogHeader className="flex flex-col gap-2">
             <DialogTitle>Let&apos;s Get Started! </DialogTitle>
             <DialogDescription className="flex flex-col gap-1.5">

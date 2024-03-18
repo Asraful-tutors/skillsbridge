@@ -21,7 +21,7 @@ export function SkillsAccordion({ data, title, open }: SkillsAccordionProps) {
         defaultValue={open ? "item-1" : ""}
         className="w-full"
       >
-        <AccordionItem value="item-1" className="w-full ">
+        <AccordionItem value="item-1" className="w-full overscroll-auto">
           <AccordionTrigger className="w-full text-base rounded-md px-4 py-3 text-white bg-gradient-to-b from-[#B278FF] to-[#9D53FF]">
             {title}
           </AccordionTrigger>

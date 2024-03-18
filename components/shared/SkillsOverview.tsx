@@ -60,7 +60,7 @@ const SkillsOverview = ({ data, disableAnimation }: ChartData) => {
                         }
                       : {}
                   }
-                  className={`cursor-pointer w-[5.5px] h-[8px] border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
+                  className={`cursor-pointer w-[4px] h-[8px] border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
                     innerIndex === 0 ? "rounded-l-full" : ""
                   } ${innerIndex === 99 ? "rounded-r-full" : ""}`}
                 ></motion.div>
@@ -76,7 +76,7 @@ const SkillsOverview = ({ data, disableAnimation }: ChartData) => {
                     height="44"
                     viewBox="0 0 18 44"
                     fill="none"
-                    className="absolute -top-6 -right-3 z-50"
+                    className="absolute -top-6 -right-3 z-40"
                   >
                     <path
                       fill-rule="evenodd"

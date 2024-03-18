@@ -17,7 +17,7 @@ export default function PrivacyPolicy({
   return (
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[1024px] max-h-[90dvh] overflow-y-scroll">
+        <DialogContent className="sm:max-w-[1024px] max-h-[80dvh] overflow-y-scroll rounded-[16px]">
           <DialogHeader>
             <DialogTitle>PRIVACY POLICY</DialogTitle>
             <DialogDescription>

@@ -156,7 +156,7 @@ export default function DashboardPage() {
   const prevClientX = useRef(0);
   const prevClientY = useRef(0);
 
-  const minZoom = 0.7;
+  const minZoom = 0.5;
   const maxZoom = 2;
 
   /* Supposed to take information about milestone to check if the milestone is available.
@@ -310,7 +310,7 @@ export default function DashboardPage() {
     );
 
   return (
-    <section className="bg-[url('/images/dashboard.svg')]   bg-cover bg-center bg-repeat w-screen h-screen relative overflow-hidden">
+    <section className="bg-[url('/images/dashboard.svg')] bg-cover bg-center bg-repeat w-screen h-screen relative overflow-hidden">
       <Header />
 
       <PdfDownloader open={openPdfDownloader} setOpen={setOpenDownloader} />
@@ -343,11 +343,11 @@ export default function DashboardPage() {
         }}
         transition={{ duration: 0.1, ease: "linear" }}
         onMouseDown={handleMouseDown}
-        onTouchStart={handleMouseDown}
         onWheel={handleZoom}
+        onTouchStart={handleMouseDown}
       >
         {/* Milestone 1 */}
-        <div className="absolute top-64 left-4">
+        <div className="absolute top-64 left-4 z-30">
           <div
             className="relative before:absolute before:content-[url('/images/milestone1_before.svg')] before:-top-10 before:-right-[165px] before:w-full before:h-full
           after:absolute after:content-[url('/images/milestone1_after.svg')] after:-bottom-[235px] after:-right-[125px] after:w-full after:h-full after:object-cover after:object-center
@@ -355,14 +355,14 @@ export default function DashboardPage() {
           >
             <Link
               href={`/dashboard/milestone/${allMilestonesData[0]?.id}`}
-              className="group relative cursor-pointer"
+              className="group relative cursor-pointer z-50"
             >
               <Image
                 alt="milestone 1"
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone1.png"}
-                className="w-[300px] h-[245.156px] z-40"
+                className="min-w-[300px] min-h-[245.156px]"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[0]?.id)
                     ? `saturate(4)`
@@ -379,7 +379,7 @@ export default function DashboardPage() {
           </div>
         </div>
         {/* Milestone 2 */}
-        <div className="absolute -top-[35px] left-[490px]">
+        <div className="absolute -top-[35px] left-[490px] z-30">
           <div
             className="z-0 relative before:absolute before:content-[url('/images/milestone2_before.svg')] before:top-[80px] before:-right-[335px] before:w-full before:h-full
          after:absolute after:content-[url('/images/milestone2_after.svg')] after:-bottom-[230px] after:-right-[300px] after:w-full after:h-full after:object-cover after:object-center
@@ -387,14 +387,14 @@ export default function DashboardPage() {
           >
             <Link
               href={`/dashboard/milestone/${allMilestonesData[1]?.id}`}
-              className="group relative cursor-pointer flex-shrink-0"
+              className="group relative cursor-pointer z-50"
             >
               <Image
                 alt="milestone 2"
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone2.svg"}
-                className="!w-[356px] !h-[340.156px] aspect-auto z-40"
+                className="min-w-[356px] min-h-[340.156px]"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[1]?.id)
                     ? `saturate(4)`
@@ -411,7 +411,7 @@ export default function DashboardPage() {
           </div>
         </div>
         {/* Milestone 3 */}
-        <div className="absolute top-[810px] left-[220px]">
+        <div className="absolute top-[810px] left-[220px] z-30">
           <div
             className="z-0 relative before:absolute before:content-[url('/images/milestone3_before.svg')] before:rotate-2 before:-top-[559px] before:left-[217px] before:w-full before:h-full before:object-cover before:object-center
             after:absolute after:content-[url('/images/milestone3_after.svg')] after:-top-[85px] after:-right-[255px] after:w-full after:h-full after:object-cover after:object-center
@@ -419,14 +419,14 @@ export default function DashboardPage() {
           >
             <Link
               href={`/dashboard/milestone/${allMilestonesData[2]?.id}`}
-              className="group relative cursor-pointer"
+              className="group relative cursor-pointer z-50"
             >
               <Image
                 alt="milestone 3"
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone3.svg"}
-                className="w-[356px] h-[340.156px] z-40"
+                className="min-w-[356px] min-h-[340.156px]"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[2]?.id)
                     ? `saturate(4)`
@@ -443,21 +443,21 @@ export default function DashboardPage() {
           </div>
         </div>
         {/* Milestone 4 */}
-        <div className="absolute top-[400px] left-[580px]">
+        <div className="absolute top-[400px] left-[580px] z-30">
           <div
             className="z-10 relative
               after:absolute after:content-[url('/images/milestone4_after.svg')] after:top-[140px] after:-right-[360px] after:w-full after:h-full after:object-cover after:object-center"
           >
             <Link
               href={`/dashboard/milestone/${allMilestonesData[3]?.id}`}
-              className="group relative cursor-pointer"
+              className="group relative cursor-pointer z-50"
             >
               <Image
                 alt="milestone 3"
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone4.svg"}
-                className="w-[456px] h-[440.156px] z-40 aspect-auto"
+                className="min-w-[456px] min-h-[440.156px]"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[3]?.id)
                     ? `saturate(4)`
@@ -474,18 +474,18 @@ export default function DashboardPage() {
           </div>
         </div>
         {/* Milestone 5 */}
-        <div className="absolute -top-[50px] left-[1000px] z-40">
+        <div className="absolute -top-[50px] left-[1000px] z-30">
           <div className="">
             <Link
               href={`/dashboard/milestone/${allMilestonesData[4]?.id}}`}
-              className="group relative cursor-pointer"
+              className="group relative cursor-pointer z-50"
             >
               <Image
                 alt="milestone 5"
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone5.svg"}
-                className="w-full h-full"
+                className="min-w-[240.638px] min-h-[245.156px]"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[4]?.id)
                     ? `saturate(4)`
@@ -502,21 +502,21 @@ export default function DashboardPage() {
           </div>
         </div>
         {/* Milestone 6 */}
-        <div className="absolute top-[735px] left-[1165px] z-40">
+        <div className="absolute top-[700px] left-[1165px] z-30">
           <div
-            className="z-0 relative before:absolute before:content-[url('/images/milestone6_before.svg')] before:rotate-2 before:-top-[40px] before:-left-[240px] before:w-full before:h-full before:object-cover before:object-center
-             after:absolute after:content-[url('/images/milestone6_after.svg')] after:-top-[115px] after:-right-[125px] after:w-full after:h-full after:object-cover after:object-center"
+            className="z-0 relative before:absolute before:content-[url('/images/milestone6_before.svg')] before:rotate-2 before:-top-[5px] before:-left-[240px] before:w-full before:h-full before:object-cover before:object-center
+             after:absolute after:content-[url('/images/milestone6_after.svg')] after:-top-[95px] after:-right-[125px] after:w-full after:h-full after:object-cover after:object-center"
           >
             <Link
               href={`/dashboard/milestone/${allMilestonesData[5]?.id}`}
-              className="group relative cursor-pointer"
+              className="group relative cursor-pointer z-50"
             >
               <Image
                 alt="milestone 6"
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone6.svg"}
-                className="w-full h-full"
+                className="min-w-[240.638px] min-h-[245.156px]"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[5]?.id)
                     ? `saturate(4)`
@@ -540,7 +540,7 @@ export default function DashboardPage() {
           >
             <Link
               href={`/dashboard/milestone/${allMilestonesData[6]?.id}`}
-              className="group relative cursor-pointer"
+              className="group relative cursor-pointer z-50"
             >
               <Image
                 alt="milestone 7"
