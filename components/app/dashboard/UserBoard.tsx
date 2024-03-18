@@ -5,19 +5,19 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
-import { logOut } from "@/lib/backend/user";
+import { disableRedirectUser, logOut, redirectUser } from "@/lib/backend/user";
+import { useRouter } from "next/navigation";
 
 interface UserBoardProps {
   visible: boolean;
 }
 
 export default function UserBoard({ visible }: UserBoardProps) {
-  const handleClear = () => {
-    // localStorage.removeItem("code");
-    // localStorage.removeItem("userData");
-    // localStorage.removeItem("hasCompletedMilestones");
-    // localStorage.removeItem("cookiePolicyAccepted");
+  const router = useRouter();
+  const removeCode = () => {
+    disableRedirectUser();
   };
+
   return (
     <AnimatePresence>
       {visible && (
@@ -33,7 +33,13 @@ export default function UserBoard({ visible }: UserBoardProps) {
               asChild
               className="mb-5 rounded-[8px] bg-[#EBEBEB] text-black w-[355px] text-base font-bold p-4 justify-start hover:bg-[#EBEBEB] hover:opacity-70"
             >
-              <Link href={"/start"} className="flex items-center gap-4">
+              <span
+                onClick={() => {
+                  removeCode();
+                  router.push("/start");
+                }}
+                className="flex items-center gap-4"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -49,12 +55,11 @@ export default function UserBoard({ visible }: UserBoardProps) {
                   />
                 </svg>
                 Change Paths
-              </Link>
+              </span>
             </Button>
             <Button
               onClick={() => {
                 logOut();
-                handleClear();
               }}
               className="rounded-[8px] flex items-center gap-5 bg-[#EBEBEB] text-black w-[355px] text-base font-bold p-4 justify-start hover:bg-[#EBEBEB] hover:opacity-70"
             >

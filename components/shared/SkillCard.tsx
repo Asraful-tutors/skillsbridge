@@ -59,7 +59,7 @@ export function SkillCard({ skill }: CardProps) {
                       ? "#14AE5C"
                       : "#D9D9D9",
                 }}
-                className={`cursor-pointer w-[4px] h-[8px] border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
+                className={`cursor-pointer w-[3px] lg:w-[5.5px] h-[8px] border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
                   innerIndex === 0 ? "rounded-l-full" : ""
                 } ${innerIndex === 99 ? "rounded-r-full" : ""}`}
               ></motion.div>

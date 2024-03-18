@@ -93,6 +93,17 @@ export default function Header() {
 
   useEffect(() => {
     if (completedMilestones?.length >= 18) {
+      try {
+        localStorage.setItem("__test__", "test");
+        localStorage.removeItem("__test__");
+      } catch (e) {
+        // localStorage is not available
+        console.error(
+          "Local storage is disabled. Please enable it to use this website."
+        );
+        return;
+      }
+
       const matcher = localStorage.getItem("hasCompletedMilestones");
       if (matcher == "aX76fQ93z") {
         setShowDownload(true);

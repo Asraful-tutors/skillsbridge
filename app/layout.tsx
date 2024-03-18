@@ -5,6 +5,7 @@ import MotionLayout from "@/components/layout/MotionLayout";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import { Toaster } from "sonner";
+import prisma from "@/lib/backend/prisma";
 
 export const metadata: Metadata = {
   title: "SkillsBridge",

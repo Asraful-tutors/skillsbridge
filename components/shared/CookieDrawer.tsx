@@ -15,10 +15,21 @@ import { usePathname } from "next/navigation";
 export default function CookieDrawer() {
   const [open, setOpen] = useState(false);
   const pathName = usePathname();
+
   useEffect(() => {
+    try {
+      localStorage.setItem("__test__", "test"); // Try to set an item in localStorage
+      localStorage.removeItem("__test__"); // Remove the test item
+    } catch (e) {
+      // localStorage is not available
+      console.error(
+        "Local storage is disabled. Please enable it to use this website."
+      );
+      return;
+    }
+
     const hasAccepted = localStorage.getItem("cookiePolicyAccepted");
     if (!hasAccepted) {
-      console.log("hasAccepted", hasAccepted);
       setOpen(true);
     }
   }, [pathName]);
