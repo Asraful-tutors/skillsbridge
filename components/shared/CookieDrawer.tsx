@@ -42,7 +42,7 @@ export default function CookieDrawer() {
     <Drawer open={open}>
       <DrawerContent className="border-none outline-none">
         <div className="mx-auto w-full max-w-7xl">
-          <DrawerHeader className="flex flex-col gap-4">
+          <DrawerHeader className="flex flex-col gap-4 max-h-[60vh] overflow-y-scroll">
             <DrawerTitle>Cookie Policy & Consent </DrawerTitle>
             <DrawerDescription>
               Our website uses cookies to improve your browsing experience,

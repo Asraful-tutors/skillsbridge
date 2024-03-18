@@ -14,10 +14,12 @@ export default function SkillsBoard({
   userSoftSkills: any;
   userHardSkills: any;
 }) {
+  const [visible, setVisible] = useState(false)
+
   return (
     user && (
-      <div className="max-lg:hidden">
-        {/* <Button
+      <div className="">
+        <Button
         onClick={() => setVisible(!visible)}
         className="fixed z-50 right-2 sm:right-5 top-[100px] sm:top-[116px] p-2 bg-gradient-to-b from-[#B278FF] to-[#9D53FF]"
       >
@@ -26,9 +28,9 @@ export default function SkillsBoard({
             visible ? "rotate-180" : ""
           }`}
         />
-      </Button> */}
+      </Button>
         <AnimatePresence>
-          {/* {visible && ( */}
+          {visible && (
           <motion.div
             initial={{ height: 0 }}
             animate={{ height: "auto" }}
@@ -44,7 +46,7 @@ export default function SkillsBoard({
             />
             <SkillsAccordion title="Soft Skills" data={userSoftSkills} />
           </motion.div>
-          {/* )} */}
+          )}
         </AnimatePresence>
       </div>
     )

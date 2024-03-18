@@ -12,10 +12,12 @@ import { MinusIcon } from "@radix-ui/react-icons";
 export default function SizingOverlay({ props }: any) {
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ top: 0, left: 0 });
+  const minZoom = 0.5;
+  const maxZoom = 2;
 
   const handleScaleChange = (factor: number) => {
     const newScale = Math.round((scale + factor) * 10) / 10;
-    const updatedScale = newScale >= 0.1 ? newScale : 0.1;
+    const updatedScale = Math.min(Math.max(newScale, minZoom), maxZoom);
 
     setScale(updatedScale);
 

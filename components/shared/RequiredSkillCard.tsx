@@ -37,11 +37,11 @@ export function RequiredSkillCard({ skill }: CardProps) {
   if (isError) return "Something went wrong";
 
   return (
-    <div className="bg-[#F0F1F5] overflow-hidden w-full rounded-[20px] px-[30px] py-5 mb-[10px]">
+    <div className="bg-[#F0F1F5] overflow-hidden w-[350px] sm:w-fit rounded-[20px] px-[30px] py-5 mb-[10px]">
       <h3 className="text-xl font-semibold text-[#4D4D9B] mb-[40px]">
         {data?.getSkillName?.name}
       </h3>
-      <div className="flex flex-row mb-10">
+      <div className="flex flex-row mb-10 scale-75 sm:scale-100 -ml-[40px] sm:ml-0">
         {Array.from({ length: 100 }).map((i, innerIndex) => {
           return (
             <div
@@ -100,7 +100,7 @@ export function RequiredSkillCard({ skill }: CardProps) {
         })}
         {/* Display the last index */}
         <div className="flex flex-col items-center relative">
-          <span className="text-xs text-gray-500 absolute -bottom-5 left-0">
+          <span className="text-xs text-gray-500 absolute -bottom-5 -left-2 sm:left-0">
             100
           </span>
         </div>
