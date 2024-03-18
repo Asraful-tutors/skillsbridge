@@ -102,22 +102,22 @@ export default function MileStoneAssessment({
   return (
     <motion.div className=" w-full h-full">
       <div className="h-[140px] md:h-[189px] bg-Moderate_violet z-10 w-screen "></div>
-      <>
-        <motion.div className="flex flex-col gap-16 max-w-7xl mx-auto bg-white_background px-6 py-8 lg:px-16 lg:py-10 -mt-20 rounded-xl border border-transparent">
+      <div className="max-lg:px-4">
+        <motion.div className="flex flex-col gap-8 lg:gap-16 max-w-7xl mx-auto bg-white_background px-6 py-8 lg:px-16 lg:py-10 -mt-20 rounded-xl border border-transparent">
           <ProgressBar
             currentStep={currentQuestion}
             totalSteps={questions?.length}
           />
-          <div className="flex flex-col gap-8">
-            <p>
+          <div className="flex flex-col gap-5 lg:gap-8">
+            <p className="max-lg:text-sm">
               Q: {currentQuestion + 1} ({totalQuestions - currentQuestion}{" "}
               questions remaining)
             </p>
-            <h2 className="text-black text-base font-semibold leading-[150%]">
+            <h2 className="text-black max-lg:text-sm text-base font-semibold leading-[150%]">
               {currentQuestionData?.text}
             </h2>
             {/* Add the question text above the answer choices */}
-            <RadioGroup className="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-7">
+            <RadioGroup className="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-4 lg:gap-y-7">
               {currentQuestionData?.data?.options.map(
                 (answer: QuestionOption, index: number) => {
                   return (
@@ -135,7 +135,7 @@ export default function MileStoneAssessment({
                         id={answer.text}
                       />
                       <Label
-                        className="tracking-wide leading-5"
+                        className="tracking-wide leading-5 max-lg:text-sm"
                         htmlFor={answer.text}
                       >
                         {answer.text}
@@ -151,7 +151,7 @@ export default function MileStoneAssessment({
               onClick={handleBack}
               disabled={currentQuestion === 0}
               variant={"outline"}
-              className="max-w-[284px] w-full  border border-Moderate_violet"
+              className="max-w-[284px] w-full  border border-Moderate_violet max-lg:py-3"
             >
               Back
             </Button>
@@ -169,7 +169,7 @@ export default function MileStoneAssessment({
                 }}
                 disabled={!isOptionSelected}
                 variant={"violate"}
-                className="max-w-[284px] w-full  border border-Moderate_violet"
+                className="max-w-[284px] w-full  border border-Moderate_violet  max-lg:py-3"
               >
                 Finish
               </Button>
@@ -178,14 +178,14 @@ export default function MileStoneAssessment({
                 onClick={handleNext}
                 disabled={!isOptionSelected}
                 variant={"violate"}
-                className="max-w-[284px] w-full  border border-Moderate_violet"
+                className="max-w-[284px] w-full  border border-Moderate_violet  max-lg:py-3"
               >
                 Save & Next
               </Button>
             )}
           </div>
         </motion.div>
-      </>
+      </div>
     </motion.div>
   );
 }

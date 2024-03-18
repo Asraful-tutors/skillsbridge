@@ -82,11 +82,11 @@ export default function StartMultiStepAssessments({
   if (isError) return <>Something went wrong!</>;
 
   return (
-    <motion.div>
-      <div className="h-[140px] md:h-[189px] bg-Moderate_violet z-10 w-screen "></div>
+    <motion.div className="">
+      <div className="h-[140px] md:h-[189px] bg-Moderate_violet z-10 w-[100vw] -ml-4"></div>
       <motion.div className="grid grid-cols-1 lg:grid-cols-7 xl:grid-cols-5 gap-8 max-w-screen-2xl mx-auto -mt-20 px-6 py-4">
         {/* steps calculate */}
-        <motion.div className="w-full mx-auto lg:col-span-2 xl:col-span-1">
+        <motion.div className="w-full hidden sm:block  mx-auto lg:col-span-2 xl:col-span-1">
           <WhiteWrapper>
             <Sidebar currentSkillType={currentSkillType} />
           </WhiteWrapper>

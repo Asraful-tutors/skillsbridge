@@ -131,15 +131,15 @@ export default function SelectLearningPath({
       className="h-full flex flex-col items-center justify-center gap-[40px] "
     >
       <section className="space-y-1">
-        <h1 className="header">Select your learning Path</h1>
-        <p className="desc max-w-[633px] max-auto text-[#828282]">
+        <h1 className="max-lg:text-2xl header">Select your learning Path</h1>
+        <p className="max-lg:text-sm desc max-w-[633px] max-auto text-[#828282]">
           Get guided through tailored study materials and skill assessments. And
           if your goals evolve, switching paths is simple. Your journey, your
           choice.
         </p>
       </section>
       <motion.section
-        className="flex items-center justify-center flex-wrap gap-6"
+        className="flex items-center justify-center flex-wrap gap-4 lg:gap-6"
         variants={staggerVariants}
       >
         {paths?.map((path: any, key: number) => (

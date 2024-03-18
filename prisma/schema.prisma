@@ -57,6 +57,7 @@ model User {
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  enableRedirect Boolean       @default(false)
 
   accounts    Account[]
   sessions    Session[]

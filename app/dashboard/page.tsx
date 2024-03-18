@@ -387,21 +387,21 @@ export default function DashboardPage() {
           >
             <Link
               href={`/dashboard/milestone/${allMilestonesData[1]?.id}`}
-              className="group relative cursor-pointer"
+              className="group relative cursor-pointer flex-shrink-0"
             >
               <Image
                 alt="milestone 2"
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone2.svg"}
-                className="w-full h-full  z-40"
+                className="!w-[356px] !h-[340.156px] aspect-auto z-40"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[1]?.id)
                     ? `saturate(4)`
                     : `saturate(1)`,
                 }}
               />
-              <span className="w-[134px] h-[32px] h-full absolute -bottom-[180px] left-[100px] z-50 text-white font-bold text-2xl shadow-sm">
+              <span className="w-[134px] h-full absolute -bottom-[180px] left-[100px] z-50 text-white font-bold text-2xl shadow-sm">
                 {allMilestonesData[1]?.name}
                 {isMilestoneCompleted(allMilestonesData[1]?.id)
                   ? "  (Completed)"
@@ -426,7 +426,7 @@ export default function DashboardPage() {
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone3.svg"}
-                className="w-full h-full z-40"
+                className="w-[356px] h-[340.156px] z-40"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[2]?.id)
                     ? `saturate(4)`
@@ -457,7 +457,7 @@ export default function DashboardPage() {
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone4.svg"}
-                className="w-full h-full z-40"
+                className="w-[456px] h-[440.156px] z-40 aspect-auto"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[3]?.id)
                     ? `saturate(4)`

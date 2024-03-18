@@ -23,6 +23,15 @@ export default function UserProfileCard({ link }: { link?: string }) {
   );
 
   useEffect(() => {
+    try {
+      localStorage.setItem("__test__", "test"); // Try to set an item in localStorage
+      localStorage.removeItem("__test__"); // Remove the test item
+    } catch (e) {
+      // localStorage is not available
+      alert("Local storage is disabled. Please enable it to use this website.");
+      return;
+    }
+
     // Check if the password is stored in localStorage
     const storedPassword = localStorage.getItem("code");
     if (
@@ -40,28 +49,6 @@ export default function UserProfileCard({ link }: { link?: string }) {
   return (
     <motion.div className="flex flex-col items-center justify-center gap-[50px]">
       <div className="flex flex-col items-center justify-center gap-[50px] bg-[#F2F7F7] p-10 rounded-2xl">
-        <div className="w-full flex items-center justify-end">
-          {/* <Button
-            variant={"outline"}
-            className="max-w-[70px] flex items-center gap-2 p-2 text-sm font-medium leading-5"
-          >
-            Edit{" "}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 20 20"
-              fill="none"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M15.8833 2.99189L17.0083 4.11689C17.6667 4.76689 17.6667 5.82523 17.0083 6.47523L5.98333 17.5002H2.5V14.0169L11.1667 5.34189L13.525 2.99189C14.175 2.34189 15.2333 2.34189 15.8833 2.99189ZM4.16667 15.8336L5.34167 15.8836L13.525 7.69189L12.35 6.51689L4.16667 14.7002V15.8336Z"
-                fill="#757575"
-              />
-            </svg>
-          </Button> */}
-        </div>
         <div className=" flex flex-col gap-2.5 rounded-3xl">
           <div className="max-w-[200px] mx-auto rounded-full overflow-hidden">
             <Image

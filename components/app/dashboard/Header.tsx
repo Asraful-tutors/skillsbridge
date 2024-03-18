@@ -93,6 +93,17 @@ export default function Header() {
 
   useEffect(() => {
     if (completedMilestones?.length >= 18) {
+      try {
+        localStorage.setItem("__test__", "test");
+        localStorage.removeItem("__test__");
+      } catch (e) {
+        // localStorage is not available
+        console.error(
+          "Local storage is disabled. Please enable it to use this website."
+        );
+        return;
+      }
+
       const matcher = localStorage.getItem("hasCompletedMilestones");
       if (matcher == "aX76fQ93z") {
         setShowDownload(true);
@@ -107,10 +118,10 @@ export default function Header() {
   useOutsideClick(visible, setVisible);
 
   return (
-    <nav className="fixed top-0 right-0 flex items-center justify-between w-full z-[100]">
+    <nav className="fixed top-0 right-0 flex items-center lg:justify-between w-full z-[100]">
       {/* left */}
       <PdfView open={openPdf} setOpen={setOpenPdf} />
-      <section className="clip-left bg-white_background max-w-[597px] h-[90px] px-5 md:px-10 py-[13px] flex items-center justify-start gap-5 md:gap-10 w-full">
+      <section className="clip-left bg-white_background lg:max-w-[597px] h-[90px] px-5 md:px-10 py-[13px] flex items-center justify-start gap-5 md:gap-10 w-full">
         <Image
           src={"/logo/logo.svg"}
           width={129}
@@ -129,7 +140,7 @@ export default function Header() {
       </section>
 
       {/* right */}
-      <section className="clip-right bg-white_background max-w-[597px] h-[90px] px-5 md:px-10 py-[13px] flex items-center justify-end w-full gap-5 md:gap-10">
+      <section className="clip-right bg-white_background lg:max-w-[597px] h-[90px] px-5 md:px-10 py-[13px] flex items-center justify-end w-full gap-5 md:gap-10">
         {showDownload ? (
           <Button
             onClick={() => setOpenPdf(true)}

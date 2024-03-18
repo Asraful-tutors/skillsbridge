@@ -19,25 +19,15 @@ export default function SoftSkillsCard({
     onScaleClick(value);
   };
   return (
-    <motion.div className="p-8 rounded-2xl bg-white_background flex items-center flex-col md:flex-row gap-10 w-full md:min-w-[704px]">
+    <motion.div className="p-6 lg:p-8 rounded-2xl bg-white_background flex items-center flex-col gap-4 md:flex-row w-full md:min-w-[704px]">
       <section className="flex flex-1 items-center gap-2.5">
-        <div className="w-16 h-16 rounded-md aspect-auto object-center object-cover bg-light_gray">
-          {/* <Image
-            src={}
-            alt={title}
-            width={64}
-            height={64}
-            className="w-16 rounded-md aspect-auto object-center object-cover"
-          /> */}
-        </div>
-        {/* <div className="w-16 h-16 rounded-md aspect-auto object-center object-cover bg-gray-200"></div> */}
         <div className="flex flex-col">
-          <h4 className="text-xl font-semibold leading-[150%] text-black">
+          <h4 className="text-lg lg:text-xl font-semibold leading-[150%] text-black">
             {name}
           </h4>
         </div>
       </section>
-      <section className="flex flex-1 items-center gap-1.5">
+      <section className="flex max-lg:flex-wrap flex-1 items-center gap-1.5">
         {/* scale */}
         {Array.from({ length: 10 }, (_, index) => index).map((value) => (
           <motion.div
@@ -46,7 +36,7 @@ export default function SoftSkillsCard({
               backgroundColor:
                 selectedScale >= value + 1 ? "#9d64d6" : "#D9D9D9",
             }}
-            className={`w-16 h-3 rounded-md cursor-pointer `}
+            className={`w-5 lg:w-16 h-3 rounded-md cursor-pointer `}
             onClick={() => handleScaleClick(value + 1)}
           ></motion.div>
         ))}

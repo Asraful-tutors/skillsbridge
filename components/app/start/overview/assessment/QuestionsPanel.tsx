@@ -117,17 +117,17 @@ export default function QuestionsPanel({
   const currentQuestionData = questions?.questions[currentQuestion];
 
   return (
-    <motion.div className="flex flex-col gap-16">
+    <motion.div className="flex flex-col gap-8 lg:gap-16">
       <ProgressBar
         currentStep={currentQuestion}
         totalSteps={questions?.questions?.length}
       />
-      <div className="flex flex-col gap-8">
-        <p>
+      <div className="flex flex-col gap-5 lg:gap-8">
+        <p className="max-lg:text-sm">
           Q: {currentQuestion + 1} ({totalQuestions - currentQuestion} questions
           remaining)
         </p>
-        <h2 className="text-black text-base font-semibold leading-[150%]">
+        <h2 className="text-black text-sm lg:text-base font-semibold leading-[150%]">
           {currentSkillType !== "hard" ? (
             <>{currentQuestionData?.text}</>
           ) : (
@@ -135,7 +135,7 @@ export default function QuestionsPanel({
           )}
         </h2>
         {/* Add the question text above the answer choices */}
-        <RadioGroup className="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-7">
+        <RadioGroup className="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-4 lg:gap-y-7">
           {currentSkillType !== "hard" ? (
             <>
               {currentQuestionData?.data?.options.map(
@@ -156,7 +156,7 @@ export default function QuestionsPanel({
                       />
                       <Label
                         htmlFor={answer.text}
-                        className="tracking-wide leading-4"
+                        className="tracking-wide leading-4 max-lg:text-sm"
                       >
                         {answer.text}
                       </Label>
@@ -184,7 +184,7 @@ export default function QuestionsPanel({
                         id={answer.text}
                       />
                       <Label
-                        className="tracking-wide leading-4"
+                        className="tracking-wide leading-4 max-lg:text-sm"
                         htmlFor={answer.text}
                       >
                         {answer.text}
@@ -202,7 +202,7 @@ export default function QuestionsPanel({
           onClick={handleBack}
           disabled={currentQuestion === 0}
           variant={"outline"}
-          className="max-w-[284px] w-full  border border-Moderate_violet"
+          className="max-w-[284px] w-full  border border-Moderate_violet max-lg:py-3"
         >
           Back
         </Button>
@@ -220,7 +220,7 @@ export default function QuestionsPanel({
             }}
             disabled={!isOptionSelected}
             variant={"violate"}
-            className="max-w-[284px] w-full  border border-Moderate_violet"
+            className="max-w-[284px] w-full  border border-Moderate_violet  max-lg:py-3"
           >
             Finish
           </Button>
@@ -229,7 +229,7 @@ export default function QuestionsPanel({
             onClick={handleNext}
             disabled={!isOptionSelected}
             variant={"violate"}
-            className="max-w-[284px] w-full  border border-Moderate_violet"
+            className="max-w-[284px] w-full  border border-Moderate_violet max-lg:py-3"
           >
             Save & Next
           </Button>

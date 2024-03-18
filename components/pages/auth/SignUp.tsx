@@ -71,7 +71,7 @@ export default function SignUp({}: SignUpProps) {
         ease: "easeInOut",
       }}
     >
-      <section className="grid grid-cols-1 lg:grid-cols-2 w-screen h-screen overflow-hidden py-14 p-4 lg:p-10 xl:px-12 absolute inset-0 bg-[#F9F9F7]">
+      <section className="grid grid-cols-1 lg:grid-cols-2 w-screen min-h-screen lg:h-screen overflow-hidden py-14 p-4 lg:p-10 xl:px-12 absolute inset-0 bg-[#F9F9F7]">
         <div className="hidden lg:flex bg-white_background flex-col items-center justify-center gap-3.5 py-24">
           <Image
             src="/logo/logo.svg"
@@ -83,7 +83,7 @@ export default function SignUp({}: SignUpProps) {
             className="w-[130px] object-cover object-center"
           />
           <h1 className="header">Welcome to Skillsbridge</h1>
-          <p className="desc max-w-[449px] mx-auto -mt-1">
+          <p className="text-sm lg:desc max-w-[449px] mx-auto -mt-1">
             Elevate your potential in the games industry! Here, you&apos;ll find
             the right resources and advice to make your journey rewarding and
             laser-focused. Let&apos;s turn your passion into a career, together.
@@ -98,21 +98,26 @@ export default function SignUp({}: SignUpProps) {
             className="max-w-[449px] aspect-square object-cover object-center"
           />
         </div>
-        <div className="p-4 lg:p-10 max-lg:bg-white_background xl:p-20 flex flex-col items-center justify-center gap-10">
+        <div className="p-4 lg:p-10 max-lg:bg-white_background xl:p-20 flex flex-col items-center justify-center gap-6 lg:gap-10">
           <div>
-            <h2 className="header">Sign up for an account</h2>
-            <p className="desc">
+            <h2 className="max-lg:text-2xl max-lg:mb-4 header">
+              Sign up for an account
+            </h2>
+            <p className="max-lg:text-sm desc">
               Ready to level up? Let&apos;s navigate the journey to your dream
               job together.
               <br />
-              <span className="font-medium">
+              <span className="font-medium ">
                 NOTE: You won&apos;t be able to change your name later, so use
                 the one you want to appear on your Completion Certificate!
               </span>
             </p>
           </div>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <div className="flex items-center gap-8">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4 lg:space-y-8"
+          >
+            <div className="flex items-center gap-4 lg:gap-8">
               <Input
                 type="text"
                 placeholder="First Name"
@@ -152,7 +157,7 @@ export default function SignUp({}: SignUpProps) {
               disabled={isPending}
               required
             />
-            <p className="desc text-center">
+            <p className="max-lg:text-sm desc text-center">
               By creating an account, you are agreeing to our{" "}
               <span
                 onClick={() => setOpenPrivacyModal(true)}

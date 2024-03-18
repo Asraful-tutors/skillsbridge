@@ -31,7 +31,7 @@ export function SkillCard({ skill }: CardProps) {
 
   return (
     <div className="bg-[#F0F1F5] overflow-hidden w-fit rounded-[20px] px-[30px] py-5 justify-self-center">
-      <h3 className="text-xl font-semibold text-[#4D4D9B] mb-[60px]">
+      <h3 className="text-sm lg:text-xl font-semibold text-[#4D4D9B] mb-4 lg:mb-[60px]">
         {data.name}
       </h3>
       <div className="flex flex-row mb-5">
@@ -59,7 +59,7 @@ export function SkillCard({ skill }: CardProps) {
                       ? "#14AE5C"
                       : "#D9D9D9",
                 }}
-                className={`cursor-pointer w-[5.5px] h-[8px] border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
+                className={`cursor-pointer w-[3px] lg:w-[5.5px] h-[8px] border-[1px] shadow-md shadow-[#320864]/[.10] border-[#999999]/[.20] ${
                   innerIndex === 0 ? "rounded-l-full" : ""
                 } ${innerIndex === 99 ? "rounded-r-full" : ""}`}
               ></motion.div>
