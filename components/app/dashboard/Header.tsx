@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import UserBoard from "@/components/app/dashboard/UserBoard";
 import useOutsideClick from "@/components/hooks/useOutsideClick";
 import { useQuery } from "@tanstack/react-query";
-import { getCurrentUser } from "@/lib/backend/user";
+import { getCompletedMilestones, getCurrentUser } from "@/lib/backend/user";
 import useUserPaths from "@/components/hooks/useUserPaths";
 import PdfView from "@/components/shared/PdfView";
 
@@ -67,7 +67,6 @@ export default function Header() {
     // @ts-ignore
     queryFn: async () => {
       const data = await getCompletedMilestones(user.id);
-      setCompletedMilestoesData(data);
       return data || [];
     },
     enabled: !!user,
@@ -106,6 +105,7 @@ export default function Header() {
 
       const matcher = localStorage.getItem("hasCompletedMilestones");
       if (matcher == "aX76fQ93z") {
+        console.log("matched");
         setShowDownload(true);
       }
     }

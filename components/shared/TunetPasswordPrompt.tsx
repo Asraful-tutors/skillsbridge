@@ -45,10 +45,12 @@ export default function TunetPasswordPrompt({
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] rounded-[16px]">
           <DialogHeader className="flex flex-col gap-2">
-            <DialogTitle>Let&apos;s Get Started! </DialogTitle>
-            <DialogDescription className="flex flex-col gap-1.5">
+            <DialogTitle className="text-left">
+              Let&apos;s Get Started!{" "}
+            </DialogTitle>
+            <DialogDescription className="flex flex-col gap-1.5 text-left">
               Follow these simple steps to access our learning resources:
               <ol className="list-decimal space-y-1">
                 <li className="ml-4">
@@ -67,11 +69,11 @@ export default function TunetPasswordPrompt({
               Easy, right? If you need help, we&apos;re here for you. Happy
               learning!
             </DialogDescription>
-            <DialogDescription>
+            <DialogDescription className="text-left">
               <a
                 href="https://net.tutors.fi/reg/3j6k335y"
                 target="_blank"
-                className="underline cursor-pointer text-sky-700"
+                className="underline cursor-pointer text-sky-700 "
               >
                 https://net.tutors.fi/reg/3j6k335y
               </a>

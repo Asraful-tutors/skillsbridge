@@ -77,9 +77,9 @@ export default function MilestoneModal({
   }
 
   return (
-    <div className="z-[100] bg-black/[.70] w-screen h-screen absolute top-0 left-0 flex items-center">
+    <div className="z-[100] bg-black/[.70] w-screen h-screen absolute top-0 left-0 flex items-center px-4">
       <motion.div
-        className={`popup w-full relative text-black max-w-screen-2xl mx-auto max-h-[800px] max-h-screen my-8 rounded-2xl sm:mx-10 xl:mx-auto grid grid-cols-1 xl:grid-cols-10 gap-12 p-0 bg-white_background overflow-y-scroll xl:overflow-hidden`}
+        className={`popup w-full relative text-black max-w-screen-2xl max-h-[90%] rounded-2xl sm:mx-10 xl:mx-auto grid grid-cols-1 xl:grid-cols-10 gap-12 p-0 bg-white_background overflow-y-scroll xl:overflow-hidden`}
       >
         <div className="absolute right-4 top-4">
           <Button
@@ -109,7 +109,7 @@ export default function MilestoneModal({
               )}
             </p>
           </div>
-          <div className="flex flex-col mb-[42px]">
+          <div className="flex flex-col lg:mb-[42px]">
             <div className="flex flex-row gap-3 flex-wrap">
               {mileStoneName?.length > 0 ? (
                 <div className="flex flex-col mb-[84px]">
