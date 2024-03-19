@@ -74,9 +74,12 @@ export default function PdfDownloader({
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[425px] rounded-[16px] z-[60]">
           <DialogHeader className="flex flex-col gap-2">
-            <DialogTitle>Download your Certificate of Completion! </DialogTitle>
-            <DialogDescription className="flex flex-col gap-1.5">
-              Follow these simple steps to download your certificate:
+            <DialogTitle className="text-left">
+              Download your Certificate of Completion!{" "}
+            </DialogTitle>
+            <DialogDescription className="flex flex-col gap-1.5 text-left">
+              Follow these simple steps to download your certificate once
+              you&apos;re done studying the Soft Skill milestones!
               <ol className="list-decimal space-y-1">
                 <li className="ml-4">
                   Complete the Evaluation Survey by clicking this link:
@@ -92,8 +95,9 @@ export default function PdfDownloader({
                   Find your passcode at the end of the survey
                 </li>
                 <li className="ml-4">
-                  Come back here and enter your passcode below and completed all
-                  the milestones to download your certificate!
+                  Come back here and enter your passcode below: once you&apos;ll
+                  complete all the Soft Skill milestones, the <b>Certificate</b>{" "}
+                  will be automatically unlocked!
                 </li>
               </ol>
             </DialogDescription>

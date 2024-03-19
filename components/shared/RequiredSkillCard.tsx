@@ -32,7 +32,7 @@ export function RequiredSkillCard({ skill }: CardProps) {
     enabled: !!skill?.skillId,
   });
 
-  if (isLoading) return "Loading...";
+  if (isLoading) return "";
 
   if (isError) return "Something went wrong";
 

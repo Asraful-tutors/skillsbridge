@@ -57,7 +57,10 @@ model User {
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  enableRedirect Boolean       @default(false)
+  enableRedirect  Boolean   @default(false)
+  enableCookiePolicy  Boolean  @default(false)
+  tunetPasswordCheck  Boolean  @default(false)
+  tunetPasswordCheck  Boolean  @default(false)
 
   accounts    Account[]
   sessions    Session[]

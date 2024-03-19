@@ -278,7 +278,7 @@ export default function DashboardPage() {
   }
 
   useEffect(() => {
-    if (completedMilestones?.length >= 2) {
+    if (completedMilestones?.length >= 3) {
       if (matcher == "aX76fQ93z") {
         setOpenDownloader(false);
       } else {
