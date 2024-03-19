@@ -60,7 +60,7 @@ model User {
   enableRedirect  Boolean   @default(false)
   enableCookiePolicy  Boolean  @default(false)
   tunetPasswordCheck  Boolean  @default(false)
-  tunetPasswordCheck  Boolean  @default(false)
+
 
   accounts    Account[]
   sessions    Session[]
