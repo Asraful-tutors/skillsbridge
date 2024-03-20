@@ -362,7 +362,7 @@ export default function DashboardPage() {
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone1.png"}
-                className="w-[240px] h-[245.156px] rounded-full"
+                className="min-w-[240px] min-h-[245.156px] rounded-full"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[0]?.id)
                     ? `saturate(4)`
@@ -394,7 +394,7 @@ export default function DashboardPage() {
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone2.svg"}
-                className="w-[356px] h-[340.156px] rounded-full"
+                className="min-w-[356px] min-h-[340.156px] rounded-full"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[1]?.id)
                     ? `saturate(4)`
@@ -426,7 +426,7 @@ export default function DashboardPage() {
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone3.svg"}
-                className="w-[356px] h-[340.156px] rounded-full"
+                className="min-w-[356px] min-h-[340.156px] rounded-full"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[2]?.id)
                     ? `saturate(4)`
@@ -452,11 +452,11 @@ export default function DashboardPage() {
               className="group relative cursor-pointer z-50 inline-block rounded-full overflow-hidden"
             >
               <Image
-                alt="milestone 3"
+                alt="milestone 4"
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone4.svg"}
-                className="w-[356px] h-[340.156px] rounded-full"
+                className="min-w-[356px] min-h-[340.156px] rounded-full"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[3]?.id)
                     ? `saturate(4)`
@@ -484,7 +484,7 @@ export default function DashboardPage() {
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone5.svg"}
-                className="w-[240.638px] h-[245.156px] rounded-full"
+                className="min-w-[240.638px] min-h-[245.156px] rounded-full"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[4]?.id)
                     ? `saturate(4)`
