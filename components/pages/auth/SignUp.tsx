@@ -48,6 +48,7 @@ export default function SignUp({}: SignUpProps) {
     startTransition(() => {
       register(values)
         .then((res) => {
+          console.log(res);
           localStorage.setItem("userData", JSON.stringify(values));
         })
         .catch((err) => console.log(err));
