@@ -72,7 +72,7 @@ export default function PdfDownloader({
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[425px] rounded-[16px] z-[60]">
+        <DialogContent className="sm:max-w-[425px] rounded-[16px] z-50">
           <DialogHeader className="flex flex-col gap-2">
             <DialogTitle className="text-left">
               Download your Certificate of Completion!{" "}
