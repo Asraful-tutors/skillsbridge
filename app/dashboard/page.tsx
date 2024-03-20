@@ -309,6 +309,13 @@ export default function DashboardPage() {
       </>
     );
 
+  if (allMilestonesData.length <= 0)
+    return (
+      <>
+        <Loading />
+      </>
+    );
+
   return (
     <section className="bg-[url('/images/dashboard.svg')] bg-cover bg-center bg-repeat w-screen h-screen relative overflow-hidden">
       <Header />
