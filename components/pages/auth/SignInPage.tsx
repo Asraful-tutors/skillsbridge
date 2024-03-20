@@ -8,6 +8,7 @@ import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 import * as z from "zod";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 
 type LoginProps = {};
 
@@ -21,7 +22,7 @@ const LoginSchema = z.object({
 
 export default function SignInPage({}: LoginProps) {
   const [isPending, startTransition] = useTransition();
-
+  const [error, setError] = useState(false);
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
   });
@@ -38,9 +39,17 @@ export default function SignInPage({}: LoginProps) {
         email: values.email,
         password: values.password,
         redirect: false,
-      }).then(() => {
-        window.location.href = DEFAULT_LOGIN_REDIRECT;
-      });
+      })
+        .then((res) => {
+          if (res?.error) {
+            // setError(true);
+            toast.error("No account found with the given credentials");
+          } else {
+            toast.success("Login successfull");
+            window.location.href = DEFAULT_LOGIN_REDIRECT;
+          }
+        })
+        .catch((error) => console.log(error));
     });
   };
 
