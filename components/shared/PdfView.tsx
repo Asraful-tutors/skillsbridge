@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { usePDF } from "react-to-pdf";
 import { useAppSelector } from "@/lib/store/hooks";
 import Image from "next/image";
+
 const certificateStyles = {
   width: "1027px", // Adjust width as needed
   padding: "40px",
