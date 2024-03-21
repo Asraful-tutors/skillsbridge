@@ -94,7 +94,7 @@ export default function Header() {
   const [showDownload, setShowDownload] = useState(false);
 
   useEffect(() => {
-    if (completedMilestones?.length >= 2) {
+    if (completedMilestones?.length >= 18) {
       try {
         localStorage.setItem("__test__", "test");
         localStorage.removeItem("__test__");
