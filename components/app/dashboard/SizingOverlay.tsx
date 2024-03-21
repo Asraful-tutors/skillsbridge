@@ -22,6 +22,7 @@ export default function SizingOverlay({ props }: any) {
     setScale(updatedScale);
 
     props({
+      ...props,
       scale: updatedScale,
       position,
     });
@@ -43,6 +44,7 @@ export default function SizingOverlay({ props }: any) {
     setPosition(newPosition);
 
     props({
+      ...props,
       scale,
       position: newPosition,
     });

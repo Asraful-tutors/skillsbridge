@@ -260,11 +260,12 @@ export default function DashboardPage() {
   }
 
   const handleDivStyle = (props: any) => {
-    return setDivStyle({
+    return setDivStyle((prevDivStyle) => ({
+      ...prevDivStyle,
       scale: props.scale,
       top: props.position.top,
       left: props.position.left,
-    });
+    }));
   };
 
   const [milestoneCompletion, setMilestoneCompletion] = useState(
@@ -319,7 +320,6 @@ export default function DashboardPage() {
   return (
     <section className="bg-[url('/images/dashboard.svg')] bg-cover bg-center bg-repeat w-screen h-screen relative overflow-hidden">
       <Header />
-
       <PdfDownloader open={openPdfDownloader} setOpen={setOpenDownloader} />
       <SizingOverlay props={handleDivStyle} />
       <SkillsBoard
@@ -362,14 +362,14 @@ export default function DashboardPage() {
           >
             <Link
               href={`/dashboard/milestone/${allMilestonesData[0]?.id}`}
-              className="group relative cursor-pointer z-50 inline-block rounded-full overflow-hidden"
+              className="group relative cursor-pointer z-40 inline-block rounded-full overflow-hidden"
             >
               <Image
                 alt="milestone 1"
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone1.png"}
-                className="w-[240px] h-[245.156px] rounded-full"
+                className="min-w-[240px] min-h-[245.156px] rounded-full"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[0]?.id)
                     ? `saturate(4)`
@@ -377,7 +377,7 @@ export default function DashboardPage() {
                 }}
               />
             </Link>
-            <span className="w-[134px] h-[32px] absolute top-1/2 left-1/2 z-50 text-white font-bold text-2xl">
+            <span className="w-[134px] h-[32px] absolute top-1/2 left-1/2 z-40 text-white font-bold text-2xl">
               {allMilestonesData[0]?.name}{" "}
               {isMilestoneCompleted(allMilestonesData[0]?.id)
                 ? "  (Completed)"
@@ -394,14 +394,14 @@ export default function DashboardPage() {
           >
             <Link
               href={`/dashboard/milestone/${allMilestonesData[1]?.id}`}
-              className="relative cursor-pointer z-50 inline-block rounded-full overflow-hidden"
+              className="relative cursor-pointer z-40 inline-block rounded-full overflow-hidden"
             >
               <Image
                 alt="milestone 2"
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone2.svg"}
-                className="w-[356px] h-[340.156px] rounded-full"
+                className="min-w-[356px] min-h-[340.156px] rounded-full"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[1]?.id)
                     ? `saturate(4)`
@@ -409,7 +409,7 @@ export default function DashboardPage() {
                 }}
               />
             </Link>
-            <span className="w-[134px] h-[32px] absolute z-50 top-1/2 left-1/2 text-white font-bold text-2xl">
+            <span className="w-[134px] h-[32px] absolute z-40 top-1/2 left-1/2 text-white font-bold text-2xl">
               {allMilestonesData[1]?.name}
               {isMilestoneCompleted(allMilestonesData[1]?.id)
                 ? "  (Completed)"
@@ -426,14 +426,14 @@ export default function DashboardPage() {
           >
             <Link
               href={`/dashboard/milestone/${allMilestonesData[2]?.id}`}
-              className="group relative cursor-pointer z-50 inline-block rounded-full overflow-hidden"
+              className="group relative cursor-pointer z-40 inline-block rounded-full overflow-hidden"
             >
               <Image
                 alt="milestone 3"
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone3.svg"}
-                className="w-[356px] h-[340.156px] rounded-full"
+                className="min-w-[356px] min-h-[340.156px] rounded-full"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[2]?.id)
                     ? `saturate(4)`
@@ -441,7 +441,7 @@ export default function DashboardPage() {
                 }}
               />
             </Link>
-            <span className="w-[134px] h-[32px] absolute top-1/2 left-1/2 z-50 text-white font-bold text-2xl">
+            <span className="w-[134px] h-[32px] absolute top-1/2 left-1/2 z-40 text-white font-bold text-2xl">
               {allMilestonesData[2]?.name}
               {isMilestoneCompleted(allMilestonesData[2]?.id)
                 ? "  (Completed)"
@@ -456,14 +456,14 @@ export default function DashboardPage() {
           >
             <Link
               href={`/dashboard/milestone/${allMilestonesData[3]?.id}`}
-              className="group relative cursor-pointer z-50 inline-block rounded-full overflow-hidden"
+              className="group relative cursor-pointer z-40 inline-block rounded-full overflow-hidden"
             >
               <Image
-                alt="milestone 3"
+                alt="milestone 4"
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone4.svg"}
-                className="w-[356px] h-[340.156px] rounded-full"
+                className="min-w-[356px] min-h-[340.156px] rounded-full"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[3]?.id)
                     ? `saturate(4)`
@@ -471,7 +471,7 @@ export default function DashboardPage() {
                 }}
               />
             </Link>
-            <span className="w-[134px] h-[32px] absolute z-50 top-1/2 left-1/2 text-white font-bold text-2xl">
+            <span className="w-[134px] h-[32px] absolute z-40 top-1/2 left-1/2 text-white font-bold text-2xl">
               {allMilestonesData[3]?.name}
               {isMilestoneCompleted(allMilestonesData[3]?.id)
                 ? "  (Completed)"
@@ -484,14 +484,14 @@ export default function DashboardPage() {
           <div className="">
             <Link
               href={`/dashboard/milestone/${allMilestonesData[4]?.id}}`}
-              className="group relative cursor-pointer z-50 inline-block rounded-full overflow-hidden"
+              className="group relative cursor-pointer z-40 inline-block rounded-full overflow-hidden"
             >
               <Image
                 alt="milestone 5"
                 width={240.638}
                 height={245.156}
                 src={"/images/milestone5.svg"}
-                className="w-[240.638px] h-[245.156px] rounded-full"
+                className="min-w-[240.638px] min-h-[245.156px] rounded-full"
                 style={{
                   filter: isMilestoneCompleted(allMilestonesData[4]?.id)
                     ? `saturate(4)`
@@ -499,7 +499,7 @@ export default function DashboardPage() {
                 }}
               />
             </Link>
-            <span className="w-[134px] h-[32px] absolute top-1/2 left-1/2 z-50 text-white font-bold text-2xl">
+            <span className="w-[134px] h-[32px] absolute top-1/2 left-1/2 z-40 text-white font-bold text-2xl">
               {allMilestonesData[4]?.name}
               {isMilestoneCompleted(allMilestonesData[4]?.id)
                 ? " (Completed)"
@@ -515,7 +515,7 @@ export default function DashboardPage() {
           >
             <Link
               href={`/dashboard/milestone/${allMilestonesData[5]?.id}`}
-              className="group relative cursor-pointer z-50 inline-block rounded-full overflow-hidden"
+              className="group relative cursor-pointer z-40 inline-block rounded-full overflow-hidden"
             >
               <Image
                 alt="milestone 6"
@@ -530,7 +530,7 @@ export default function DashboardPage() {
                 }}
               />
             </Link>
-            <span className="w-[134px] h-[32px] absolute top-1/2 left-1/2 z-50 text-white font-bold text-2xl">
+            <span className="w-[134px] h-[32px] absolute top-1/2 left-1/2 z-40 text-white font-bold text-2xl">
               {allMilestonesData[5]?.name}
               {isMilestoneCompleted(allMilestonesData[5]?.id)
                 ? "  (Completed)"
@@ -546,7 +546,7 @@ export default function DashboardPage() {
           >
             <Link
               href={`/dashboard/milestone/${allMilestonesData[6]?.id}`}
-              className="group relative cursor-pointer z-50 inline-block rounded-full overflow-hidden"
+              className="group relative cursor-pointer z-40 inline-block rounded-full overflow-hidden"
             >
               <Image
                 alt="milestone 7"
@@ -561,7 +561,7 @@ export default function DashboardPage() {
                 }}
               />
             </Link>
-            <span className="w-[134px] h-[32px] absolute top-1/2 left-1/2 z-50 text-white font-bold text-2xl">
+            <span className="w-[134px] h-[32px] absolute top-1/2 left-1/2 z-40 text-white font-bold text-2xl">
               {allMilestonesData[6]?.name}
               {isMilestoneCompleted(allMilestonesData[6]?.id)
                 ? "  (Completed)"
@@ -610,7 +610,7 @@ export default function DashboardPage() {
                     ? `/dashboard/milestone/${allMilestonesData[index + 7]?.id}`
                     : "#"
                 }
-                className={`cursor-pointer z-50 inline-block rounded-full overflow-hidden ${
+                className={`cursor-pointer z-40 inline-block rounded-full overflow-hidden ${
                   index <= 11
                     ? ""
                     : isMilestoneCompleted(allMilestonesData[index + 6]?.id)
@@ -646,7 +646,7 @@ export default function DashboardPage() {
                   }}
                 />
               </Link>
-              <span className="w-[134px] h-[32px] absolute z-50 top-1/2 left-1/2 text-white font-bold text-2xl">
+              <span className="w-[134px] h-[32px] absolute z-40 top-1/2 left-1/2 text-white font-bold text-2xl">
                 {allMilestonesData[index + 7]?.name}
                 {isMilestoneCompleted(allMilestonesData[index + 7]?.id)
                   ? "  (Completed)"
