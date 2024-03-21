@@ -9,6 +9,9 @@ import { useQuery } from "@tanstack/react-query";
 import { getCompletedMilestones, getCurrentUser } from "@/lib/backend/user";
 import useUserPaths from "@/components/hooks/useUserPaths";
 import PdfView from "@/components/shared/PdfView";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import PdfGenerator from "@/components/shared/PdfGenerator";
+import { useAppSelector } from "@/lib/store/hooks";
 
 export default function Header() {
   const [visible, setVisible] = useState(false);
@@ -91,7 +94,7 @@ export default function Header() {
   const [showDownload, setShowDownload] = useState(false);
 
   useEffect(() => {
-    if (completedMilestones?.length >= 18) {
+    if (completedMilestones?.length >= 2) {
       try {
         localStorage.setItem("__test__", "test");
         localStorage.removeItem("__test__");
@@ -117,6 +120,13 @@ export default function Header() {
 
   useOutsideClick(visible, setVisible);
 
+  const certifyTo = useAppSelector((state) => state.user.userData);
+  // Get the current date
+  const currentDate = new Date();
+  const day = currentDate.getDate();
+  const month = currentDate.getMonth() + 1; // Month is 0-indexed
+  const year = currentDate.getFullYear();
+
   return (
     <nav className="fixed top-0 right-0 flex items-center lg:justify-between w-full z-[100]">
       {/* left */}
@@ -140,28 +150,50 @@ export default function Header() {
       </section>
 
       {/* right */}
-      <section className="clip-right bg-white_background lg:max-w-[597px] h-[90px] px-5 md:px-10 py-[13px] flex items-center justify-end w-full gap-5 md:gap-10">
+      <section className="clip-right bg-white_background lg:max-w-[597px] h-[90px] px-5 md:px-10 py-[13px] flex items-center justify-end w-full gap-5">
         {showDownload ? (
-          <Button
-            onClick={() => setOpenPdf(true)}
-            className=" bg-Moderate_violet  items-center gap-2 rounded-md text-sm overflow-hidden p-2 flex"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-4 h-4"
+          <>
+            <PDFDownloadLink
+              document={
+                <PdfGenerator
+                  user={certifyTo}
+                  day={day}
+                  month={month}
+                  year={year}
+                />
+              }
+              fileName="certificate.pdf"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M7.5 7.5h-.75A2.25 2.25 0 0 0 4.5 9.75v7.5a2.25 2.25 0 0 0 2.25 2.25h7.5a2.25 2.25 0 0 0 2.25-2.25v-7.5a2.25 2.25 0 0 0-2.25-2.25h-.75m-6 3.75 3 3m0 0 3-3m-3 3V1.5m6 9h.75a2.25 2.25 0 0 1 2.25 2.25v7.5a2.25 2.25 0 0 1-2.25 2.25h-7.5a2.25 2.25 0 0 1-2.25-2.25v-.75"
-              />
-            </svg>
-            Download
-          </Button>
+              {({ loading, error }) =>
+                loading ? (
+                  <Button variant={"violate"} className="">
+                    Loading doc..
+                  </Button>
+                ) : (
+                  <Button
+                    variant={"violate"}
+                    className="bg-Moderate_violet  items-center gap-2 rounded-md text-sm overflow-hidden px-2 py-0 flex"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-4 h-4"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M7.5 7.5h-.75A2.25 2.25 0 0 0 4.5 9.75v7.5a2.25 2.25 0 0 0 2.25 2.25h7.5a2.25 2.25 0 0 0 2.25-2.25v-7.5a2.25 2.25 0 0 0-2.25-2.25h-.75m-6 3.75 3 3m0 0 3-3m-3 3V1.5m6 9h.75a2.25 2.25 0 0 1 2.25 2.25v7.5a2.25 2.25 0 0 1-2.25 2.25h-7.5a2.25 2.25 0 0 1-2.25-2.25v-.75"
+                      />
+                    </svg>
+                    Download
+                  </Button>
+                )
+              }
+            </PDFDownloadLink>
+          </>
         ) : null}
 
         <Button
