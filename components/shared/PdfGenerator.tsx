@@ -124,17 +124,14 @@ export default function PdfGenerator({ user, day, month, year }: any) {
                     marginLeft: "-15px",
                   }}
                   src="/images/arrowUp.png"
-                  alt=""
                 />
                 <Image
                   style={{ height: "70px", marginBottom: "5px" }}
                   src="/images/skillsbridge.png"
-                  alt=""
                 />
                 <Image
                   style={{ height: "50px", marginBottom: "10px" }}
                   src="/images/erasmus.png"
-                  alt="logo"
                 />
               </View>
             </View>
