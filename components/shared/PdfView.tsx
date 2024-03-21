@@ -14,7 +14,6 @@ import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { useAppSelector } from "@/lib/store/hooks";
-import Image from "next/image";
 
 const certificateStyles = {
   width: "1027px", // Adjust width as needed
@@ -143,7 +142,7 @@ const MyDocument = ({ user, day, month, year }: any) => (
                 alignItems: "flex-end",
               }}
             >
-              <img
+              <Image
                 style={{
                   width: "100px",
                   height: "150px",
@@ -151,17 +150,14 @@ const MyDocument = ({ user, day, month, year }: any) => (
                   marginLeft: "-15px",
                 }}
                 src="/images/arrowUp.png"
-                alt="image"
               />
-              <img
+              <Image
                 style={{ height: "70px", marginBottom: "5px" }}
                 src="/images/skillsbridge.png"
-                alt="image"
               />
-              <img
+              <Image
                 style={{ height: "50px", marginBottom: "10px" }}
                 src="/images/erasmus.png"
-                alt="logo"
               />
             </View>
           </View>
