@@ -14,6 +14,7 @@ import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { useAppSelector } from "@/lib/store/hooks";
+import Image from "next/image";
 
 const certificateStyles = {
   width: "1027px", // Adjust width as needed
