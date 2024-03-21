@@ -9,7 +9,7 @@ export default function Breadcrumb() {
   // @ts-ignore
   const decodedId = params?.id ? decodeURIComponent(params?.id) : "";
   return (
-    <motion.div className="w-full text-black max-w-screen-2xl h-fit rounded-2xl mx-auto mt-[43px]">
+    <motion.div className="w-full text-black max-w-screen-2xl h-fit rounded-2xl mx-auto mb-[18px]">
       <nav>
         <ul className="flex flex-row">
           <Link href={"/dashboard"} className="text-[#4F6181] text-sm">

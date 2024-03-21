@@ -28,7 +28,7 @@ export default function IsEligable({
     <motion.div className="w-full text-black max-w-screen-2xl h-full my-8 rounded-2xl mx-auto grid grid-cols-1 xl:grid-cols-2 gap-12 py-6 lg:py-[77px] xl:pr-0 px-12 bg-white_background">
       <div className="">
         <Breadcrumb />
-        <h1 className="text-2xl lg:text-[40px] font-bold mb-[18px] max-lg:mt-4">
+        <h1 className="text-2xl lg:text-[40px] font-bold mb-[40px] max-lg:mt-4">
           {milestone?.name}
         </h1>
         <Image

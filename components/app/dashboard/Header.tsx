@@ -128,7 +128,7 @@ export default function Header() {
   const year = currentDate.getFullYear();
 
   return (
-    <nav className="fixed top-0 right-0 flex items-center lg:justify-between w-full z-[100]">
+    <nav className="fixed top-0 right-0 flex items-center lg:justify-between w-full z-[47]">
       {/* left */}
       <PdfView open={openPdf} setOpen={setOpenPdf} />
       <section className="clip-left bg-white_background lg:max-w-[597px] h-[90px] px-5 md:px-10 py-[13px] flex items-center justify-start gap-5 md:gap-10 w-full">

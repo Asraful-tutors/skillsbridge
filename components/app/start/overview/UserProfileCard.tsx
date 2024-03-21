@@ -39,7 +39,7 @@ export default function UserProfileCard({ link }: { link?: string }) {
       storedPassword === process.env.NEXT_PUBLIC_ACCESS_PASSWORD
     ) {
       // Password is present and matches, redirect to the specified link
-      setCanAccess(true);
+      setCanAccess(false);
     } else {
       // Password not present or doesn't match, open the modal
       setCanAccess(false);

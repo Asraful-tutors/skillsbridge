@@ -74,7 +74,6 @@ export const getQuestions = async (id: any) => {
         assessments: true,
       },
     });
-    console.log("getassessment", getassessment);
     const assessmentIds =
       getassessment?.assessments.map((assessment) => assessment.id) || [];
 

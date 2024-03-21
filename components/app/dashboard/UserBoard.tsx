@@ -26,7 +26,7 @@ export default function UserBoard({ visible }: UserBoardProps) {
           animate={{ height: 170 }}
           exit={{ height: 0 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="absolute bg-white rounded-[20px]  w-[400px] z-[100] top-[20px] sm:top-[116px] -right-12 sm:right-2 overflow-hidden scale-75 sm:scale-100"
+          className="absolute bg-white rounded-[20px]  w-[400px] z-[47] top-[20px] sm:top-[116px] -right-12 sm:right-2 overflow-hidden scale-75 sm:scale-100"
         >
           <div className="pt-4 flex flex-col items-center">
             <Button
