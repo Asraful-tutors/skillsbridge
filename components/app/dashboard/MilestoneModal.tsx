@@ -77,7 +77,7 @@ export default function MilestoneModal({
   }
 
   return (
-    <div className="z-[100] bg-black/[.70] w-screen h-screen absolute top-0 left-0 flex items-center px-4">
+    <div className="z-50 bg-black/[.70] w-screen h-screen absolute top-0 left-0 flex items-center px-4">
       <motion.div
         className={`popup w-full relative text-black max-w-screen-2xl max-h-[90%] rounded-2xl sm:mx-10 xl:mx-auto grid grid-cols-1 xl:grid-cols-10 gap-12 p-0 bg-white_background overflow-y-scroll xl:overflow-hidden`}
       >
