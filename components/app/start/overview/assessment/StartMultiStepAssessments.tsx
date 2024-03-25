@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getHardQuestions, getSoftQuestions } from "@/actions/assessment";
 import useUserPaths from "@/components/hooks/useUserPaths";
 import { startAssessment } from "@/lib/backend/assessment";
+import Loading from "@/app/loading";
 
 export default function StartMultiStepAssessments({
   currentSkillType,
@@ -77,7 +78,12 @@ export default function StartMultiStepAssessments({
     enabled: !!userPaths,
   });
 
-  if (isLoading) return "Loading...";
+  if (isLoading)
+    return (
+      <>
+        <Loading />
+      </>
+    );
 
   if (isError) return <>Something went wrong!</>;
 

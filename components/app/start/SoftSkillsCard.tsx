@@ -13,6 +13,7 @@ export default function SoftSkillsCard({
   onScaleClick,
 }: SoftSkillCardProps) {
   const [selectedScale, setSelectedScale] = useState(0);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const handleScaleClick = (value: number) => {
     setSelectedScale(value);
@@ -36,9 +37,17 @@ export default function SoftSkillsCard({
               backgroundColor:
                 selectedScale >= value + 1 ? "#9d64d6" : "#D9D9D9",
             }}
-            className={`w-5 lg:w-16 h-3 rounded-md cursor-pointer `}
+            className={`w-5 lg:w-16 h-3 rounded-md cursor-pointer relative`}
             onClick={() => handleScaleClick(value + 1)}
-          ></motion.div>
+            onMouseEnter={() => setHoveredIndex(value + 1)}
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
+            {hoveredIndex === value + 1 && (
+              <motion.div className="absolute -top-6 left-3 text-Moderate_violet font-semibold">
+                {value + 1}
+              </motion.div>
+            )}
+          </motion.div>
         ))}
       </section>
     </motion.div>

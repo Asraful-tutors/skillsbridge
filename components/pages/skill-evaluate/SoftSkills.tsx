@@ -64,9 +64,10 @@ export default function SoftSkillsPage() {
     <div className="flex flex-col items-center justify-center h-full w-full gap-10">
       <section className="space-y-1">
         <h1 className="header">Evaluate your level of Soft Skills</h1>
-        <p className="desc text-[#616060]">
-          This self-reflection is crucial for personal growth and aligning you
-          with the right journey.
+        <p className="desc text-[#616060] max-w-5xl mx-auto">
+          Rate yourself from 1 to 10 in the following fields based on your
+          perception. This self-reflection is crucial for personal growth and
+          aligning you with the right journey.
         </p>
       </section>
       <motion.section

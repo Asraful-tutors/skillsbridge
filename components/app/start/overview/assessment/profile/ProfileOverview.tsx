@@ -53,9 +53,15 @@ export default function ProfileOverview() {
 
   return (
     <motion.div className="flex flex-col gap-5">
-      <h1 className="text-black font-bold text-2xl leading-[150%]">
-        Skills Overview
-      </h1>
+      <div className="flex flex-col gap-2">
+        <h1 className="text-black font-bold text-2xl leading-[150%]">
+          Skills Overview
+        </h1>
+        <p className="text-black font-medium leading-[150%]">
+          The yellow bar represents your self-evaluation. In purple, you can see
+          the level of knowledge assessed through the initial quiz.
+        </p>
+      </div>
       <SkillAssessment title="Hard Skills">
         <SkillsOverview
           disableAnimation={false}

@@ -94,7 +94,11 @@ export default function MileStoneAssessment({
   const isLastSoftQuestion = currentQuestion === questions?.length - 1;
 
   if (!questions || questions?.length < 1) {
-    return <Loading />;
+    return (
+      <>
+        <Loading />
+      </>
+    );
   }
 
   const currentQuestionData = questions[currentQuestion];
