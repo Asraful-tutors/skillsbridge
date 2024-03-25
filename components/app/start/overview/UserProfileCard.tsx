@@ -72,14 +72,14 @@ export default function UserProfileCard({ link }: { link?: string }) {
             </p>
           </div>
         </div>
-        <div className="text-center text-blacke leading-[150%] space-y-2.5">
+        {/* <div className="text-center text-blacke leading-[150%] space-y-2.5">
           <p className="font-semibold">A little bit about me:</p>
           <p className="font-normal text-black text-opacity-50">
             Passionate learner on the journey to becoming a game designer,
             seeking creativity and expertise in the exciting realm of game
             development.
           </p>
-        </div>
+        </div> */}
       </div>
 
       {link ? (
