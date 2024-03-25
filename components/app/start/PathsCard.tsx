@@ -9,7 +9,10 @@ import { setSelectedPath } from "@/lib/store/path/pathSlice";
 import { LearningPath } from "@/lib/types/types";
 import { QueryClient } from "@tanstack/react-query";
 import { updateUsersLearningPaths } from "@/actions/getLearningPaths";
-
+import Artist from "../../../public/images/skill-artist.png";
+import Programmer from "../../../public/images/skill-programmer.png";
+import Designer from "../../../public/images/skill-designer.png";
+import Producer from "../../../public/images/skill-producer.png";
 export interface paths {
   userId: number;
   pathId: number;
@@ -28,6 +31,8 @@ const cardVariants = {
   selected: { backgroundColor: "#9d64d6" },
   unselected: { backgroundColor: "#dedfe3" },
 };
+
+const pathImages = [Artist, Programmer, Designer, Producer];
 
 export default function PathsCard({
   icon,
@@ -68,7 +73,7 @@ export default function PathsCard({
     >
       <div className="w-[88px] bg-[#C7C7C7] rounded-sm">
         <Image
-          src={icon || "/images/game-artist.svg"}
+          src={icon || pathImages[id - 1]}
           alt={name}
           width={64}
           height={64}
