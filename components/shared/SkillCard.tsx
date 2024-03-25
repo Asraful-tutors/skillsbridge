@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useAppSelector } from "@/lib/store/hooks";
 import { useQuery } from "@tanstack/react-query";
 import { getScoreCard } from "@/lib/backend/score";
+import Loading from "@/app/loading";
 
 interface CardProps {
   skill: {
@@ -26,7 +27,12 @@ export function SkillCard({ skill }: CardProps) {
     enabled: !!skill,
   });
 
-  if (isLoading) return "";
+  if (isLoading)
+    return (
+      <>
+        <Loading />
+      </>
+    );
   if (isError) return "Something went wrong";
 
   return (

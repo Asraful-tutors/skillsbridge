@@ -20,7 +20,7 @@ export const upsertHardSkills = async (
       create: {
         userId,
         skillId,
-        selfScore,
+        selfScore: selfScore * 10,
         score: 0,
       },
     });
@@ -47,7 +47,7 @@ export const upsertSoftSkills = async (
       create: {
         userId,
         skillId,
-        selfScore,
+        selfScore: selfScore * 10,
         score: 0,
       },
     });
