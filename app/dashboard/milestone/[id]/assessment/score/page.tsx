@@ -63,7 +63,14 @@ export default function ScorePage() {
   return (
     <motion.div className="w-full text-black max-w-screen-2xl h-full my-8 rounded-2xl mx-auto flex flex-col gap-12 py-[34px] px-[52px] bg-white_background">
       <div className="border-b-[1px] border-[#B1ABAB] w-full">
-        <h1 className="text-2xl font-bold m-6">Scorecard</h1>
+        <h1 className="text-2xl font-bold m-6">
+          Scorecard
+          <br />
+          <span className="font-medium text-sm ">
+            {" "}
+            See how much you have improved in each skill (marked in green)!
+          </span>
+        </h1>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:mx-[50px]">
         {userSkills &&

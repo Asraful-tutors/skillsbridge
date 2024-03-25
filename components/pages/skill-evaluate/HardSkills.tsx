@@ -89,9 +89,10 @@ export default function HardSkillsPage({
     >
       <section className="space-y-1">
         <h1 className="header">Evaluate your level of Hard Skills</h1>
-        <p className="desc text-[#616060]">
-          Your self-evaluation helps us tailor your learning experience to
-          bridge gaps and enhance strengths.
+        <p className="desc text-[#616060] max-w-5xl mx-auto">
+          Rate yourself from 1 to 10 in the following fields based on your
+          perception. Your self-evaluation helps us tailor your learning
+          experience to bridge gaps and enhance strengths.
         </p>
       </section>
       <motion.section className="grid grid-cols-1 gap-5 px-4">
