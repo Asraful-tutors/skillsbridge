@@ -168,7 +168,7 @@ async function parseMilestoneData() {
       ...skillRequirements
     ] = line;
 
-    const careerNames = careerNamesRaw.split(/,\ ?/)
+    const careerNames = careerNamesRaw.split(/,\ ?/);
 
     const careers = await SeedDB.Paths.getCreateMulti(...careerNames);
 
