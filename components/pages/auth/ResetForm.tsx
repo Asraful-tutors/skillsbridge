@@ -1,3 +1,4 @@
+"use client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
@@ -10,22 +11,22 @@ import * as z from "zod";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import Link from "next/link";
+import { resetForm } from "@/lib/backend/reset";
 
 type LoginProps = {};
 
-const LoginSchema = z.object({
+export const ResetSchema = z.object({
   email: z
     .string()
     .email("Invalid email address")
     .nonempty("Email is required"),
-  password: z.string().nonempty("Password is required"),
 });
 
-export default function SignInPage({}: LoginProps) {
+export default function ResetForm({}: LoginProps) {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState(false);
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof ResetSchema>>({
+    resolver: zodResolver(ResetSchema),
   });
 
   const {
@@ -34,20 +35,20 @@ export default function SignInPage({}: LoginProps) {
     register,
   } = form;
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (values: z.infer<typeof ResetSchema>) => {
     startTransition(() => {
-      signIn("credentials", {
-        email: values.email,
-        password: values.password,
-        redirect: false,
-      })
+      toast.loading("Loading...");
+      resetForm(values)
         .then((res) => {
           if (res?.error) {
             // setError(true);
             toast.error("No account found with the given credentials");
+            toast.dismiss();
           } else {
-            toast.success("Login successfull");
-            window.location.href = DEFAULT_LOGIN_REDIRECT;
+            toast.success("Reset password sent successfully");
+            toast.dismiss();
+
+            // window.location.href = DEFAULT_LOGIN_REDIRECT;
           }
         })
         .catch((error) => console.log(error));
@@ -66,8 +67,11 @@ export default function SignInPage({}: LoginProps) {
         duration: 0.5,
         ease: "easeInOut",
       }}
-      className="w-full max-w-md"
+      className="!w-full min-[312px]:min-w-[346px] max-[415px]:min-w-[412px]"
     >
+      <div className="text-2xl font-medium text-center py-6">
+        Forgot your password ?
+      </div>
       <section className=" flex flex-col items-center justify-center gap-6 lg:gap-10 !w-full ">
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -88,25 +92,20 @@ export default function SignInPage({}: LoginProps) {
               </div>
             )}
           </div>
-          <div className="w-full text-right text-sm font-medium hover:font-semibold">
-            <Link href={"/reset"}>Forgot Password ?</Link>
+
+          <div className="flex items-center justify-between gap-2 w-full">
+            <Button
+              asChild
+              variant={"secondary"}
+              disabled={isPending}
+              className="w-full"
+            >
+              <Link href={"/"}>Back</Link>
+            </Button>
+            <Button type="submit" variant={"violate"} disabled={isPending}>
+              Send reset email
+            </Button>
           </div>
-          <Input
-            type="password"
-            placeholder="******"
-            {...register("password")}
-            disabled={isPending}
-            required
-            className="w-full"
-          />
-          {errors.password && (
-            <div className="p-4 py-3 bg-red-500/10 text-red-500 rounded-md w-full">
-              {errors.password.message}
-            </div>
-          )}
-          <Button type="submit" variant={"violate"} disabled={isPending}>
-            Log In
-          </Button>
         </form>
       </section>
     </motion.div>
