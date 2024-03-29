@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import Breadcrumb from "@/components/shared/Breadcrumb";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { BsInfoCircle } from "react-icons/bs";
 
 interface Skill {
   skill?: {
@@ -38,7 +39,7 @@ export default function IsEligable({
           height={555}
           className="w-full lg:w-[604px] aspect-video lg:h-[555px] object-center object-cover xl:hidden justify-self-start mb-8"
         />
-        <div className="flex flex-col mb-8">
+        <div className="flex flex-col mb-10">
           <h2 className="text-lg lg:text-xl font-semibold mb-1.5 text-subheading">
             Overview
           </h2>
@@ -54,7 +55,7 @@ export default function IsEligable({
           </p>
         </div>
         {skillNames?.length > 0 && (
-          <div className="flex flex-col mb-[84px]">
+          <div className="flex flex-col mb-10">
             <h3 className="text-base font-medium mb-[9px]">
               Skills you&apos;ll learn
             </h3>
@@ -79,6 +80,22 @@ export default function IsEligable({
             </div>
           </div>
         )}
+
+        <div className="flex gap-2 bg-purple-100 p-3 rounded-md mb-8">
+          <div>
+            <BsInfoCircle className="text-purple-800 mt-0.5" size={20} />
+          </div>
+          <p className="text-sm tracking-wide text-badge_text">
+            Encountered a few head-scratchers? No stress if some questions seem
+            odd or out of place. This assessment isn&apos;t just about correct
+            answers; it&apos;s about exploring your problem-solving strategies
+            and how you apply soft skills to tackle hard-skill challenges. Your
+            approach and how you navigate these questions are what matter most.
+            Dive in with confidence — your unique way of thinking is what
+            matters here.
+          </p>
+        </div>
+
         <div className="flex flex-row gap-5 lg:gap-[42px] mx-auto flex-wrap">
           <Button
             asChild
