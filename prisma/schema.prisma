@@ -70,6 +70,15 @@ model User {
   assessments AssessmentRecord[]
 }
 
+model PasswordResetToken {
+  id String @id @default(cuid())
+  email String
+  token String @unique
+  expires DateTime
+
+  @@unique([email,token])
+}
+
 model UserProfile {
   userId    Int     @id
   firstName String? @db.VarChar(64)

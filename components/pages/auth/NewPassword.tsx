@@ -1,3 +1,4 @@
+"use client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
@@ -10,22 +11,25 @@ import * as z from "zod";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import Link from "next/link";
+import { resetForm } from "@/lib/backend/reset";
+import { useSearchParams } from "next/navigation";
+import { newPassword } from "@/lib/backend/newPassword";
 
 type LoginProps = {};
 
-const LoginSchema = z.object({
-  email: z
-    .string()
-    .email("Invalid email address")
-    .nonempty("Email is required"),
-  password: z.string().nonempty("Password is required"),
+export const NewPasswordSchema = z.object({
+  password: z.string().min(4, {
+    message: "Minimum of 4 charecters required",
+  }),
 });
 
-export default function SignInPage({}: LoginProps) {
+export default function NewPassword() {
+  const searchParam = useSearchParams();
+  const token = searchParam.get("token");
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState(false);
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof NewPasswordSchema>>({
+    resolver: zodResolver(NewPasswordSchema),
   });
 
   const {
@@ -34,19 +38,19 @@ export default function SignInPage({}: LoginProps) {
     register,
   } = form;
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (values: z.infer<typeof NewPasswordSchema>) => {
     startTransition(() => {
-      signIn("credentials", {
-        email: values.email,
-        password: values.password,
-        redirect: false,
-      })
+      toast.loading("Loading...");
+      newPassword(values, token)
         .then((res) => {
           if (res?.error) {
             // setError(true);
-            toast.error("No account found with the given credentials");
+            toast.error("Invalid token!");
+            toast.dismiss();
           } else {
-            toast.success("Login successfull");
+            toast.success("Password reset successfull");
+            toast.dismiss();
+
             window.location.href = DEFAULT_LOGIN_REDIRECT;
           }
         })
@@ -66,8 +70,11 @@ export default function SignInPage({}: LoginProps) {
         duration: 0.5,
         ease: "easeInOut",
       }}
-      className="w-full max-w-md"
+      className="!w-full min-[312px]:min-w-[346px] max-[415px]:min-w-[412px]"
     >
+      <div className="text-2xl font-medium text-center py-6">
+        Enter a new password
+      </div>
       <section className=" flex flex-col items-center justify-center gap-6 lg:gap-10 !w-full ">
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -75,38 +82,33 @@ export default function SignInPage({}: LoginProps) {
         >
           <div className="flex flex-col gap-4 w-full">
             <Input
-              type="email"
-              placeholder="Email Address"
-              {...register("email")}
+              type="password"
+              placeholder="******"
+              {...register("password")}
               disabled={isPending}
               required
               className="w-full"
             />
-            {errors.email && (
+            {errors.password && (
               <div className="p-4 py-3 bg-red-500/10 text-red-500 rounded-md w-full ">
-                {errors.email.message}
+                {errors.password.message}
               </div>
             )}
           </div>
-          <div className="w-full text-right text-sm font-medium hover:font-semibold">
-            <Link href={"/reset"}>Forgot Password ?</Link>
+
+          <div className="flex items-center justify-between gap-2 w-full">
+            <Button
+              asChild
+              variant={"secondary"}
+              disabled={isPending}
+              className="w-full"
+            >
+              <Link href={"/"}>Back</Link>
+            </Button>
+            <Button type="submit" variant={"violate"} disabled={isPending}>
+              Reset password
+            </Button>
           </div>
-          <Input
-            type="password"
-            placeholder="******"
-            {...register("password")}
-            disabled={isPending}
-            required
-            className="w-full"
-          />
-          {errors.password && (
-            <div className="p-4 py-3 bg-red-500/10 text-red-500 rounded-md w-full">
-              {errors.password.message}
-            </div>
-          )}
-          <Button type="submit" variant={"violate"} disabled={isPending}>
-            Log In
-          </Button>
         </form>
       </section>
     </motion.div>
