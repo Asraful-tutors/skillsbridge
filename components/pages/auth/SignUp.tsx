@@ -74,7 +74,7 @@ export default function SignUp({}: SignUpProps) {
         ease: "easeInOut",
       }}
     >
-      <section className="grid grid-cols-1 lg:grid-cols-2 w-screen min-h-screen lg:h-screen overflow-hidden py-14 p-4 lg:p-10 xl:px-12 absolute inset-0 bg-[#F9F9F7]">
+      <section className="grid grid-cols-1 lg:grid-cols-2 w-screen min-h-screen lg:h-screen  py-14 p-4 lg:p-10 xl:px-12 absolute inset-0 bg-[#F9F9F7] overflow-y-scroll">
         <div className="hidden lg:flex bg-white_background flex-col items-center justify-center gap-3.5 py-24">
           <Image
             src="/logo/logo.svg"
