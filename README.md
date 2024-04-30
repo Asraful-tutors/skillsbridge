@@ -29,3 +29,5 @@ Prisma does not read `env.local` automatically, you will need to install and use
 ## Inspect the database
 
 Run `npx prisma studio`
+
+- For info about remote DB connection, see remotedDb.md
