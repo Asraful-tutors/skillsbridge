@@ -22,7 +22,9 @@ export default async function RootLayout({
     <StoreProvider>
       <html lang="en">
         <MotionLayout>
-          <body>{children}</body>
+          <body>            
+            <script type="text/javascript" async src="https://bot.leadoo.com/bot/dynamic.js?company=LVbtMuTt"></script> 
+            {children}</body>
           <Toaster />
         </MotionLayout>
       </html>
